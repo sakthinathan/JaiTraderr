@@ -92,167 +92,154 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-slate-950">
-      {/* Background cover image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 pointer-events-none scale-105"
-        style={{ backgroundImage: `url('/laundry-login-bg.jpg')` }}
-      />
-      {/* Vignette overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#090d16_95%)] pointer-events-none" />
+    <div className="relative min-h-screen flex overflow-hidden bg-[#0a0f14]">
 
-      {/* Background Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[35rem] h-[35rem] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse duration-8000" />
-      <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse duration-10000" />
-      
-      {/* Mesh lines effect */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#020617_1px,transparent_1px),linear-gradient(to_bottom,#020617_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
+      {/* === LEFT PANEL — Full-bleed boutique photo === */}
+      <div className="hidden lg:flex flex-1 relative overflow-hidden">
+        {/* Background photo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-105"
+          style={{ backgroundImage: `url('/laundry-login-bg.jpg')` }}
+        />
+        {/* Darkening gradient to bleed into right panel */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-[#0a0f14]" />
+        {/* Bottom vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f14]/80 via-transparent to-transparent" />
 
-      <div className="relative z-10 w-full max-w-md my-8">
-        {/* App Logo/Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-4 backdrop-blur-md shadow-lg shadow-emerald-500/5">
-            <Sparkles className="w-3.5 h-3.5 animate-spin duration-3000 text-emerald-400" />
-            <span>Smart Billing & Lifecycle Portal</span>
+        {/* Floating brand badge bottom-left */}
+        <div className="absolute bottom-10 left-10 z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 border border-amber-500/30 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span className="text-amber-300 text-xs font-semibold uppercase tracking-widest">Premium Dry Cleaning & Laundry</span>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-widest bg-gradient-to-r from-white via-slate-100 to-emerald-400 bg-clip-text text-transparent drop-shadow-md">
-            JAI TRADERR
-          </h1>
-          <p className="text-slate-400 mt-2 text-xs font-medium uppercase tracking-widest opacity-80">
-            Operational center for professional laundry processing
+          <p className="text-slate-500 text-[10px] mt-3 ml-1 uppercase tracking-wider">
+            Since 2023 · Erode, Tamil Nadu
           </p>
         </div>
+      </div>
 
-        {/* Login Card */}
-        <Card className="border border-slate-800/80 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/80 overflow-hidden relative">
-          {/* Decorative Top Line */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-indigo-500 to-cyan-500" />
+      {/* === RIGHT PANEL — Login Card === */}
+      <div className="relative z-10 w-full lg:w-[440px] xl:w-[480px] flex-shrink-0 flex flex-col justify-center min-h-screen px-8 xl:px-12 py-10 bg-[#0a0f14]/95 lg:bg-[#0a0f14] border-l border-slate-800/60">
 
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-bold text-slate-950 flex items-center gap-2">
-              <Landmark className="w-4.5 h-4.5 text-indigo-600" />
-              Portal Access
-            </CardTitle>
-            <CardDescription className="text-slate-400 text-xs">
-              Sign in to manage orders, payments, and workflow statuses.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Alert Area */}
-              {error && (
-                <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-start gap-2 animate-shake">
-                  <ShieldAlert className="w-4.5 h-4.5 mt-0.5 shrink-0" />
-                  <span>{error}</span>
-                </div>
-              )}
+        {/* Subtle glowing background orb */}
+        <div className="absolute top-1/3 -left-24 w-64 h-64 bg-teal-600/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 right-0 w-48 h-48 bg-indigo-600/8 rounded-full blur-3xl pointer-events-none" />
 
-              {success && (
-                <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-start gap-2">
-                  <CheckCircle2 className="w-4.5 h-4.5 mt-0.5 shrink-0" />
-                  <span>Authentication approved! Connecting session...</span>
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-300 text-xs font-medium">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@jaitraderr.com"
-                    className="pl-10 bg-slate-950/60 border-slate-800 text-slate-300 placeholder-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 h-9 text-xs"
-                    disabled={loading || success}
-                    {...register("email")}
-                  />
-                </div>
-                {errors.email && (
-                  <p className="text-rose-500 text-xs mt-1">{errors.email.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="password" className="text-slate-300 text-xs font-medium">Password</Label>
-                </div>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    className="pl-10 bg-slate-950/60 border-slate-800 text-slate-300 placeholder-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 h-9 text-xs"
-                    disabled={loading || success}
-                    {...register("password")}
-                  />
-                </div>
-                {errors.password && (
-                  <p className="text-rose-500 text-xs mt-1">{errors.password.message}</p>
-                )}
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-medium py-2 rounded-lg shadow-lg shadow-emerald-600/10 active:scale-98 transition duration-200 h-9 text-xs"
-                disabled={loading || success}
-              >
-                {loading ? "Verifying..." : "Access Dashboard"}
-              </Button>
-            </form>
-          </CardContent>
-
-          {/* Demo Shortcuts Block */}
-          <div className="border-t border-slate-800/80 px-6 py-4 bg-slate-950/30">
-            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-indigo-400" />
-              Demo Roles (Quick login bypass)
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("admin@jaitraderr.com")}
-                className="px-2.5 py-1.5 text-left rounded-md bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition hover:bg-slate-900 flex flex-col"
-                disabled={loading || success}
-              >
-                <span className="font-semibold text-slate-200">Admin</span>
-                <span className="text-[9px] text-slate-500 mt-0.5">Full operations</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("billing@jaitraderr.com")}
-                className="px-2.5 py-1.5 text-left rounded-md bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition hover:bg-slate-900 flex flex-col"
-                disabled={loading || success}
-              >
-                <span className="font-semibold text-slate-200">Billing Staff</span>
-                <span className="text-[9px] text-slate-500 mt-0.5">Job Cards & Payments</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("processing@jaitraderr.com")}
-                className="px-2.5 py-1.5 text-left rounded-md bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition hover:bg-slate-900 flex flex-col"
-                disabled={loading || success}
-              >
-                <span className="font-semibold text-slate-200">Processing Staff</span>
-                <span className="text-[9px] text-slate-500 mt-0.5">Status Workflow</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin("delivery@jaitraderr.com")}
-                className="px-2.5 py-1.5 text-left rounded-md bg-slate-950/60 border border-slate-800 hover:border-indigo-500/40 text-slate-300 text-xs transition hover:bg-slate-900 flex flex-col"
-                disabled={loading || success}
-              >
-                <span className="font-semibold text-slate-200">Delivery Staff</span>
-                <span className="text-[9px] text-slate-500 mt-0.5">Invoice Collections</span>
-              </button>
+        {/* Brand header */}
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-6">
+            {/* Logo mark */}
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/25 flex-shrink-0">
+              <span className="text-white font-black text-lg leading-none">J</span>
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-white tracking-tight leading-none">
+                JaiLaundry
+              </h1>
+              <p className="text-emerald-400 text-xs font-semibold tracking-widest uppercase mt-0.5">
+                Erode
+              </p>
             </div>
           </div>
-          <CardFooter className="flex justify-center border-t border-slate-800/80 pt-4">
-            <p className="text-slate-500 text-[10px] text-center">
-              Protected secure login terminal. Operations are logged.
+          <div>
+            <h2 className="text-slate-100 text-xl font-bold leading-tight">
+              Welcome back
+            </h2>
+            <p className="text-slate-500 text-sm mt-1">
+              Sign in to access the operations dashboard
             </p>
-          </CardFooter>
-        </Card>
+          </div>
+        </div>
+
+        {/* Login Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Alert Area */}
+          {error && (
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-start gap-2">
+              <ShieldAlert className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+          {success && (
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>Authentication approved! Redirecting...</span>
+            </div>
+          )}
+
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-slate-400 text-xs font-medium">Email Address</Label>
+            <div className="relative">
+              <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-600" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@jailaundry.com"
+                className="pl-10 h-11 bg-slate-900/60 border-slate-800 text-slate-200 placeholder-slate-600 focus:border-teal-500/60 focus:ring-1 focus:ring-teal-500/20 rounded-xl text-sm"
+                disabled={loading || success}
+                {...register("email")}
+              />
+            </div>
+            {errors.email && <p className="text-rose-500 text-xs">{errors.email.message}</p>}
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-slate-400 text-xs font-medium">Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-600" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                className="pl-10 h-11 bg-slate-900/60 border-slate-800 text-slate-200 placeholder-slate-600 focus:border-teal-500/60 focus:ring-1 focus:ring-teal-500/20 rounded-xl text-sm"
+                disabled={loading || success}
+                {...register("password")}
+              />
+            </div>
+            {errors.password && <p className="text-rose-500 text-xs">{errors.password.message}</p>}
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full h-11 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-semibold shadow-lg shadow-teal-700/20 transition-all duration-200 active:scale-[0.98] text-sm"
+            disabled={loading || success}
+          >
+            {loading ? "Verifying credentials..." : "Sign in to Dashboard"}
+          </Button>
+        </form>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 my-7">
+          <div className="flex-1 h-px bg-slate-800" />
+          <span className="text-slate-600 text-[10px] uppercase tracking-wider font-medium">Demo access</span>
+          <div className="flex-1 h-px bg-slate-800" />
+        </div>
+
+        {/* Demo role shortcuts */}
+        <div className="grid grid-cols-2 gap-2.5">
+          {[
+            { label: "Admin", sub: "Full operations", email: "admin@jaitraderr.com" },
+            { label: "Billing Staff", sub: "Job Cards & Payments", email: "billing@jaitraderr.com" },
+            { label: "Processing", sub: "Status Workflow", email: "processing@jaitraderr.com" },
+            { label: "Delivery", sub: "Invoice Collections", email: "delivery@jaitraderr.com" },
+          ].map((role) => (
+            <button
+              key={role.email}
+              type="button"
+              onClick={() => handleDemoLogin(role.email)}
+              disabled={loading || success}
+              className="p-3 text-left rounded-xl bg-slate-900/60 border border-slate-800 hover:border-teal-600/40 hover:bg-slate-900 transition-all duration-150 group"
+            >
+              <span className="block text-xs font-semibold text-slate-200 group-hover:text-teal-300 transition-colors">{role.label}</span>
+              <span className="block text-[10px] text-slate-600 mt-0.5">{role.sub}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <p className="text-slate-700 text-[10px] text-center mt-8 uppercase tracking-wider">
+          Secured access · Operations are logged
+        </p>
       </div>
     </div>
   );
