@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import FirebaseOtpModal from "@/components/firebase-otp-modal";
 
 interface JobCardsClientProps {
   customers: Customer[];
@@ -102,6 +103,22 @@ export default function JobCardsClient({
   const [otpValue, setOtpValue] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [otpError, setOtpError] = useState<string | null>(null);
+  const [firebaseOtpModalOpen, setFirebaseOtpModalOpen] = useState(false);
+
+  const handleFirebaseOtpVerified = async () => {
+    if (!detailedJc) return;
+    setFirebaseOtpModalOpen(false);
+    startTransition(async () => {
+      const res = await unlockJobCard(detailedJc.id);
+      if (res.success) {
+        const fullDetails = await getJobCardDetails(detailedJc.id);
+        const updatedJc = fullDetails || { ...detailedJc, is_locked: false };
+        handleEditJobCard(updatedJc);
+      } else {
+        alert(res.error || "Failed to unlock job card.");
+      }
+    });
+  };
 
   const handleViewJcDetails = async (jc: JobCard) => {
     setLoadingDetails(true);
@@ -1225,13 +1242,22 @@ export default function JobCardsClient({
             {!otpRequested && detailedJc && (
               <>
                 {detailedJc.is_locked ? (
-                  <Button
-                    onClick={() => handleRequestUnlockOtp(detailedJc)}
-                    className="bg-amber-600 hover:bg-amber-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
-                  >
-                    <Zap className="w-3.5 h-3.5" />
-                    Unlock Card (OTP)
-                  </Button>
+                  <div className="flex gap-2 flex-1">
+                    <Button
+                      onClick={() => handleRequestUnlockOtp(detailedJc)}
+                      className="bg-amber-600 hover:bg-amber-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
+                    >
+                      <Zap className="w-3.5 h-3.5" />
+                      Unlock (DB OTP)
+                    </Button>
+                    <Button
+                      onClick={() => setFirebaseOtpModalOpen(true)}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
+                    >
+                      <Smartphone className="w-3.5 h-3.5" />
+                      Unlock (Firebase OTP)
+                    </Button>
+                  </div>
                 ) : (
                   <Button
                     onClick={() => handleEditJobCard(detailedJc)}
@@ -1264,6 +1290,19 @@ export default function JobCardsClient({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Firebase Phone Auth OTP Modal */}
+      {detailedJc && (
+        <FirebaseOtpModal
+          isOpen={firebaseOtpModalOpen}
+          jobCardId={detailedJc.id}
+          jobCardNumber={detailedJc.job_card_number}
+          customerName={detailedJc.customer_name || ""}
+          customerPhone={detailedJc.customer_mobile || ""}
+          onVerified={handleFirebaseOtpVerified}
+          onClose={() => setFirebaseOtpModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
