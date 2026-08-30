@@ -66,7 +66,7 @@ export async function recordPayment(
     if (idx !== -1) {
       const activePayments = mockPayments.filter(p => p.job_card_id === jobCardId);
       const totalPaid = activePayments.reduce((acc, p) => acc + p.amount, 0);
-      list[idx].balance_due = list[idx].grand_total - totalPaid;
+      list[idx].balance_due = list[idx].grand_total - (list[idx].advance_paid || 0) - totalPaid;
       
       // Auto transition to DELIVERED if balance is fully paid and final payment type is recorded
       if (data.payment_type === "FINAL" && list[idx].balance_due <= 0) {
