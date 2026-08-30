@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useMemo } from "react";
 import { 
   ArrowRight, 
   Calendar, 
@@ -49,6 +49,34 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
   const [paymentMethod, setPaymentMethod] = useState<"CASH" | "UPI" | "CARD" | "BANK_TRANSFER" | "OTHER">("UPI");
   const [formError, setFormError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // 1. Group shelf locations by prefix (e.g. A-01 -> Rack A, B-01 -> Rack B)
+  const groupedShelves = useMemo(() => {
+    const groups: { [rack: string]: typeof shelfLocations } = {};
+    shelfLocations.forEach(s => {
+      const parts = s.code.split("-");
+      const rack = parts[0] || "General";
+      if (!groups[rack]) {
+        groups[rack] = [];
+      }
+      groups[rack].push(s);
+    });
+    return groups;
+  }, [shelfLocations]);
+
+  // 2. Map occupied shelves to active job cards currently on them
+  const occupiedShelves = useMemo(() => {
+    const map: { [shelfCode: string]: JobCard[] } = {};
+    jobCards.forEach(jc => {
+      if (jc.shelf_location && jc.status === "READY_FOR_DELIVERY") {
+        if (!map[jc.shelf_location]) {
+          map[jc.shelf_location] = [];
+        }
+        map[jc.shelf_location].push(jc);
+      }
+    });
+    return map;
+  }, [jobCards]);
 
   const buildWhatsAppLink = (jc: JobCard) => {
     const name = jc.customer_name || "Customer";
@@ -256,9 +284,9 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
         })}
       </div>
 
-      {/* Dialog: Change Status Confirmation (Shelf Location Input) */}
+      {/* Dialog: Change Status Confirmation (Visual Shelf Mapping) */}
       <Dialog open={!!statusDialogJc} onOpenChange={() => setStatusDialogJc(null)}>
-        <DialogContent className="border-slate-800 bg-slate-900 text-slate-100 max-w-sm">
+        <DialogContent className={`border-slate-800 bg-slate-900 text-slate-100 transition-all duration-300 ${targetStatus === "READY_FOR_DELIVERY" ? "max-w-md" : "max-w-sm"}`}>
           <DialogHeader>
             <DialogTitle className="text-white text-base">Update Order Stage</DialogTitle>
             <DialogDescription className="text-slate-400 text-xs">
@@ -275,20 +303,98 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
 
           <div className="space-y-4 py-2">
             {targetStatus === "READY_FOR_DELIVERY" && (
-              <div className="space-y-2">
-                <Label htmlFor="shelf" className="text-slate-300 text-xs">Select Shelf Location <span className="text-rose-500">*</span></Label>
-                <select
-                  id="shelf"
-                  value={shelfLocation}
-                  onChange={(e) => setShelfLocation(e.target.value)}
-                  className="w-full h-9 px-3 rounded-lg bg-slate-950 border border-slate-800 text-white text-sm focus:border-indigo-500 focus:outline-none"
-                  disabled={isPending}
-                >
-                  <option value="">-- Select Shelf --</option>
-                  {shelfLocations.map(s => (
-                    <option key={s.id} value={s.code}>{s.code}</option>
+              <div className="space-y-3">
+                <Label className="text-slate-300 text-xs flex justify-between items-center">
+                  <span>Visual Rack Layout & Shelf Allocation <span className="text-rose-500">*</span></span>
+                  {shelfLocation && (
+                    <span className="text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full font-mono font-bold animate-pulse">
+                      Selected: {shelfLocation}
+                    </span>
+                  )}
+                </Label>
+                
+                {/* Visual Rack Map */}
+                <div className="space-y-4 max-h-60 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+                  {Object.keys(groupedShelves).sort().map(rack => (
+                    <div key={rack} className="space-y-1.5">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                        Rack {rack}
+                      </div>
+                      <div className="grid grid-cols-4 gap-2">
+                        {groupedShelves[rack].map(s => {
+                          const isSelected = s.code === shelfLocation;
+                          const occupants = occupiedShelves[s.code] || [];
+                          const isOccupied = occupants.length > 0;
+                          
+                          return (
+                            <button
+                              key={s.id}
+                              type="button"
+                              onClick={() => setShelfLocation(s.code)}
+                              disabled={isPending}
+                              title={isOccupied 
+                                ? `Slot ${s.code} - Occupied by ${occupants.map(o => `${o.customer_name} (#${o.job_card_number})`).join(", ")}` 
+                                : `Slot ${s.code} - Empty/Available`}
+                              className={`relative group flex flex-col items-center justify-center p-2 rounded-xl border text-center transition-all cursor-pointer select-none h-14 ${
+                                isSelected
+                                  ? "bg-indigo-600/10 border-indigo-500 text-white ring-2 ring-indigo-500/40 ring-offset-2 ring-offset-slate-900"
+                                  : isOccupied
+                                    ? "bg-amber-500/5 border-amber-500/30 text-amber-300 hover:border-amber-400"
+                                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                              }`}
+                            >
+                              <span className={`text-xs font-mono font-bold ${isSelected ? "text-indigo-400" : isOccupied ? "text-amber-400" : "text-slate-300"}`}>
+                                {s.code.split("-")[1] || s.code}
+                              </span>
+                              
+                              {/* Small status indicator / dot */}
+                              <div className="mt-1 flex items-center gap-1">
+                                {isOccupied && !isSelected && (
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                                )}
+                                {isSelected && (
+                                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                                )}
+                                <span className="text-[8px] opacity-60">
+                                  {isOccupied ? `${occupants.length} order` : "Free"}
+                                </span>
+                              </div>
+                              
+                              {/* Hover tooltip for occupied slots */}
+                              {isOccupied && (
+                                <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-48 -translate-x-1/2 scale-90 rounded bg-slate-950 p-2 text-left text-[9px] text-slate-300 opacity-0 shadow-xl border border-slate-800 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+                                  <p className="font-semibold text-amber-400 border-b border-slate-800 pb-1 mb-1">Occupied Slot {s.code}</p>
+                                  {occupants.map(o => (
+                                    <div key={o.id} className="truncate">
+                                      • {o.customer_name} ({o.job_card_number})
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   ))}
-                </select>
+                </div>
+                
+                {/* Legend */}
+                <div className="flex gap-4 pt-1 justify-center text-[10px] text-slate-500 border-t border-slate-800/60">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded bg-slate-950 border border-slate-800 inline-block" />
+                    <span>Available</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded bg-amber-500/10 border border-amber-500/30 inline-block" />
+                    <span>Occupied</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded bg-indigo-600/10 border border-indigo-500 inline-block" />
+                    <span>Selected</span>
+                  </div>
+                </div>
               </div>
             )}
 
