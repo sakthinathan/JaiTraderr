@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Sparkles, Mail, Lock, ShieldAlert, CheckCircle2, User, Landmark } from "lucide-react";
+import { Sparkles, Mail, Lock, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+
 import { createClient } from "@/lib/supabase/client";
 
 const loginSchema = z.object({
@@ -29,7 +29,6 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -85,11 +84,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoLogin = (email: string) => {
-    setValue("email", email);
-    setValue("password", "demo123456");
-    handleSubmit(onSubmit)();
-  };
 
   return (
     <div className="relative min-h-screen flex overflow-hidden bg-[#0a0f14]">
@@ -127,19 +121,14 @@ export default function LoginPage() {
 
         {/* Brand header */}
         <div className="mb-10">
-          <div className="flex items-center gap-3 mb-6">
-            {/* Logo mark */}
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/30 flex-shrink-0">
-              <span className="text-white font-black text-xl leading-none drop-shadow">J</span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-black tracking-tight leading-none" style={{ color: '#ffffff' }}>
-                JaiLaundry
-              </h1>
-              <p className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: '#34d399' }}>
-                Erode
-              </p>
-            </div>
+          {/* Logo image */}
+          <div className="mb-6">
+            <img
+              src="/jailaundry-logo.jpg"
+              alt="JaiLaundry Erode"
+              className="w-full h-auto object-contain rounded-xl"
+              style={{ maxWidth: '380px' }}
+            />
           </div>
           <div>
             <h2 className="text-xl font-bold leading-tight" style={{ color: '#f1f5f9' }}>
@@ -209,37 +198,6 @@ export default function LoginPage() {
             {loading ? "Verifying credentials..." : "Sign in to Dashboard"}
           </Button>
         </form>
-
-        {/* Divider */}
-        <div className="flex items-center gap-3 my-6">
-          <div className="flex-1 h-px" style={{ backgroundColor: '#1e293b' }} />
-          <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#475569' }}>Demo access</span>
-          <div className="flex-1 h-px" style={{ backgroundColor: '#1e293b' }} />
-        </div>
-
-        {/* Demo role shortcuts */}
-        <div className="grid grid-cols-2 gap-2.5">
-          {[
-            { label: "Admin", sub: "Full operations", email: "admin@jaitraderr.com" },
-            { label: "Billing Staff", sub: "Job Cards & Payments", email: "billing@jaitraderr.com" },
-            { label: "Processing", sub: "Status Workflow", email: "processing@jaitraderr.com" },
-            { label: "Delivery", sub: "Invoice Collections", email: "delivery@jaitraderr.com" },
-          ].map((role) => (
-            <button
-              key={role.email}
-              type="button"
-              onClick={() => handleDemoLogin(role.email)}
-              disabled={loading || success}
-              className="p-3 text-left rounded-xl border transition-all duration-150 group"
-              style={{ backgroundColor: 'rgba(15,23,42,0.6)', borderColor: '#1e293b' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = '#0d9488')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = '#1e293b')}
-            >
-              <span className="block text-xs font-semibold transition-colors" style={{ color: '#e2e8f0' }}>{role.label}</span>
-              <span className="block text-[10px] mt-0.5" style={{ color: '#64748b' }}>{role.sub}</span>
-            </button>
-          ))}
-        </div>
 
         {/* Footer */}
         <p className="text-[10px] text-center mt-8 uppercase tracking-wider" style={{ color: '#334155' }}>

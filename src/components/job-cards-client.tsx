@@ -3,13 +3,13 @@
 
 import React, { useState, useTransition } from "react";
 import Link from "next/link";
-import { 
-  FileText, 
-  Search, 
-  PlusCircle, 
-  Trash2, 
-  Calendar, 
-  CheckCircle2, 
+import {
+  FileText,
+  Search,
+  PlusCircle,
+  Trash2,
+  Calendar,
+  CheckCircle2,
   ShieldAlert,
   ArrowRight,
   ArrowLeft,
@@ -55,11 +55,11 @@ interface SelectedServiceGroup {
   items: SelectedItemLine[];
 }
 
-export default function JobCardsClient({ 
-  customers, 
-  services, 
-  items, 
-  units, 
+export default function JobCardsClient({
+  customers,
+  services,
+  items,
+  units,
   rates,
   initialJobCards
 }: JobCardsClientProps) {
@@ -120,7 +120,7 @@ export default function JobCardsClient({
 
   const handleEditJobCard = (jc: JobCard) => {
     setEditingJobCardId(jc.id);
-    
+
     // 1. Find Customer
     const cust = customers.find(c => c.name === jc.customer_name || c.id === jc.customer_id);
     if (cust) {
@@ -166,7 +166,7 @@ export default function JobCardsClient({
     if (jc.expected_delivery_date) {
       setExpectedDate(jc.expected_delivery_date.split('T')[0]);
     }
-    
+
     // Switch to Step 2
     setStep(2);
     setDetailedJc(null); // Close details modal
@@ -176,13 +176,16 @@ export default function JobCardsClient({
     setOtpRequested(true);
     setOtpError(null);
     setOtpValue("");
-    
+    setGeneratedOtp("");
+
     startTransition(async () => {
       const res = await requestJobCardUnlockOtp(jc.id);
       if (!res.success) {
         setOtpRequested(false);
         setOtpError(res.error || "Failed to dispatch OTP.");
         alert(res.error || "Failed to dispatch OTP.");
+      } else if (res.devOtpCode) {
+        setGeneratedOtp(res.devOtpCode);
       }
     });
   };
@@ -198,11 +201,11 @@ export default function JobCardsClient({
       if (res.success) {
         setOtpRequested(false);
         setOtpError(null);
-        
+
         // Trigger reload
         const fullDetails = await getJobCardDetails(jc.id);
         const updatedJc = fullDetails || { ...jc, is_locked: false };
-        
+
         // Load into editor
         handleEditJobCard(updatedJc);
       } else {
@@ -218,7 +221,7 @@ export default function JobCardsClient({
     const advance = jc.advance_paid.toFixed(2);
     const balance = jc.balance_due.toFixed(2);
     const shelf = jc.shelf_location || "N/A";
-    
+
     let text = `*JaiTraderr Laundry Billing Receipt*\n\n`;
     text += `Dear *${name}*,\n`;
     text += `Here is your summary for Order *${num}*:\n\n`;
@@ -239,7 +242,7 @@ export default function JobCardsClient({
   };
 
   // Search filter
-  const filteredCustomers = customers.filter(c => 
+  const filteredCustomers = customers.filter(c =>
     c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     c.mobile.includes(searchQuery)
   );
@@ -298,14 +301,14 @@ export default function JobCardsClient({
   };
 
   const updateItemRow = (
-    serviceId: string, 
-    itemIdx: number, 
-    field: keyof SelectedItemLine, 
+    serviceId: string,
+    itemIdx: number,
+    field: keyof SelectedItemLine,
     value: any
   ) => {
     setSelectedServices(selectedServices.map(s => {
       if (s.service_id !== serviceId) return s;
-      
+
       const newItems = s.items.map((item, idx) => {
         if (idx !== itemIdx) return item;
 
@@ -314,7 +317,7 @@ export default function JobCardsClient({
         // Auto lookup rate if item, service, or unit changes
         if (field === "item_id" || field === "unit_id") {
           const itemId = field === "item_id" ? value : item.item_id;
-          
+
           if (itemId === "custom") {
             updated.item_name = field === "item_id" ? "" : item.item_name;
             updated.rate = field === "item_id" ? 0 : item.rate;
@@ -323,13 +326,13 @@ export default function JobCardsClient({
             if (itemObj) {
               updated.item_name = itemObj.name;
             }
-            
+
             const unitId = field === "unit_id" ? value : item.unit_id;
 
-            const matchRate = rates.find(r => 
-              r.service_id === serviceId && 
-              r.item_id === itemId && 
-              r.unit_id === unitId && 
+            const matchRate = rates.find(r =>
+              r.service_id === serviceId &&
+              r.item_id === itemId &&
+              r.unit_id === unitId &&
               r.is_active
             );
 
@@ -475,7 +478,7 @@ export default function JobCardsClient({
                     {step === 3 && "Review Billing & Close Card"}
                   </CardTitle>
                 </div>
-                
+
                 {/* Horizontal Progress Path */}
                 <div className="flex items-center justify-between w-full max-w-md mx-auto pt-2">
                   <div className="flex flex-col items-center">
@@ -628,7 +631,7 @@ export default function JobCardsClient({
                       <div className="space-y-4">
                         {svcGroup.items.map((row, rowIdx) => (
                           <div key={rowIdx} className="bg-slate-900/40 border border-slate-850 hover:border-slate-800 p-4 rounded-xl space-y-3 sm:space-y-0 sm:grid sm:grid-cols-6 sm:gap-4 sm:items-center transition duration-200">
-                            
+
                             {/* Item name selector */}
                             <div className="sm:col-span-2 space-y-1">
                               <Label className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Item</Label>
@@ -997,7 +1000,7 @@ export default function JobCardsClient({
             </CardHeader>
             <CardContent className="space-y-3.5 max-h-[500px] overflow-y-auto pr-1 pt-4">
               {filteredJobCards.map((jc) => (
-                <div 
+                <div
                   key={jc.id}
                   onClick={() => handleViewJcDetails(jc)}
                   className="p-3.5 rounded-xl border border-slate-900 bg-slate-950/40 hover:border-slate-800 transition duration-150 relative group cursor-pointer hover:bg-slate-900/10 active:scale-99"
@@ -1060,7 +1063,7 @@ export default function JobCardsClient({
 
           {detailedJc && (
             <div className="space-y-5 py-2 max-h-[450px] overflow-y-auto pr-1">
-              
+
               {/* Meta information */}
               <div className="grid grid-cols-2 gap-4 text-xs bg-slate-950/40 p-4 rounded-xl border border-slate-850">
                 <div>
@@ -1085,7 +1088,7 @@ export default function JobCardsClient({
                   <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Staff Remarks</p>
                   <p className="text-slate-300 mt-0.5 italic">{detailedJc.remarks || "No remarks entered."}</p>
                 </div>
-                
+
                 {/* Overall counts metrics */}
                 <div className="col-span-2 grid grid-cols-3 gap-2.5 pt-2.5 border-t border-slate-900/60 mt-1">
                   <div>
@@ -1106,7 +1109,7 @@ export default function JobCardsClient({
               {/* Items details table */}
               <div className="space-y-4">
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Services & Items Checklist</p>
-                
+
                 {loadingDetails ? (
                   <p className="text-xs text-slate-500 py-3">Loading items checklist...</p>
                 ) : detailedJc.services && detailedJc.services.length > 0 ? (
@@ -1170,12 +1173,19 @@ export default function JobCardsClient({
               {/* Supervisor OTP bypass input when requested */}
               {otpRequested && (
                 <div className="mt-4 p-4 border border-amber-500/20 bg-amber-500/5 rounded-xl space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-4.5 h-4.5 text-amber-400" />
-                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Supervisor OTP Verification</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-4.5 h-4.5 text-amber-400" />
+                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Supervisor OTP Verification</span>
+                    </div>
+                    {generatedOtp && (
+                      <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold">
+                        Dev OTP: {generatedOtp}
+                      </span>
+                    )}
                   </div>
                   <p className="text-[10px] text-slate-400">
-                    A 6-digit approval OTP has been dispatched to Supervisor (Ravi Kumar: +919988776655). Enter the code below to unlock this job card.
+                    A 6-digit approval OTP has been dispatched to Supervisor (Ravi Kumar: +917550234201). Enter the code below to unlock this job card.
                   </p>
                   <div className="space-y-2">
                     <Input

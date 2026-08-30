@@ -117,20 +117,28 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
         }`}
       >
         {/* Brand Logo Header */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-900">
-          <Link href="/dashboard" className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-600/20 shrink-0">
-              <Landmark className="w-4 h-4 text-white" />
-            </div>
-            {!sidebarCollapsed && (
-              <span className="font-extrabold text-lg text-white truncate tracking-wide">
-                JaiTraderr
-              </span>
+        <div className="h-16 flex items-center justify-between px-3 border-b border-slate-900">
+          <Link href="/dashboard" className="flex items-center overflow-hidden">
+            {sidebarCollapsed ? (
+              /* Collapsed: small teal J icon */
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/30 shrink-0">
+                <span className="text-white font-black text-lg leading-none">J</span>
+              </div>
+            ) : (
+              /* Expanded: logo image */
+              <div className="flex items-center gap-2 overflow-hidden">
+                <img
+                  src="/jailaundry-logo.jpg"
+                  alt="JaiLaundry Erode"
+                  className="h-10 w-auto object-contain rounded-md"
+                  style={{ maxWidth: '170px' }}
+                />
+              </div>
             )}
           </Link>
           <button 
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="text-slate-500 hover:text-slate-200 transition-colors hidden lg:block shrink-0"
+            className="text-slate-500 hover:text-slate-200 transition-colors hidden lg:block shrink-0 ml-1"
             title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <ChevronRight className={`w-4 h-4 transform transition-transform duration-300 ${sidebarCollapsed ? "" : "rotate-180"}`} />
@@ -214,7 +222,7 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
               <span>Branch: </span>
               <span className="text-slate-200 font-semibold">{user.branchName}</span>
             </div>
-            <span className="md:hidden font-bold text-slate-200">JaiTraderr</span>
+            <img src="/jailaundry-logo.jpg" alt="JaiLaundry" className="md:hidden h-8 w-auto object-contain rounded" />
           </div>
 
           <div className="flex items-center gap-3">
@@ -276,7 +284,7 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
           {/* Drawer Menu */}
           <div className="relative w-72 max-w-[80vw] bg-slate-950 border-r border-slate-900 p-5 flex flex-col z-10 animate-slide-in-left">
             <div className="flex items-center justify-between mb-8">
-              <span className="font-bold text-lg text-white">Menu Navigation</span>
+              <img src="/jailaundry-logo.jpg" alt="JaiLaundry Erode" className="h-10 w-auto object-contain rounded-md" />
               <button 
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-100"

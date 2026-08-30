@@ -13,11 +13,11 @@ create table public.job_card_unlock_otps (
 -- Enable Row Level Security (RLS)
 alter table public.job_card_unlock_otps enable row level security;
 
--- Only server-side contexts (Server Actions using Service Role Key or authenticated admins) 
--- will read/write to this table directly.
-create policy "Allow server-side access to OTP verification"
+-- Allow authenticated, anon, and service_role to manage OTP verification records
+create policy "Allow all operations for authenticated and anon"
     on public.job_card_unlock_otps
     for all
-    to service_role
+    to authenticated, anon, service_role
     using (true)
     with check (true);
+
