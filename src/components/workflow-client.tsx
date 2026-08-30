@@ -50,6 +50,18 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
   const [formError, setFormError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // Drag and Drop States
+  const [draggedJc, setDraggedJc] = useState<JobCard | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<JobCard["status"] | null>(null);
+
+  const handleDropOnColumn = (status: JobCard["status"]) => {
+    if (!draggedJc) return;
+    if (draggedJc.status === status) return;
+    handleOpenStatusDialog(draggedJc, status);
+    setDraggedJc(null);
+    setDragOverColumn(null);
+  };
+
   // 1. Group shelf locations by prefix (e.g. A-01 -> Rack A, B-01 -> Rack B)
   const groupedShelves = useMemo(() => {
     const groups: { [rack: string]: typeof shelfLocations } = {};
@@ -226,13 +238,37 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
               </div>
 
               {/* Column Jobs List */}
-              <div className="flex-1 space-y-3.5 min-h-[350px] p-2 rounded-xl bg-slate-950/10 border border-slate-900/60 overflow-y-auto max-h-[500px]">
+              <div 
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  if (draggedJc && draggedJc.status !== col.status) {
+                    setDragOverColumn(col.status);
+                  }
+                }}
+                onDragLeave={() => setDragOverColumn(null)}
+                onDrop={() => handleDropOnColumn(col.status)}
+                className={`flex-1 space-y-3.5 min-h-[450px] p-2 rounded-xl border transition-all duration-200 overflow-y-auto max-h-[500px] ${
+                  dragOverColumn === col.status
+                    ? "bg-indigo-600/5 border-indigo-500/40 ring-1 ring-indigo-500/10 shadow-[inset_0_0_12px_rgba(99,102,241,0.05)]"
+                    : draggedJc && draggedJc.status !== col.status
+                      ? "bg-slate-950/20 border-dashed border-slate-800/80"
+                      : "bg-slate-950/10 border-slate-900/60"
+                }`}
+              >
                 {colJobs.map((jc) => {
                   const next = getNextStatus(jc.status);
                   return (
                     <div 
                       key={jc.id}
-                      className="p-3.5 rounded-xl border border-slate-900 bg-slate-950/40 hover:border-slate-800 transition duration-150 relative group"
+                      draggable
+                      onDragStart={() => setDraggedJc(jc)}
+                      onDragEnd={() => {
+                        setDraggedJc(null);
+                        setDragOverColumn(null);
+                      }}
+                      className={`p-3.5 rounded-xl border border-slate-900 bg-slate-950/40 hover:border-slate-800 transition duration-150 relative group cursor-grab active:cursor-grabbing ${
+                        draggedJc?.id === jc.id ? "opacity-30 border-indigo-500/30 bg-indigo-950/10 select-none scale-[0.98]" : ""
+                      }`}
                     >
                       <div className="flex justify-between items-start">
                         <span 
