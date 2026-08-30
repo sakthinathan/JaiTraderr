@@ -292,3 +292,20 @@ aside button {
 aside button:hover {
   color: #7bbb43 !important;
 }
+
+/* Globals: Form inputs & Select dropdown popovers contrast fix */
+input.bg-slate-950, 
+select.bg-slate-950, 
+textarea.bg-slate-950 {
+  color: #0f172a !important; /* Force dark text color inside light bg fields */
+}
+
+input.bg-slate-950::placeholder,
+textarea.bg-slate-950::placeholder {
+  color: #64748b !important; /* Force readable slate placeholder */
+}
+
+select.bg-slate-950 option {
+  background-color: #ffffff !important; /* Clean white background for dropdown select options */
+  color: #0f172a !important; /* Readable dark text inside options list */
+}
