@@ -92,37 +92,48 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 px-4">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-slate-950">
+      {/* Background cover image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 pointer-events-none scale-105"
+        style={{ backgroundImage: `url('/laundry-login-bg.jpg')` }}
+      />
+      {/* Vignette overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#090d16_95%)] pointer-events-none" />
+
       {/* Background Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[35rem] h-[35rem] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse duration-8000" />
-      <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse duration-10000" />
+      <div className="absolute top-1/4 left-1/4 w-[35rem] h-[35rem] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse duration-8000" />
+      <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse duration-10000" />
       
       {/* Mesh lines effect */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#020617_1px,transparent_1px),linear-gradient(to_bottom,#020617_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#020617_1px,transparent_1px),linear-gradient(to_bottom,#020617_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md my-8">
         {/* App Logo/Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-indigo-500/20 text-indigo-400 text-sm font-medium mb-4 backdrop-blur-md shadow-lg shadow-indigo-500/5">
-            <Sparkles className="w-4 h-4 animate-spin duration-3000" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-4 backdrop-blur-md shadow-lg shadow-emerald-500/5">
+            <Sparkles className="w-3.5 h-3.5 animate-spin duration-3000 text-emerald-400" />
             <span>Smart Billing & Lifecycle Portal</span>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-slate-950 via-slate-800 to-indigo-600 bg-clip-text text-transparent">
-            JaiTraderr
+          <h1 className="text-4xl font-extrabold tracking-widest bg-gradient-to-r from-white via-slate-100 to-emerald-400 bg-clip-text text-transparent drop-shadow-md">
+            JAI TRADERR
           </h1>
-          <p className="text-slate-400 mt-2 text-sm">
+          <p className="text-slate-400 mt-2 text-xs font-medium uppercase tracking-widest opacity-80">
             Operational center for professional laundry processing
           </p>
         </div>
 
         {/* Login Card */}
-        <Card className="border border-slate-800/80 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/80">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold text-slate-950 flex items-center gap-2">
-              <Landmark className="w-5 h-5 text-indigo-600" />
+        <Card className="border border-slate-800/80 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/80 overflow-hidden relative">
+          {/* Decorative Top Line */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-indigo-500 to-cyan-500" />
+
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-bold text-slate-950 flex items-center gap-2">
+              <Landmark className="w-4.5 h-4.5 text-indigo-600" />
               Portal Access
             </CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-slate-400 text-xs">
               Sign in to manage orders, payments, and workflow statuses.
             </CardDescription>
           </CardHeader>
@@ -130,28 +141,28 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Alert Area */}
               {error && (
-                <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-start gap-2 animate-shake">
+                <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-start gap-2 animate-shake">
                   <ShieldAlert className="w-4.5 h-4.5 mt-0.5 shrink-0" />
                   <span>{error}</span>
                 </div>
               )}
 
               {success && (
-                <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-start gap-2">
+                <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-start gap-2">
                   <CheckCircle2 className="w-4.5 h-4.5 mt-0.5 shrink-0" />
                   <span>Authentication approved! Connecting session...</span>
                 </div>
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-300 text-sm font-medium">Email Address</Label>
+                <Label htmlFor="email" className="text-slate-300 text-xs font-medium">Email Address</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-4.5 h-4.5 text-slate-500" />
+                  <Mail className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="name@jaitraderr.com"
-                    className="pl-10 bg-slate-950/60 border-slate-800 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30"
+                    className="pl-10 bg-slate-950/60 border-slate-800 text-slate-300 placeholder-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 h-9 text-xs"
                     disabled={loading || success}
                     {...register("email")}
                   />
@@ -163,15 +174,15 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="password" className="text-slate-300 text-sm font-medium">Password</Label>
+                  <Label htmlFor="password" className="text-slate-300 text-xs font-medium">Password</Label>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 w-4.5 h-4.5 text-slate-500" />
+                  <Lock className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
                   <Input
                     id="password"
                     type="password"
                     placeholder="••••••••"
-                    className="pl-10 bg-slate-950/60 border-slate-800 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30"
+                    className="pl-10 bg-slate-950/60 border-slate-800 text-slate-300 placeholder-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 h-9 text-xs"
                     disabled={loading || success}
                     {...register("password")}
                   />
@@ -183,7 +194,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full mt-2 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-medium py-2.5 rounded-lg shadow-lg shadow-indigo-600/20 active:scale-98 transition duration-200"
+                className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white font-medium py-2 rounded-lg shadow-lg shadow-emerald-600/10 active:scale-98 transition duration-200 h-9 text-xs"
                 disabled={loading || success}
               >
                 {loading ? "Verifying..." : "Access Dashboard"}
@@ -193,7 +204,7 @@ export default function LoginPage() {
 
           {/* Demo Shortcuts Block */}
           <div className="border-t border-slate-800/80 px-6 py-4 bg-slate-950/30">
-            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-indigo-400" />
               Demo Roles (Quick login bypass)
             </p>
@@ -205,7 +216,7 @@ export default function LoginPage() {
                 disabled={loading || success}
               >
                 <span className="font-semibold text-slate-200">Admin</span>
-                <span className="text-[10px] text-slate-500">Full operations</span>
+                <span className="text-[9px] text-slate-500 mt-0.5">Full operations</span>
               </button>
               <button
                 type="button"
@@ -214,7 +225,7 @@ export default function LoginPage() {
                 disabled={loading || success}
               >
                 <span className="font-semibold text-slate-200">Billing Staff</span>
-                <span className="text-[10px] text-slate-500">Job Cards & Payments</span>
+                <span className="text-[9px] text-slate-500 mt-0.5">Job Cards & Payments</span>
               </button>
               <button
                 type="button"
@@ -223,7 +234,7 @@ export default function LoginPage() {
                 disabled={loading || success}
               >
                 <span className="font-semibold text-slate-200">Processing Staff</span>
-                <span className="text-[10px] text-slate-500">Status Workflow</span>
+                <span className="text-[9px] text-slate-500 mt-0.5">Status Workflow</span>
               </button>
               <button
                 type="button"
@@ -232,12 +243,12 @@ export default function LoginPage() {
                 disabled={loading || success}
               >
                 <span className="font-semibold text-slate-200">Delivery Staff</span>
-                <span className="text-[10px] text-slate-500">Invoice Collections</span>
+                <span className="text-[9px] text-slate-500 mt-0.5">Invoice Collections</span>
               </button>
             </div>
           </div>
           <CardFooter className="flex justify-center border-t border-slate-800/80 pt-4">
-            <p className="text-slate-500 text-xs text-center">
+            <p className="text-slate-500 text-[10px] text-center">
               Protected secure login terminal. Operations are logged.
             </p>
           </CardFooter>
