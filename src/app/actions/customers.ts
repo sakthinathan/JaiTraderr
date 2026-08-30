@@ -23,6 +23,7 @@ export interface Customer {
     totalBilled: number;
     totalPaid: number;
     outstandingBalance: number;
+    averageBillValue: number;
   };
 }
 
@@ -39,8 +40,8 @@ const mockCustomers: Customer[] = [
     email: "john.doe@gmail.com",
     is_active: true,
     branch_id: "b1111111-1111-1111-1111-111111111111",
-    created_at: new Date().toISOString(),
-    stats: { totalJobCards: 5, activeOrders: 1, totalBilled: 2450, totalPaid: 2450, outstandingBalance: 0 },
+    created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+    stats: { totalJobCards: 5, activeOrders: 1, totalBilled: 2450, totalPaid: 2450, outstandingBalance: 0, averageBillValue: 490 },
   },
   {
     id: "mock-cust-2",
@@ -53,8 +54,8 @@ const mockCustomers: Customer[] = [
     email: "sarah.smith@yahoo.com",
     is_active: true,
     branch_id: "b1111111-1111-1111-1111-111111111111",
-    created_at: new Date().toISOString(),
-    stats: { totalJobCards: 8, activeOrders: 1, totalBilled: 5400, totalPaid: 5080, outstandingBalance: 320 },
+    created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), // 60 days ago
+    stats: { totalJobCards: 8, activeOrders: 1, totalBilled: 5400, totalPaid: 5080, outstandingBalance: 320, averageBillValue: 675 },
   },
   {
     id: "mock-cust-3",
@@ -67,8 +68,8 @@ const mockCustomers: Customer[] = [
     email: "ravi.kumar@gmail.com",
     is_active: true,
     branch_id: "b1111111-1111-1111-1111-111111111111",
-    created_at: new Date().toISOString(),
-    stats: { totalJobCards: 3, activeOrders: 1, totalBilled: 1200, totalPaid: 920, outstandingBalance: 280 },
+    created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
+    stats: { totalJobCards: 3, activeOrders: 1, totalBilled: 1200, totalPaid: 920, outstandingBalance: 280, averageBillValue: 400 },
   },
 ];
 
@@ -128,14 +129,30 @@ export async function getCustomerProfile(id: string): Promise<Customer | null> {
 
     if (error) throw error;
 
-    // Fetch operational stats placeholder (to be enriched during Job Cards/Payments phases)
     const customer = data as Customer;
+
+    // Fetch dynamic operational metrics from job cards
+    const { data: jcs, error: jcsError } = await supabase
+      .from("job_cards")
+      .select("grand_total, balance_due, status")
+      .eq("customer_id", id);
+
+    if (jcsError) throw jcsError;
+
+    const totalJobCards = jcs?.length || 0;
+    const activeOrders = jcs?.filter((j: any) => j.status !== "DELIVERED").length || 0;
+    const totalBilled = jcs?.reduce((acc: number, j: any) => acc + (j.grand_total || 0), 0) || 0;
+    const outstandingBalance = jcs?.reduce((acc: number, j: any) => acc + (j.balance_due || 0), 0) || 0;
+    const totalPaid = Math.max(0, totalBilled - outstandingBalance);
+    const averageBillValue = totalJobCards > 0 ? totalBilled / totalJobCards : 0;
+
     customer.stats = {
-      totalJobCards: 0,
-      activeOrders: 0,
-      totalBilled: 0,
-      totalPaid: 0,
-      outstandingBalance: 0,
+      totalJobCards,
+      activeOrders,
+      totalBilled,
+      totalPaid,
+      outstandingBalance,
+      averageBillValue,
     };
 
     return customer;
@@ -177,7 +194,7 @@ export async function registerCustomer(data: {
       is_active: true,
       branch_id: "b1111111-1111-1111-1111-111111111111",
       created_at: new Date().toISOString(),
-      stats: { totalJobCards: 0, activeOrders: 0, totalBilled: 0, totalPaid: 0, outstandingBalance: 0 }
+      stats: { totalJobCards: 0, activeOrders: 0, totalBilled: 0, totalPaid: 0, outstandingBalance: 0, averageBillValue: 0 }
     };
 
     mockCustomers.push(newCust);

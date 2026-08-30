@@ -18,7 +18,7 @@ import {
   TrendingUp,
   Bookmark
 } from "lucide-react";
-import { Customer, registerCustomer } from "@/app/actions/customers";
+import { Customer, registerCustomer, getCustomerProfile } from "@/app/actions/customers";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -40,6 +40,15 @@ const customerSchema = z.object({
 
 type CustomerFormValues = z.infer<typeof customerSchema>;
 
+function formatLocalDate(dateString: string | Date) {
+  const d = new Date(dateString);
+  if (isNaN(d.getTime())) return "";
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 export default function CustomersClient({ initialCustomers }: CustomersClientProps) {
   const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,6 +56,16 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
   const [formError, setFormError] = useState<string | null>(null);
   const [formSuccess, setFormSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const handleSelectCustomer = (cust: Customer) => {
+    setSelectedCustomer(cust);
+    startTransition(async () => {
+      const fullProfile = await getCustomerProfile(cust.id);
+      if (fullProfile) {
+        setSelectedCustomer(fullProfile);
+      }
+    });
+  };
 
   const {
     register,
@@ -142,7 +161,7 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                     filteredCustomers.map((cust) => (
                       <button
                         key={cust.id}
-                        onClick={() => setSelectedCustomer(cust)}
+                        onClick={() => handleSelectCustomer(cust)}
                         className={`w-full p-3.5 text-left flex items-center justify-between hover:bg-slate-900/40 transition duration-150 ${
                           selectedCustomer?.id === cust.id ? "bg-indigo-600/10 border-l-2 border-indigo-500" : ""
                         }`}
@@ -360,9 +379,15 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                         {selectedCustomer.place_address || "—"}
                       </span>
                     </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-slate-500">Customer Since</span>
+                      <span className="text-slate-300 font-medium">
+                        {selectedCustomer.created_at ? formatLocalDate(selectedCustomer.created_at) : "—"}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Financial Stats Summary (Phase 2 placeholder data) */}
+                  {/* Financial Stats Summary */}
                   {selectedCustomer.stats && (
                     <div className="border-t border-slate-900 pt-4 space-y-4">
                       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
@@ -371,7 +396,7 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                       </p>
                       <div className="grid grid-cols-2 gap-3.5">
                         <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
-                          <p className="text-[10px] text-slate-500 uppercase font-medium">Total Orders</p>
+                          <p className="text-[10px] text-slate-500 uppercase font-medium">Total Visits</p>
                           <p className="text-xl font-bold text-white mt-0.5">{selectedCustomer.stats.totalJobCards}</p>
                         </div>
                         <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
@@ -389,6 +414,11 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                           }`}>
                             ₹{selectedCustomer.stats.outstandingBalance}
                           </p>
+                        </div>
+                        {/* Average Bill Value card spanning full width */}
+                        <div className="p-3 rounded-lg bg-indigo-600/5 border border-indigo-500/20 text-center col-span-2 shadow-inner">
+                          <p className="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Average Bill Value</p>
+                          <p className="text-xl font-extrabold text-indigo-400 mt-0.5">₹{selectedCustomer.stats.averageBillValue?.toFixed(2) || "0.00"}</p>
                         </div>
                       </div>
                     </div>

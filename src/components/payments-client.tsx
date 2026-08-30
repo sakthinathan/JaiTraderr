@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useMemo } from "react";
 import { 
   Search, 
   CreditCard, 
@@ -141,11 +141,17 @@ export default function PaymentsClient({ initialJobCards }: PaymentsClientProps)
     });
   };
 
-  const filteredJobCards = jobCards.filter(j => 
-    j.job_card_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    j.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    j.customer_mobile?.includes(searchQuery)
-  );
+  const displayedJobCards = useMemo(() => {
+    if (searchQuery.trim()) {
+      return jobCards.filter(j => 
+        j.job_card_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        j.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        j.customer_mobile?.includes(searchQuery)
+      );
+    }
+    // By default, display all pending bills (Job Cards with an outstanding balance)
+    return jobCards.filter(j => j.balance_due > 0);
+  }, [jobCards, searchQuery]);
 
   return (
     <div className="space-y-6">
@@ -183,33 +189,41 @@ export default function PaymentsClient({ initialJobCards }: PaymentsClientProps)
               </div>
 
               {/* Instant list results */}
-              {searchQuery && (
-                <div className="mt-4 border border-slate-900 rounded-lg divide-y divide-slate-900/60 bg-slate-950/40 max-h-60 overflow-y-auto">
-                  {filteredJobCards.length > 0 ? (
-                    filteredJobCards.map((jc) => (
-                      <button
-                        key={jc.id}
-                        onClick={() => {
-                          handleSelectJobCard(jc);
-                          setSearchQuery("");
-                        }}
-                        className="w-full p-3.5 text-left flex items-center justify-between hover:bg-slate-900/30 text-slate-300 text-xs transition"
-                      >
-                        <div>
-                          <p className="font-semibold text-slate-200">{jc.job_card_number} • {jc.customer_name}</p>
-                          <p className="text-slate-500 mt-0.5">{jc.customer_mobile} • Status: {jc.status}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-slate-200">Balance: ₹{jc.balance_due}</p>
-                          {jc.shelf_location && <p className="text-emerald-400 text-[10px] mt-0.5">Shelf: {jc.shelf_location}</p>}
-                        </div>
-                      </button>
-                    ))
-                  ) : (
-                    <div className="p-4 text-center text-slate-500 text-xs">No active orders found matching your search.</div>
-                  )}
+              <div className="mt-4 border border-slate-900 rounded-lg divide-y divide-slate-900/60 bg-slate-950/40 max-h-72 overflow-y-auto">
+                <div className="p-2 border-b border-slate-900 bg-slate-950/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                  {searchQuery ? "Search Results" : "Pending Collections / Outstanding Bills"}
                 </div>
-              )}
+                {displayedJobCards.length > 0 ? (
+                  displayedJobCards.map((jc) => (
+                    <button
+                      key={jc.id}
+                      onClick={() => {
+                        handleSelectJobCard(jc);
+                      }}
+                      className={`w-full p-3.5 text-left flex items-center justify-between hover:bg-slate-900/30 text-slate-300 text-xs transition ${
+                        selectedJc?.id === jc.id ? "bg-indigo-600/10 border-l-2 border-indigo-500" : ""
+                      }`}
+                    >
+                      <div>
+                        <p className="font-semibold text-slate-200">{jc.job_card_number} • {jc.customer_name}</p>
+                        <p className="text-slate-500 mt-0.5">{jc.customer_mobile} • Status: {jc.status}</p>
+                      </div>
+                      <div className="text-right flex flex-col items-end">
+                        <p className="font-semibold text-rose-400">₹{jc.balance_due}</p>
+                        {jc.shelf_location ? (
+                          <p className="text-emerald-400 text-[10px] mt-0.5">Shelf: {jc.shelf_location}</p>
+                        ) : (
+                          <p className="text-slate-600 text-[10px] mt-0.5">No shelf yet</p>
+                        )}
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-slate-500 text-xs">
+                    {searchQuery ? "No active orders found matching your search." : "No pending bill collections at the moment!"}
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
