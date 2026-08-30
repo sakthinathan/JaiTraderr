@@ -1187,77 +1187,20 @@ export default function JobCardsClient({
                 </div>
               </div>
 
-              {/* Supervisor OTP bypass input when requested */}
-              {otpRequested && (
-                <div className="mt-4 p-4 border border-amber-500/20 bg-amber-500/5 rounded-xl space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-4.5 h-4.5 text-amber-400" />
-                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Supervisor OTP Verification</span>
-                    </div>
-                    {generatedOtp && (
-                      <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold">
-                        Dev OTP: {generatedOtp}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[10px] text-slate-400">
-                    A 6-digit approval OTP has been dispatched to Supervisor (Ravi Kumar: +917550234201). Enter the code below to unlock this job card.
-                  </p>
-                  <div className="space-y-2">
-                    <Input
-                      type="text"
-                      maxLength={6}
-                      placeholder="Enter 6-Digit OTP"
-                      value={otpValue}
-                      onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, ""))}
-                      className="bg-slate-950 border-slate-800 text-center font-mono text-lg tracking-widest text-white h-10"
-                    />
-                    {otpError && <p className="text-[10px] text-rose-400 font-bold">{otpError}</p>}
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => setOtpRequested(false)}
-                      className="text-slate-400 hover:text-white flex-1 text-xs h-9"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={() => handleVerifyAndUnlock(detailedJc)}
-                      className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white flex-1 text-xs h-9 font-bold"
-                    >
-                      Verify & Unlock
-                    </Button>
-                  </div>
-                </div>
-              )}
-
             </div>
           )}
 
           <DialogFooter className="pt-2 border-t border-slate-900 flex sm:justify-between gap-2">
-            {!otpRequested && detailedJc && (
+            {detailedJc && (
               <>
                 {detailedJc.is_locked ? (
-                  <div className="flex gap-2 flex-1">
-                    <Button
-                      onClick={() => handleRequestUnlockOtp(detailedJc)}
-                      className="bg-amber-600 hover:bg-amber-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
-                    >
-                      <Zap className="w-3.5 h-3.5" />
-                      Unlock (DB OTP)
-                    </Button>
-                    <Button
-                      onClick={() => setFirebaseOtpModalOpen(true)}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
-                    >
-                      <Smartphone className="w-3.5 h-3.5" />
-                      Unlock (Firebase OTP)
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => setFirebaseOtpModalOpen(true)}
+                    className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs shadow-lg shadow-emerald-600/20"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    Unlock Job Card (Firebase SMS OTP)
+                  </Button>
                 ) : (
                   <Button
                     onClick={() => handleEditJobCard(detailedJc)}
