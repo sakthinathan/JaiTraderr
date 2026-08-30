@@ -108,11 +108,11 @@ export default function LoginPage() {
 
         {/* Floating brand badge bottom-left */}
         <div className="absolute bottom-10 left-10 z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 border border-amber-500/30 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 border border-amber-500/40 backdrop-blur-md shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
             <span className="text-amber-300 text-xs font-semibold uppercase tracking-widest">Premium Dry Cleaning & Laundry</span>
           </div>
-          <p className="text-slate-500 text-[10px] mt-3 ml-1 uppercase tracking-wider">
+          <p className="text-[#94a3b8] text-[10px] mt-3 ml-1 uppercase tracking-wider">
             Since 2023 · Erode, Tamil Nadu
           </p>
         </div>
@@ -129,23 +129,23 @@ export default function LoginPage() {
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-6">
             {/* Logo mark */}
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/25 flex-shrink-0">
-              <span className="text-white font-black text-lg leading-none">J</span>
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/30 flex-shrink-0">
+              <span className="text-white font-black text-xl leading-none drop-shadow">J</span>
             </div>
             <div>
-              <h1 className="text-2xl font-black text-white tracking-tight leading-none">
+              <h1 className="text-2xl font-black tracking-tight leading-none" style={{ color: '#ffffff' }}>
                 JaiLaundry
               </h1>
-              <p className="text-emerald-400 text-xs font-semibold tracking-widest uppercase mt-0.5">
+              <p className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: '#34d399' }}>
                 Erode
               </p>
             </div>
           </div>
           <div>
-            <h2 className="text-slate-100 text-xl font-bold leading-tight">
+            <h2 className="text-xl font-bold leading-tight" style={{ color: '#f1f5f9' }}>
               Welcome back
             </h2>
-            <p className="text-slate-500 text-sm mt-1">
+            <p className="text-sm mt-1" style={{ color: '#94a3b8' }}>
               Sign in to access the operations dashboard
             </p>
           </div>
@@ -168,35 +168,37 @@ export default function LoginPage() {
           )}
 
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-slate-400 text-xs font-medium">Email Address</Label>
+            <Label htmlFor="email" className="text-xs font-semibold" style={{ color: '#cbd5e1' }}>Email Address</Label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-600" />
+              <Mail className="absolute left-3.5 top-3.5 w-4 h-4" style={{ color: '#64748b' }} />
               <Input
                 id="email"
                 type="email"
                 placeholder="you@jailaundry.com"
-                className="pl-10 h-11 bg-slate-900/60 border-slate-800 text-slate-200 placeholder-slate-600 focus:border-teal-500/60 focus:ring-1 focus:ring-teal-500/20 rounded-xl text-sm"
+                className="pl-10 h-11 rounded-xl border text-sm"
+                style={{ backgroundColor: 'rgba(15,23,42,0.7)', borderColor: '#334155', color: '#e2e8f0' }}
                 disabled={loading || success}
                 {...register("email")}
               />
             </div>
-            {errors.email && <p className="text-rose-500 text-xs">{errors.email.message}</p>}
+            {errors.email && <p className="text-rose-400 text-xs">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="password" className="text-slate-400 text-xs font-medium">Password</Label>
+            <Label htmlFor="password" className="text-xs font-semibold" style={{ color: '#cbd5e1' }}>Password</Label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-600" />
+              <Lock className="absolute left-3.5 top-3.5 w-4 h-4" style={{ color: '#64748b' }} />
               <Input
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                className="pl-10 h-11 bg-slate-900/60 border-slate-800 text-slate-200 placeholder-slate-600 focus:border-teal-500/60 focus:ring-1 focus:ring-teal-500/20 rounded-xl text-sm"
+                className="pl-10 h-11 rounded-xl border text-sm"
+                style={{ backgroundColor: 'rgba(15,23,42,0.7)', borderColor: '#334155', color: '#e2e8f0' }}
                 disabled={loading || success}
                 {...register("password")}
               />
             </div>
-            {errors.password && <p className="text-rose-500 text-xs">{errors.password.message}</p>}
+            {errors.password && <p className="text-rose-400 text-xs">{errors.password.message}</p>}
           </div>
 
           <Button
@@ -209,10 +211,10 @@ export default function LoginPage() {
         </form>
 
         {/* Divider */}
-        <div className="flex items-center gap-3 my-7">
-          <div className="flex-1 h-px bg-slate-800" />
-          <span className="text-slate-600 text-[10px] uppercase tracking-wider font-medium">Demo access</span>
-          <div className="flex-1 h-px bg-slate-800" />
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-px" style={{ backgroundColor: '#1e293b' }} />
+          <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#475569' }}>Demo access</span>
+          <div className="flex-1 h-px" style={{ backgroundColor: '#1e293b' }} />
         </div>
 
         {/* Demo role shortcuts */}
@@ -228,16 +230,19 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleDemoLogin(role.email)}
               disabled={loading || success}
-              className="p-3 text-left rounded-xl bg-slate-900/60 border border-slate-800 hover:border-teal-600/40 hover:bg-slate-900 transition-all duration-150 group"
+              className="p-3 text-left rounded-xl border transition-all duration-150 group"
+              style={{ backgroundColor: 'rgba(15,23,42,0.6)', borderColor: '#1e293b' }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = '#0d9488')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#1e293b')}
             >
-              <span className="block text-xs font-semibold text-slate-200 group-hover:text-teal-300 transition-colors">{role.label}</span>
-              <span className="block text-[10px] text-slate-600 mt-0.5">{role.sub}</span>
+              <span className="block text-xs font-semibold transition-colors" style={{ color: '#e2e8f0' }}>{role.label}</span>
+              <span className="block text-[10px] mt-0.5" style={{ color: '#64748b' }}>{role.sub}</span>
             </button>
           ))}
         </div>
 
         {/* Footer */}
-        <p className="text-slate-700 text-[10px] text-center mt-8 uppercase tracking-wider">
+        <p className="text-[10px] text-center mt-8 uppercase tracking-wider" style={{ color: '#334155' }}>
           Secured access · Operations are logged
         </p>
       </div>
