@@ -14,22 +14,22 @@ export default async function JobCardsPage() {
   }
 
   const [customers, services, items, units, rates, jobCards] = await Promise.all([
-    getCustomersList(),
-    getServices(),
-    getItems(),
-    getUnits(),
-    getCatalogRates(),
-    getJobCardsList(),
+    getCustomersList().catch(() => []),
+    getServices().catch(() => []),
+    getItems().catch(() => []),
+    getUnits().catch(() => []),
+    getCatalogRates().catch(() => []),
+    getJobCardsList().catch(() => []),
   ]);
 
   return (
     <JobCardsClient
-      customers={customers}
-      services={services}
-      items={items}
-      units={units}
-      rates={rates}
-      initialJobCards={jobCards}
+      customers={customers || []}
+      services={services || []}
+      items={items || []}
+      units={units || []}
+      rates={rates || []}
+      initialJobCards={jobCards || []}
     />
   );
 }

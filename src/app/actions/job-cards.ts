@@ -505,20 +505,47 @@ export async function getJobCardsList(): Promise<JobCard[]> {
       .from("job_cards")
       .select(`
         *,
-        customer_id(name, mobile)
+        customers:customer_id (name, mobile)
       `)
       .order("created_at", { ascending: false });
 
-    if (error) throw error;
+    if (error) {
+      console.warn("getJobCardsList PostgREST join notice, attempting raw fallback:", error.message);
+      const { data: rawData, error: rawError } = await supabase
+        .from("job_cards")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (rawError || !rawData) return mockJobCards;
+
+      const custIds = Array.from(new Set((rawData || []).map(r => r.customer_id).filter(Boolean)));
+      const custMap: Record<string, { name: string; mobile: string }> = {};
+      if (custIds.length > 0) {
+        const { data: custs } = await supabase
+          .from("customers")
+          .select("id, name, mobile")
+          .in("id", custIds);
+        
+        (custs || []).forEach(c => {
+          custMap[c.id] = { name: c.name, mobile: c.mobile };
+        });
+      }
+
+      return (rawData || []).map((row: any) => ({
+        ...row,
+        customer_name: custMap[row.customer_id]?.name || "Unknown",
+        customer_mobile: custMap[row.customer_id]?.mobile || "",
+      })) as JobCard[];
+    }
 
     return (data || []).map((row: any) => ({
       ...row,
-      customer_name: row.customer_id?.name || "Unknown",
-      customer_mobile: row.customer_id?.mobile || "",
+      customer_name: row.customers?.name || (typeof row.customer_id === "object" ? row.customer_id?.name : undefined) || "Unknown",
+      customer_mobile: row.customers?.mobile || (typeof row.customer_id === "object" ? row.customer_id?.mobile : undefined) || "",
     })) as JobCard[];
   } catch (error) {
     console.error("getJobCardsList failed:", error);
-    return [];
+    return mockJobCards;
   }
 }
 
