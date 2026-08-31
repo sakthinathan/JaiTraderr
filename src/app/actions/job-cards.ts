@@ -466,21 +466,30 @@ export async function getJobCardDetails(id: string): Promise<JobCard | null> {
 
     if (svcError) throw svcError;
 
-    const mappedServices: JobCardService[] = [];
+    const svcIds = (services || []).map((s: any) => s.id);
+    const itemsMap: Record<string, JobCardItem[]> = {};
 
-    for (const svc of (services || [])) {
+    if (svcIds.length > 0) {
+      // Single bulk query for all items across services (O(1) database trip)
       const { data: items, error: itemsError } = await supabase
         .from("job_card_items")
         .select("*")
-        .eq("job_card_service_id", svc.id);
+        .in("job_card_service_id", svcIds);
 
       if (itemsError) throw itemsError;
 
-      mappedServices.push({
-        ...svc,
-        items: items || [],
+      (items || []).forEach((item: any) => {
+        if (!itemsMap[item.job_card_service_id]) {
+          itemsMap[item.job_card_service_id] = [];
+        }
+        itemsMap[item.job_card_service_id].push(item);
       });
     }
+
+    const mappedServices: JobCardService[] = (services || []).map((svc: any) => ({
+      ...svc,
+      items: itemsMap[svc.id] || [],
+    }));
 
     const formattedJc = jobCard as any;
     return {
