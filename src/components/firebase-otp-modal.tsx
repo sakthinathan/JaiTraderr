@@ -55,15 +55,37 @@ export default function FirebaseOtpModal({
     }
   }, [isOpen, customerPhone]);
 
+  const clearRecaptcha = () => {
+    if (recaptchaRef.current) {
+      try {
+        recaptchaRef.current.clear();
+      } catch {}
+      recaptchaRef.current = null;
+    }
+    const container = document.getElementById("recaptcha-container-firebase");
+    if (container) {
+      container.innerHTML = "";
+    }
+  };
+
   const setupRecaptcha = () => {
-    if (recaptchaRef.current) return;
+    if (recaptchaRef.current) return recaptchaRef.current;
+
+    const container = document.getElementById("recaptcha-container-firebase");
+    if (container) {
+      container.innerHTML = "";
+    }
+
     try {
-      recaptchaRef.current = new RecaptchaVerifier(auth, "recaptcha-container-firebase", {
+      const verifier = new RecaptchaVerifier(auth, "recaptcha-container-firebase", {
         size: "invisible",
         callback: () => {},
       });
+      recaptchaRef.current = verifier;
+      return verifier;
     } catch (e: any) {
       console.error("reCAPTCHA setup error:", e);
+      return null;
     }
   };
 
@@ -76,16 +98,20 @@ export default function FirebaseOtpModal({
     }
     setLoading(true);
     try {
-      setupRecaptcha();
+      clearRecaptcha();
+      const verifier = setupRecaptcha();
+      if (!verifier) {
+        throw new Error("Failed to initialize reCAPTCHA verifier.");
+      }
       const fullPhone = `+91${cleaned}`;
-      const result = await signInWithPhoneNumber(auth, fullPhone, recaptchaRef.current!);
+      const result = await signInWithPhoneNumber(auth, fullPhone, verifier);
       confirmationRef.current = result;
       setStep("otp");
       setResendTimer(60);
     } catch (err: any) {
       console.error("Firebase sendOTP error:", err);
       setError(err?.message || "Failed to send OTP via Firebase. Ensure reCAPTCHA / Phone Auth is enabled.");
-      recaptchaRef.current = null;
+      clearRecaptcha();
     } finally {
       setLoading(false);
     }

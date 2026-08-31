@@ -1066,11 +1066,15 @@ export default function JobCardsClient({
       <Dialog open={!!detailedJc} onOpenChange={(open) => { if (!open) setDetailedJc(null); }}>
         <DialogContent className="border-slate-800 bg-slate-900 text-slate-100 max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-white flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-indigo-400" />
-              <span>Job Card Summary</span>
+            <DialogTitle className="text-white flex items-center justify-between pr-6">
+              <div className="flex items-center gap-2 min-w-0">
+                <ClipboardList className="w-5 h-5 text-indigo-400 shrink-0" />
+                <span className="truncate text-base font-bold">Job Card Summary</span>
+              </div>
               {detailedJc?.is_locked && (
-                <span className="text-[10px] bg-rose-500/20 text-rose-400 border border-rose-500/30 px-1.5 py-0.5 rounded font-bold uppercase">Locked</span>
+                <span className="text-[10px] bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shrink-0">
+                  Locked
+                </span>
               )}
             </DialogTitle>
             <DialogDescription className="text-slate-400 text-xs">
