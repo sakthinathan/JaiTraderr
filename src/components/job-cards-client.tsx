@@ -24,13 +24,13 @@ import {
 } from "lucide-react";
 import { Customer } from "@/app/actions/customers";
 import { Service, Item, Unit, ServiceItemRate } from "@/app/actions/catalog";
-import { createDraftJobCard, addItemsToJobCard, closeAndLockJobCard, getJobCardDetails, unlockJobCard, requestJobCardUnlockOtp, verifyOtpAndUnlockJobCard, JobCard } from "@/app/actions/job-cards";
+import { createDraftJobCard, addItemsToJobCard, closeAndLockJobCard, getJobCardDetails, unlockJobCard, JobCard } from "@/app/actions/job-cards";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import FirebaseOtpModal from "@/components/firebase-otp-modal";
+import AdminUnlockModal from "@/components/admin-unlock-modal";
 
 interface JobCardsClientProps {
   customers: Customer[];
@@ -98,25 +98,16 @@ export default function JobCardsClient({
   // Editing state for existing cards
   const [editingJobCardId, setEditingJobCardId] = useState<string | null>(null);
 
-  // OTP Unlocking States
-  const [otpRequested, setOtpRequested] = useState(false);
-  const [otpValue, setOtpValue] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [otpError, setOtpError] = useState<string | null>(null);
-  const [firebaseOtpModalOpen, setFirebaseOtpModalOpen] = useState(false);
+  // Admin PIN Unlock State
+  const [adminUnlockModalOpen, setAdminUnlockModalOpen] = useState(false);
 
-  const handleFirebaseOtpVerified = async () => {
+  const handleAdminUnlockVerified = async () => {
     if (!detailedJc) return;
-    setFirebaseOtpModalOpen(false);
+    setAdminUnlockModalOpen(false);
     startTransition(async () => {
-      const res = await unlockJobCard(detailedJc.id);
-      if (res.success) {
-        const fullDetails = await getJobCardDetails(detailedJc.id);
-        const updatedJc = fullDetails || { ...detailedJc, is_locked: false };
-        handleEditJobCard(updatedJc);
-      } else {
-        alert(res.error || "Failed to unlock job card.");
-      }
+      const fullDetails = await getJobCardDetails(detailedJc.id);
+      const updatedJc = fullDetails || { ...detailedJc, is_locked: false };
+      handleEditJobCard(updatedJc);
     });
   };
 
@@ -189,47 +180,7 @@ export default function JobCardsClient({
     setDetailedJc(null); // Close details modal
   };
 
-  const handleRequestUnlockOtp = (jc: JobCard) => {
-    setOtpRequested(true);
-    setOtpError(null);
-    setOtpValue("");
-    setGeneratedOtp("");
 
-    startTransition(async () => {
-      const res = await requestJobCardUnlockOtp(jc.id);
-      if (!res.success) {
-        setOtpRequested(false);
-        setOtpError(res.error || "Failed to dispatch OTP.");
-        alert(res.error || "Failed to dispatch OTP.");
-      } else if (res.devOtpCode) {
-        setGeneratedOtp(res.devOtpCode);
-      }
-    });
-  };
-
-  const handleVerifyAndUnlock = async (jc: JobCard) => {
-    if (otpValue.length < 6) {
-      setOtpError("Please enter a valid 6-digit OTP.");
-      return;
-    }
-
-    startTransition(async () => {
-      const res = await verifyOtpAndUnlockJobCard(jc.id, otpValue);
-      if (res.success) {
-        setOtpRequested(false);
-        setOtpError(null);
-
-        // Trigger reload
-        const fullDetails = await getJobCardDetails(jc.id);
-        const updatedJc = fullDetails || { ...jc, is_locked: false };
-
-        // Load into editor
-        handleEditJobCard(updatedJc);
-      } else {
-        setOtpError(res.error || "Failed to unlock job card.");
-      }
-    });
-  };
 
   const buildWhatsAppLink = (jc: JobCard) => {
     const name = jc.customer_name || "Customer";
@@ -1199,11 +1150,11 @@ export default function JobCardsClient({
               <>
                 {detailedJc.is_locked ? (
                   <Button
-                    onClick={() => setFirebaseOtpModalOpen(true)}
-                    className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs shadow-lg shadow-emerald-600/20"
+                    onClick={() => setAdminUnlockModalOpen(true)}
+                    className="bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs shadow-lg shadow-amber-600/20"
                   >
-                    <Smartphone className="w-4 h-4" />
-                    Unlock Job Card (Firebase SMS OTP)
+                    <Zap className="w-4 h-4" />
+                    Unlock Card (Admin PIN)
                   </Button>
                 ) : (
                   <Button
@@ -1228,7 +1179,6 @@ export default function JobCardsClient({
             <Button
               onClick={() => {
                 setDetailedJc(null);
-                setOtpRequested(false);
               }}
               className="bg-slate-900 hover:bg-slate-850 text-slate-300 flex-1 h-10 text-xs"
             >
@@ -1238,16 +1188,15 @@ export default function JobCardsClient({
         </DialogContent>
       </Dialog>
 
-      {/* Firebase Phone Auth OTP Modal */}
+      {/* Admin Passcode PIN Unlock Modal */}
       {detailedJc && (
-        <FirebaseOtpModal
-          isOpen={firebaseOtpModalOpen}
+        <AdminUnlockModal
+          isOpen={adminUnlockModalOpen}
           jobCardId={detailedJc.id}
           jobCardNumber={detailedJc.job_card_number}
           customerName={detailedJc.customer_name || ""}
-          customerPhone={detailedJc.customer_mobile || ""}
-          onVerified={handleFirebaseOtpVerified}
-          onClose={() => setFirebaseOtpModalOpen(false)}
+          onVerified={handleAdminUnlockVerified}
+          onClose={() => setAdminUnlockModalOpen(false)}
         />
       )}
     </div>
