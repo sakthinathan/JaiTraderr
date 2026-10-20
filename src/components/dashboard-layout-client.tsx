@@ -104,7 +104,7 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
       name: "Reports",
       href: "/dashboard/reports",
       icon: BarChart3,
-      roles: ["admin"],
+      roles: ["admin", "billing_staff"],
     },
   ];
 
