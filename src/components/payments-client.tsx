@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { JobCard, getJobCardDetails } from "@/app/actions/job-cards";
 import { recordPayment, getPaymentsHistory, Payment } from "@/app/actions/payments";
+import { buildReceiptWhatsAppUrl } from "@/lib/whatsapp";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -47,30 +48,7 @@ export default function PaymentsClient({ initialJobCards }: PaymentsClientProps)
 
   const buildWhatsAppLink = () => {
     if (!selectedJc) return "";
-    const name = selectedJc.customer_name || "Customer";
-    const num = selectedJc.job_card_number;
-    const total = selectedJc.grand_total.toFixed(2);
-    const advance = selectedJc.advance_paid.toFixed(2);
-    const balance = selectedJc.balance_due.toFixed(2);
-    const shelf = selectedJc.shelf_location || "N/A";
-    
-    let text = `*JaiTraderr Laundry Billing Receipt*\n\n`;
-    text += `Dear *${name}*,\n`;
-    text += `Here is your summary for Order *${num}*:\n\n`;
-    text += `• Total Billed: ₹${total}\n`;
-    text += `• Advance Paid: ₹${advance}\n`;
-    text += `• Balance Due: ₹${balance}\n`;
-    if (selectedJc.status === "READY_FOR_DELIVERY") {
-      text += `• Status: *Ready for Pickup*\n`;
-      text += `• Shelf Location: *${shelf}*\n`;
-    } else {
-      text += `• Status: *${selectedJc.status}*\n`;
-    }
-    text += `\nThank you for choosing JaiTraderr! For questions, call us directly.`;
-
-    const cleanMobile = (selectedJc.customer_mobile || "").replace(/\D/g, "");
-    const formattedMobile = cleanMobile.startsWith("91") ? cleanMobile : `91${cleanMobile}`;
-    return `https://wa.me/${formattedMobile}?text=${encodeURIComponent(text)}`;
+    return buildReceiptWhatsAppUrl(selectedJc);
   };
 
   const handleSelectJobCard = async (jc: JobCard) => {

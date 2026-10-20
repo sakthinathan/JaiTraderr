@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { createClient } from "./server";
 
@@ -11,12 +12,13 @@ export interface UserProfile {
   branchName: string;
 }
 
-export async function getCurrentUser(): Promise<UserProfile | null> {
+export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
   const cookieStore = await cookies();
   const mockToken = cookieStore.get("sb-mock-token")?.value;
+  const isDemoAllowed = process.env.NODE_ENV !== "production" || process.env.ALLOW_DEMO_MODE === "true";
 
-  // 1. Check for mock session first
-  if (mockToken) {
+  // 1. Check for mock session first (only in non-production or explicit demo mode)
+  if (isDemoAllowed && mockToken) {
     const roleMapping: Record<string, { role: UserProfile["role"]; name: string; roleName: string }> = {
       admin: { role: "admin", name: "Alex Admin", roleName: "System Administrator" },
       billing: { role: "billing_staff", name: "Brad Billing", roleName: "Billing Officer" },
@@ -89,4 +91,4 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
     console.error("Error fetching current user session:", error);
     return null;
   }
-}
+});

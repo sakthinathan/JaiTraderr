@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
-  Landmark, 
   LayoutDashboard, 
   Users, 
   Sliders, 
@@ -19,10 +18,13 @@ import {
   User, 
   ChevronRight,
   Shield,
-  CircleDot
+  CircleDot,
+  Settings,
+  ChevronDown
 } from "lucide-react";
 import { UserProfile } from "@/lib/supabase/get-user";
 import { Button } from "@/components/ui/button";
+import ProfileSettingsModal from "@/components/profile-settings-modal";
 
 interface DashboardLayoutClientProps {
   user: UserProfile;
@@ -34,6 +36,8 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [profileModalTab, setProfileModalTab] = useState<"profile" | "settings">("profile");
 
   const handleLogout = async () => {
     // Clear mock token cookie
@@ -180,20 +184,27 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
 
         {/* Profile Card & Logout */}
         <div className="p-3 border-t border-slate-900 bg-slate-950/40">
-          <div className="flex items-center gap-3 p-2 rounded-lg bg-slate-900/40 border border-slate-900">
-            <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
-              <User className="w-4 h-4 text-slate-400" />
+          <button
+            onClick={() => {
+              setProfileModalTab("profile");
+              setProfileModalOpen(true);
+            }}
+            className="w-full flex items-center gap-3 p-2 rounded-lg bg-slate-900/40 border border-slate-900 hover:border-slate-800 hover:bg-slate-900/80 transition-all text-left cursor-pointer group"
+            title="View Profile & Settings"
+          >
+            <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0 group-hover:border-indigo-500/50 group-hover:bg-indigo-600/10 transition-colors">
+              <User className="w-4 h-4 text-slate-400 group-hover:text-indigo-400 transition-colors" />
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-slate-200 truncate">{user.name}</p>
+                <p className="text-xs font-semibold text-slate-200 truncate group-hover:text-white transition-colors">{user.name}</p>
                 <p className="text-[10px] text-slate-500 flex items-center gap-1">
                   <Shield className="w-3 h-3 text-indigo-400 shrink-0" />
                   <span className="truncate">{user.roleName}</span>
                 </p>
               </div>
             )}
-          </div>
+          </button>
           <Button
             onClick={handleLogout}
             variant="ghost"
@@ -225,17 +236,58 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
             <img src="/jailaundry-logo.jpg" alt="JaiLaundry" className="md:hidden h-8 w-auto object-contain rounded" />
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {/* Quick Settings Icon Button */}
+            <button
+              onClick={() => {
+                setProfileModalTab("settings");
+                setProfileModalOpen(true);
+              }}
+              className="p-2 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-slate-100 hover:bg-slate-850 hover:border-slate-700 transition-all cursor-pointer flex items-center justify-center shadow-sm"
+              title="Settings & Role Switcher"
+              aria-label="Settings"
+            >
+              <Settings className="w-4 h-4 hover:rotate-45 transition-transform duration-300" />
+            </button>
+
             {/* Display logged in status on mobile header */}
-            <div className="md:hidden text-right">
-              <p className="text-xs font-semibold text-slate-200">{user.name}</p>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">
-                {user.roleName}
-              </span>
-            </div>
-            <div className="hidden md:flex w-8 h-8 rounded-full bg-indigo-600/10 border border-indigo-500/20 items-center justify-center">
-              <span className="text-xs font-semibold text-indigo-400">{user.name.slice(0,2).toUpperCase()}</span>
-            </div>
+            <button
+              onClick={() => {
+                setProfileModalTab("profile");
+                setProfileModalOpen(true);
+              }}
+              className="md:hidden flex items-center gap-2 text-right p-1 rounded-lg hover:bg-slate-900 transition-colors cursor-pointer text-left"
+              title="View Profile Details"
+            >
+              <div>
+                <p className="text-xs font-semibold text-slate-200">{user.name}</p>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">
+                  {user.roleName}
+                </span>
+              </div>
+              <div className="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center font-bold text-xs text-indigo-400">
+                {user.name.slice(0, 2).toUpperCase()}
+              </div>
+            </button>
+
+            {/* Desktop Profile Pill Trigger */}
+            <button
+              onClick={() => {
+                setProfileModalTab("profile");
+                setProfileModalOpen(true);
+              }}
+              className="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 hover:bg-slate-850 transition-all cursor-pointer group text-left shadow-sm"
+              title="View Profile & Settings"
+            >
+              <div className="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center font-bold text-xs text-indigo-400 group-hover:scale-105 transition-transform">
+                {user.name.slice(0, 2).toUpperCase()}
+              </div>
+              <div className="hidden lg:block text-left pr-1">
+                <p className="text-xs font-semibold text-slate-200 leading-tight group-hover:text-white transition-colors">{user.name}</p>
+                <p className="text-[10px] text-slate-500 leading-none mt-0.5">{user.roleName}</p>
+              </div>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+            </button>
           </div>
         </header>
 
@@ -316,19 +368,35 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
             </nav>
 
             <div className="pt-4 border-t border-slate-900 mt-auto">
-              <div className="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40 border border-slate-900">
-                <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
-                  <User className="w-4 h-4 text-slate-400" />
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setProfileModalTab("profile");
+                  setProfileModalOpen(true);
+                }}
+                className="w-full flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40 border border-slate-900 hover:border-slate-800 hover:bg-slate-900 text-left transition-colors cursor-pointer group"
+              >
+                <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center shrink-0 group-hover:bg-indigo-600/20 group-hover:text-indigo-400 transition-colors">
+                  <User className="w-4 h-4 text-slate-400 group-hover:text-indigo-400" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-slate-200">{user.name}</p>
+                  <p className="text-xs font-semibold text-slate-200 group-hover:text-white">{user.name}</p>
                   <p className="text-[10px] text-slate-500">{user.roleName}</p>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Interactive Profile & Settings Modal */}
+      <ProfileSettingsModal
+        isOpen={profileModalOpen}
+        onClose={() => setProfileModalOpen(false)}
+        user={user}
+        initialTab={profileModalTab}
+        onLogout={handleLogout}
+      />
     </div>
   );
 }

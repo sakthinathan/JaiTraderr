@@ -2,8 +2,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
 
 export interface Service {
   id: string;
@@ -69,15 +69,6 @@ const mockRates: ServiceItemRate[] = [
   { id: "r5", service_id: "a4444444-4444-4444-4444-444444444444", service_name: "Dry Cleaning", item_id: "f4444444-4444-4444-4444-444444444444", item_name: "Blazer", unit_id: "pcs", rate: 180.00, effective_from: "2026-08-01T00:00:00Z", effective_to: null, is_active: true },
 ];
 
-async function isPlaceholder() {
-  const cookieStore = await cookies();
-  const hasMockToken = cookieStore.get("sb-mock-token")?.value;
-  const isPlaceholderEnv = 
-    !process.env.NEXT_PUBLIC_SUPABASE_URL || 
-    process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project");
-
-  return isPlaceholderEnv || !!hasMockToken;
-}
 
 export async function getServices(): Promise<Service[]> {
   if (await isPlaceholder()) return mockServices;

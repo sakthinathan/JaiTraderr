@@ -15,19 +15,12 @@ import {
 import { JobCard } from "@/app/actions/job-cards";
 import { updateJobCardStatus, getStatusHistory, StatusHistory } from "@/app/actions/workflow";
 import { recordPayment } from "@/app/actions/payments";
+import { formatLocalDate } from "@/lib/formatters";
+import { buildWorkflowWhatsAppUrl } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-
-function formatLocalDate(dateString: string | Date) {
-  const d = new Date(dateString);
-  if (isNaN(d.getTime())) return "";
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
-}
 
 interface WorkflowClientProps {
   jobCards: JobCard[];
@@ -91,28 +84,7 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
   }, [jobCards]);
 
   const buildWhatsAppLink = (jc: JobCard) => {
-    const name = jc.customer_name || "Customer";
-    const num = jc.job_card_number;
-    const balance = jc.balance_due.toFixed(2);
-    const shelf = jc.shelf_location || "N/A";
-    
-    let text = `*JaiTraderr Laundry Order Update*\n\n`;
-    text += `Dear *${name}*,\n`;
-    text += `Your order *${num}* is currently in *${jc.status}* stage.\n`;
-    if (jc.status === "READY_FOR_DELIVERY") {
-      text += `\nYour clothes are *READY FOR PICKUP*! 🧺\n`;
-      text += `• Shelf Location: *${shelf}*\n`;
-      text += `• Balance Due: ₹${balance}\n`;
-    } else if (jc.status === "DELIVERED") {
-      text += `\nYour clothes have been *DELIVERED*. Thank you!\n`;
-    } else {
-      text += `\nWe are actively working on it. Expected completion date: ${formatLocalDate(jc.expected_delivery_date)}\n`;
-    }
-    text += `\nThank you for choosing JaiTraderr!`;
-
-    const cleanMobile = (jc.customer_mobile || "").replace(/\D/g, "");
-    const formattedMobile = cleanMobile.startsWith("91") ? cleanMobile : `91${cleanMobile}`;
-    return `https://wa.me/${formattedMobile}?text=${encodeURIComponent(text)}`;
+    return buildWorkflowWhatsAppUrl(jc);
   };
 
   const handleOpenStatusDialog = (jc: JobCard, status: JobCard["status"]) => {

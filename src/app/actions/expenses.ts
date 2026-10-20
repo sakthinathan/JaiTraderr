@@ -2,8 +2,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
 
 export interface Expense {
   id: string;
@@ -48,15 +48,6 @@ const mockCategories: ExpenseCategory[] = [
   { id: "ec777777-7777-7777-7777-777777777777", name: "Transport & Fuel", is_active: true }
 ];
 
-async function isPlaceholder() {
-  const cookieStore = await cookies();
-  const hasMockToken = cookieStore.get("sb-mock-token")?.value;
-  const isPlaceholderEnv = 
-    !process.env.NEXT_PUBLIC_SUPABASE_URL || 
-    process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project");
-
-  return isPlaceholderEnv || !!hasMockToken;
-}
 
 export async function getExpenseCategories(): Promise<ExpenseCategory[]> {
   if (await isPlaceholder()) return mockCategories;

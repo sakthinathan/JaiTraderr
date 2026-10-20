@@ -19,6 +19,7 @@ import {
   Bookmark
 } from "lucide-react";
 import { Customer, registerCustomer, getCustomerProfile } from "@/app/actions/customers";
+import { formatLocalDate } from "@/lib/formatters";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -39,15 +40,6 @@ const customerSchema = z.object({
 });
 
 type CustomerFormValues = z.infer<typeof customerSchema>;
-
-function formatLocalDate(dateString: string | Date) {
-  const d = new Date(dateString);
-  if (isNaN(d.getTime())) return "";
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
-}
 
 export default function CustomersClient({ initialCustomers }: CustomersClientProps) {
   const [customers, setCustomers] = useState<Customer[]>(initialCustomers);

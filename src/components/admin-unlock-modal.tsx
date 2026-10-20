@@ -33,13 +33,10 @@ export default function AdminUnlockModal({
 
   useEffect(() => {
     if (isOpen) {
-      setPasscode("");
-      setError(null);
-      setSuccess(false);
-      setLoading(false);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         inputRef.current?.focus();
-      }, 100);
+      }, 50);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 

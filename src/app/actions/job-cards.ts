@@ -2,9 +2,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/supabase/get-user";
+import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
 import { hashOtp, sendSupervisorOtp } from "@/utils/sms";
 import crypto from "crypto";
 
@@ -128,18 +128,8 @@ const mockJobCards: JobCard[] = [
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockEditRequests: EditRequest[] = [];
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockAuditLogs: any[] = [];
 
-async function isPlaceholder() {
-  const cookieStore = await cookies();
-  const hasMockToken = cookieStore.get("sb-mock-token")?.value;
-  const isPlaceholderEnv = 
-    !process.env.NEXT_PUBLIC_SUPABASE_URL || 
-    process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project");
-
-  return isPlaceholderEnv || !!hasMockToken;
-}
 
 export async function createDraftJobCard(customerId: string): Promise<{ success: boolean; jobCard?: JobCard; error?: string }> {
   const placeholderMode = await isPlaceholder();

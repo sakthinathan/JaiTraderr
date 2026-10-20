@@ -17,10 +17,12 @@ import {
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/supabase/get-user";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getJobCardsList } from "@/app/actions/job-cards";
 import { getAllPayments } from "@/app/actions/payments";
 import { getExpensesList } from "@/app/actions/expenses";
+import { getGreeting } from "@/lib/formatters";
+import { getStatusColor } from "@/lib/status-helpers";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -69,23 +71,6 @@ export default async function DashboardPage() {
     shelf: jc.shelf_location || null
   }));
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 17) return "Good Afternoon";
-    return "Good Evening";
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "RECEIVED": return "bg-blue-500/10 text-blue-400 border-blue-500/20";
-      case "WASHING": return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
-      case "IRONING": return "bg-amber-500/10 text-amber-400 border-amber-500/20";
-      case "READY_FOR_DELIVERY": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-      case "DELIVERED": return "bg-slate-500/10 text-slate-400 border-slate-500/20";
-      default: return "bg-slate-500/10 text-slate-400 border-slate-500/20";
-    }
-  };
 
   return (
     <div className="space-y-4 md:space-y-5 animate-fade-in pb-4">

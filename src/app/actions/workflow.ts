@@ -2,8 +2,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
 
 export interface StatusHistory {
   id: string;
@@ -46,15 +46,6 @@ const mockHistoryLogs: StatusHistory[] = [
   }
 ];
 
-async function isPlaceholder() {
-  const cookieStore = await cookies();
-  const hasMockToken = cookieStore.get("sb-mock-token")?.value;
-  const isPlaceholderEnv = 
-    !process.env.NEXT_PUBLIC_SUPABASE_URL || 
-    process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project");
-
-  return isPlaceholderEnv || !!hasMockToken;
-}
 
 export async function updateJobCardStatus(
   jobCardId: string,

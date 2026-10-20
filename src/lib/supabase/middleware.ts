@@ -6,36 +6,50 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://lukkynsezbssepqqcxze.supabase.co';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_8zrOhEMRI-kfiGFKgtef5A_ocKUxRXl';
+  const isDemoAllowed = process.env.NODE_ENV !== "production" || process.env.ALLOW_DEMO_MODE === "true";
+  const mockToken = isDemoAllowed ? request.cookies.get("sb-mock-token")?.value : undefined;
+  let user = null;
 
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
+  if (!mockToken) {
+    const allCookies = request.cookies.getAll();
+    const hasSupabaseAuthCookie = allCookies.some(c => 
+      c.name.startsWith('sb-') && (c.name.includes('-auth-token') || c.name.endsWith('-token'))
+    );
+
+    if (hasSupabaseAuthCookie) {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+      const supabase = createServerClient(
+        supabaseUrl,
+        supabaseAnonKey,
+        {
+          cookies: {
+            getAll() {
+              return request.cookies.getAll()
+            },
+            setAll(cookiesToSet) {
+              cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+              supabaseResponse = NextResponse.next({
+                request,
+              })
+              cookiesToSet.forEach(({ name, value, options }) =>
+                supabaseResponse.cookies.set(name, value, options)
+              )
+            },
+          },
+        }
+      )
+
+      try {
+        const { data } = await supabase.auth.getUser()
+        user = data.user
+      } catch {
+        user = null
+      }
     }
-  )
+  }
 
-  // Refresh session if expired
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const mockToken = request.cookies.get("sb-mock-token")?.value;
   const isAuthenticated = !!user || !!mockToken;
 
   // Protect /dashboard and sub-routes

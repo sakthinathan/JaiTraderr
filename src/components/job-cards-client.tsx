@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useMemo } from "react";
 import Link from "next/link";
 import {
   FileText,
@@ -24,7 +24,9 @@ import {
 } from "lucide-react";
 import { Customer } from "@/app/actions/customers";
 import { Service, Item, Unit, ServiceItemRate } from "@/app/actions/catalog";
-import { createDraftJobCard, addItemsToJobCard, closeAndLockJobCard, getJobCardDetails, unlockJobCard, JobCard } from "@/app/actions/job-cards";
+import { createDraftJobCard, addItemsToJobCard, closeAndLockJobCard, getJobCardDetails, JobCard } from "@/app/actions/job-cards";
+import { buildReceiptWhatsAppUrl } from "@/lib/whatsapp";
+import { getStatusColor } from "@/lib/status-helpers";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -183,45 +185,27 @@ export default function JobCardsClient({
 
 
   const buildWhatsAppLink = (jc: JobCard) => {
-    const name = jc.customer_name || "Customer";
-    const num = jc.job_card_number;
-    const total = jc.grand_total.toFixed(2);
-    const advance = jc.advance_paid.toFixed(2);
-    const balance = jc.balance_due.toFixed(2);
-    const shelf = jc.shelf_location || "N/A";
-
-    let text = `*JaiTraderr Laundry Billing Receipt*\n\n`;
-    text += `Dear *${name}*,\n`;
-    text += `Here is your summary for Order *${num}*:\n\n`;
-    text += `• Total Billed: ₹${total}\n`;
-    text += `• Advance Paid: ₹${advance}\n`;
-    text += `• Balance Due: ₹${balance}\n`;
-    if (jc.status === "READY_FOR_DELIVERY") {
-      text += `• Status: *Ready for Pickup*\n`;
-      text += `• Shelf Location: *${shelf}*\n`;
-    } else {
-      text += `• Status: *${jc.status}*\n`;
-    }
-    text += `\nThank you for choosing JaiTraderr! For questions, call us directly.`;
-
-    const cleanMobile = (jc.customer_mobile || "").replace(/\D/g, "");
-    const formattedMobile = cleanMobile.startsWith("91") ? cleanMobile : `91${cleanMobile}`;
-    return `https://wa.me/${formattedMobile}?text=${encodeURIComponent(text)}`;
+    return buildReceiptWhatsAppUrl(jc);
   };
 
-  // Search filter
-  const filteredCustomers = customers.filter(c =>
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.mobile.includes(searchQuery)
-  );
+  // Search filter memoized to avoid re-filtering on every keystroke in other inputs
+  const filteredCustomers = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return customers;
+    return customers.filter(c =>
+      c.name.toLowerCase().includes(q) || c.mobile.includes(q)
+    );
+  }, [customers, searchQuery]);
 
-  // Date-wise active job directory filtering
-  const filteredJobCards = jobCards.filter(jc => {
-    if (!filterDate) return true;
-    const dateStr = filterType === "delivery" ? jc.expected_delivery_date : jc.created_at;
-    if (!dateStr) return false;
-    return dateStr.split("T")[0] === filterDate;
-  });
+  // Date-wise active job directory filtering memoized
+  const filteredJobCards = useMemo(() => {
+    if (!filterDate) return jobCards;
+    return jobCards.filter(jc => {
+      const dateStr = filterType === "delivery" ? jc.expected_delivery_date : jc.created_at;
+      if (!dateStr) return false;
+      return dateStr.split("T")[0] === filterDate;
+    });
+  }, [jobCards, filterDate, filterType]);
 
   // Helpers
   const addServiceGroup = (serviceId: string) => {
@@ -315,13 +299,20 @@ export default function JobCardsClient({
     }));
   };
 
-  // Calculations
-  const subtotal = selectedServices.reduce((acc, svc) => {
-    return acc + svc.items.reduce((sAcc, item) => sAcc + (item.rate * item.quantity), 0);
-  }, 0);
+  // Calculations memoized to avoid re-calculating on unrelated state changes
+  const subtotal = useMemo(() => {
+    return selectedServices.reduce((acc, svc) => {
+      return acc + svc.items.reduce((sAcc, item) => sAcc + (item.rate * item.quantity), 0);
+    }, 0);
+  }, [selectedServices]);
 
-  const grandTotal = Math.max(0, subtotal - discount + tax);
-  const balanceDue = grandTotal - advance;
+  const grandTotal = useMemo(() => {
+    return Math.max(0, subtotal - discount + tax);
+  }, [subtotal, discount, tax]);
+
+  const balanceDue = useMemo(() => {
+    return grandTotal - advance;
+  }, [grandTotal, advance]);
 
   // Submit Operations
   const handleSaveJobCard = async (lock: boolean) => {
@@ -409,16 +400,6 @@ export default function JobCardsClient({
     });
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "RECEIVED": return "bg-blue-500/10 text-blue-400 border-blue-500/20";
-      case "WASHING": return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
-      case "IRONING": return "bg-amber-500/10 text-amber-400 border-amber-500/20";
-      case "READY_FOR_DELIVERY": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-      case "DELIVERED": return "bg-slate-500/10 text-slate-400 border-slate-500/20";
-      default: return "bg-slate-500/10 text-slate-400 border-slate-500/20";
-    }
-  };
 
   return (
     <div className="space-y-6">
