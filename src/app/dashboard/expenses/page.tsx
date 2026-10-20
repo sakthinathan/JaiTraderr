@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser, type UserProfile } from "@/lib/supabase/get-user";
-import { getExpensesList, getExpenseCategories, type Expense, type ExpenseCategory } from "@/app/actions/expenses";
+import { getExpensesList, getExpenseCategories, getDailyClosings, type Expense, type ExpenseCategory, type DailyClosingRecord } from "@/app/actions/expenses";
 import { getAllPayments, type Payment } from "@/app/actions/payments";
 import { getJobCardsList, type JobCard } from "@/app/actions/job-cards";
 import ExpensesClient from "@/components/expenses-client";
@@ -16,6 +16,7 @@ export default function ExpensesPage() {
   const [categories, setCategories] = useState<ExpenseCategory[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [jobCards, setJobCards] = useState<JobCard[]>([]);
+  const [closings, setClosings] = useState<DailyClosingRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,10 +27,11 @@ export default function ExpensesPage() {
       getExpenseCategories().catch(() => []),
       getAllPayments().catch(() => []),
       getJobCardsList().catch(() => []),
+      getDailyClosings().catch(() => []),
     ])
-      .then(([u, exp, cat, pmt, jc]) => {
+      .then(([u, exp, cat, pmt, jc, cls]) => {
         if (!mounted) return;
-        if (!u || u.role !== "admin") {
+        if (!u || (u.role !== "admin" && u.role !== "billing_staff")) {
           router.replace("/dashboard");
           return;
         }
@@ -38,9 +40,10 @@ export default function ExpensesPage() {
         setCategories(cat);
         setPayments(pmt);
         setJobCards(jc);
+        setClosings(cls);
       })
       .catch((err) => {
-        console.error("Failed to load expenses data:", err);
+        console.error("Failed to load expenses and register data:", err);
       })
       .finally(() => {
         if (mounted) setLoading(false);
@@ -55,12 +58,12 @@ export default function ExpensesPage() {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-3">
         <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-        <p className="text-xs text-slate-400">Loading expense tracking...</p>
+        <p className="text-xs text-slate-400">Loading daily cash register & expenses...</p>
       </div>
     );
   }
 
-  if (!user || user.role !== "admin") return null;
+  if (!user || (user.role !== "admin" && user.role !== "billing_staff")) return null;
 
   return (
     <ExpensesClient 
@@ -68,6 +71,8 @@ export default function ExpensesPage() {
       categories={categories} 
       payments={payments}
       jobCards={jobCards}
+      initialClosings={closings}
+      currentUser={user}
     />
   );
 }

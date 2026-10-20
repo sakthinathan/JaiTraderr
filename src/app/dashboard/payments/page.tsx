@@ -2,21 +2,29 @@
 
 import React, { useEffect, useState } from "react";
 import { getJobCardsList, type JobCard } from "@/app/actions/job-cards";
+import { getAllPayments, type Payment } from "@/app/actions/payments";
 import PaymentsClient from "@/components/payments-client";
 import { Loader2 } from "lucide-react";
 
 export default function PaymentsPage() {
   const [jobCards, setJobCards] = useState<JobCard[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
-    getJobCardsList()
-      .then((data) => {
-        if (mounted) setJobCards(data);
+    Promise.all([
+      getJobCardsList().catch(() => []),
+      getAllPayments().catch(() => [])
+    ])
+      .then(([jcData, payData]) => {
+        if (mounted) {
+          setJobCards(jcData);
+          setPayments(payData);
+        }
       })
       .catch((err) => {
-        console.error("Failed to load job cards for payments:", err);
+        console.error("Failed to load data for payments page:", err);
       })
       .finally(() => {
         if (mounted) setLoading(false);
@@ -36,5 +44,5 @@ export default function PaymentsPage() {
     );
   }
 
-  return <PaymentsClient initialJobCards={jobCards} />;
+  return <PaymentsClient initialJobCards={jobCards} initialPayments={payments} />;
 }

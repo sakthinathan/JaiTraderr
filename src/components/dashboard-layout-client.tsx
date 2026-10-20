@@ -95,10 +95,10 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
       roles: ["admin", "billing_staff", "delivery_staff"],
     },
     {
-      name: "Expenses",
+      name: "Daily Register & Expenses",
       href: "/dashboard/expenses",
       icon: TrendingDown,
-      roles: ["admin"],
+      roles: ["admin", "billing_staff"],
     },
     {
       name: "Reports",
