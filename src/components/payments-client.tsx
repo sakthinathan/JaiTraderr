@@ -426,14 +426,17 @@ export default function PaymentsClient({ initialJobCards }: PaymentsClientProps)
       {/* Dialog: Invoice Thermal print preview mock */}
       {selectedJc && (
         <Dialog open={showPrintModal} onOpenChange={setShowPrintModal}>
-          <DialogContent className="border-slate-800 bg-slate-900 text-slate-100 max-w-sm">
+          <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 sm:max-w-md lg:max-w-lg w-full p-6 shadow-2xl">
             <DialogHeader className="border-b border-slate-800 pb-3">
-              <DialogTitle className="text-white text-base">Receipt Preview</DialogTitle>
-              <DialogDescription className="text-slate-400 text-xs">Formatted thermal receipt layout</DialogDescription>
+              <div className="flex items-center gap-2.5">
+                <Printer className="w-5 h-5 text-indigo-400" />
+                <DialogTitle className="text-white text-base sm:text-lg font-bold">Tax Invoice & Receipt Preview</DialogTitle>
+              </div>
+              <DialogDescription className="text-slate-400 text-xs">Formatted thermal slip and customer bill for {selectedJc.job_card_number}</DialogDescription>
             </DialogHeader>
 
             {/* Thermal layout preview panel */}
-            <div className="p-5 bg-white text-slate-950 font-mono text-xs shadow-inner rounded-md space-y-4 max-h-[400px] overflow-y-auto">
+            <div className="p-6 bg-white text-slate-950 font-mono text-xs shadow-xl rounded-xl space-y-4 max-h-[550px] overflow-y-auto border border-slate-200">
               <div className="text-center space-y-1">
                 <p className="text-sm font-extrabold tracking-wider">JAI TRADERR LAUNDRY</p>
                 <p className="text-[10px] text-slate-600">123 Laundry St, Clean City</p>

@@ -75,80 +75,113 @@ export default function AdminUnlockModal({
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
       <div
-        className="relative w-full max-w-sm rounded-2xl border shadow-2xl overflow-hidden z-10"
-        style={{ backgroundColor: "#0f172a", borderColor: "#1e293b" }}
+        className="relative w-full sm:max-w-md rounded-2xl border border-slate-800 shadow-2xl overflow-hidden z-10 bg-slate-950"
         onClick={e => e.stopPropagation()}
       >
-        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-indigo-500 to-emerald-500" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-amber-500 via-indigo-500 to-emerald-500" />
 
-        <div className="flex items-start justify-between p-5 pb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+        <div className="flex items-start justify-between p-6 pb-4 border-b border-slate-900">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/10">
               <Lock className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <h3 className="font-bold text-sm" style={{ color: "#f1f5f9" }}>
-                Admin PIN Unlock
+              <h3 className="font-extrabold text-base text-white">
+                Admin Security Unlock
               </h3>
-              <p className="text-[11px]" style={{ color: "#94a3b8" }}>
-                {jobCardNumber} · {customerName || "Customer"}
+              <p className="text-xs text-slate-400 mt-0.5">
+                {jobCardNumber} · <span className="text-slate-300 font-semibold">{customerName || "Customer"}</span>
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-white rounded-lg">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition">
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="px-5 pb-5 space-y-4">
+        <div className="p-6 space-y-5">
           {success ? (
             <div className="flex flex-col items-center gap-3 py-6">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
-                <CheckCircle2 className="w-7 h-7 text-emerald-400" />
+              <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center animate-bounce">
+                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
               </div>
-              <p className="font-semibold text-sm" style={{ color: "#f1f5f9" }}>Passcode Verified!</p>
-              <p className="text-xs" style={{ color: "#94a3b8" }}>Unlocking job card...</p>
+              <p className="font-extrabold text-base text-white">Passcode Verified!</p>
+              <p className="text-xs text-slate-400">Unlocking job card for staff edits...</p>
             </div>
           ) : (
             <form onSubmit={handleVerify} className="space-y-4">
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                <p className="text-xs text-amber-300">
-                  Enter the Admin Passcode to override and unlock this job card for modifications.
-                </p>
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 leading-relaxed">
+                Enter the supervisor passcode to override lock restrictions and edit clothes, rates, or notes.
+                <div className="mt-1 font-mono text-[11px] text-amber-400">Default PIN: 889900</div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold" style={{ color: "#cbd5e1" }}>
-                  Admin Passcode / PIN
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-slate-300">
+                  Enter 6-Digit Admin Passcode
                 </Label>
                 <div className="relative">
                   <Input
                     ref={inputRef}
                     type={showPasscode ? "text" : "password"}
                     maxLength={10}
-                    placeholder="Enter Admin PIN (Default: 889900)"
+                    placeholder="••••••"
                     value={passcode}
                     onChange={e => setPasscode(e.target.value)}
-                    className="pr-10 h-10 rounded-xl text-sm border bg-slate-950 border-slate-800 text-white font-mono tracking-widest"
+                    className="pr-12 h-12 rounded-xl text-lg text-center border bg-slate-900 border-slate-850 text-white font-mono tracking-[0.3em] font-bold shadow-inner"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPasscode(!showPasscode)}
-                    className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200"
+                    className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-200"
                   >
-                    {showPasscode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPasscode ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                {error && <p className="text-rose-400 text-xs mt-1 font-semibold">{error}</p>}
+                {error && <p className="text-rose-400 text-xs mt-1.5 font-semibold text-center">{error}</p>}
+              </div>
+
+              {/* Quick Keypad */}
+              <div className="grid grid-cols-3 gap-2 pt-1">
+                {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setPasscode((prev) => (prev.length < 8 ? prev + num : prev))}
+                    className="h-10 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 font-bold text-sm transition active:scale-95 shadow-sm"
+                  >
+                    {num}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setPasscode("")}
+                  className="h-10 rounded-xl bg-slate-900/60 hover:bg-slate-850 border border-slate-850 text-rose-400 font-semibold text-xs transition active:scale-95"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPasscode((prev) => (prev.length < 8 ? prev + "0" : prev))}
+                  className="h-10 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 font-bold text-sm transition active:scale-95 shadow-sm"
+                >
+                  0
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPasscode((prev) => prev.slice(0, -1))}
+                  className="h-10 rounded-xl bg-slate-900/60 hover:bg-slate-850 border border-slate-850 text-slate-400 font-semibold text-xs transition active:scale-95"
+                >
+                  ⌫
+                </button>
               </div>
 
               <Button
                 type="submit"
-                className="w-full h-10 rounded-xl font-semibold text-sm gap-2 bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white"
+                className="w-full h-11 rounded-xl font-bold text-sm gap-2 bg-gradient-to-r from-amber-600 via-emerald-600 to-emerald-500 hover:from-amber-500 hover:to-emerald-400 text-white shadow-lg shadow-amber-600/15"
                 disabled={loading || !passcode.trim()}
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
-                {loading ? "Verifying PIN..." : "Verify & Unlock Job Card"}
+                {loading ? "Verifying PIN..." : "Unlock Job Card"}
               </Button>
             </form>
           )}

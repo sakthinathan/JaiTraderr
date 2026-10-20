@@ -78,7 +78,7 @@ export default function ProfileSettingsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 max-w-lg p-0 overflow-hidden shadow-2xl">
+      <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 sm:max-w-2xl lg:max-w-3xl w-full p-0 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
         <DialogTitle className="sr-only">User Profile and System Settings</DialogTitle>
         {/* Top Header Banner */}
         <div className="relative p-6 bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 border-b border-slate-850">

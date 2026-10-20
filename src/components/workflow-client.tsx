@@ -294,9 +294,9 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
 
       {/* Dialog: Change Status Confirmation (Visual Shelf Mapping) */}
       <Dialog open={!!statusDialogJc} onOpenChange={() => setStatusDialogJc(null)}>
-        <DialogContent className={`border-slate-800 bg-slate-900 text-slate-100 transition-all duration-300 ${targetStatus === "READY_FOR_DELIVERY" ? "max-w-md" : "max-w-sm"}`}>
-          <DialogHeader>
-            <DialogTitle className="text-white text-base">Update Order Stage</DialogTitle>
+        <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 sm:max-w-xl lg:max-w-2xl w-full p-6 sm:p-7 shadow-2xl transition-all duration-300">
+          <DialogHeader className="border-b border-slate-800 pb-3">
+            <DialogTitle className="text-white text-base sm:text-lg font-bold">Update Order Stage</DialogTitle>
             <DialogDescription className="text-slate-400 text-xs">
               Confirm moving job card <span className="font-semibold text-white">{statusDialogJc?.job_card_number}</span> to status **{targetStatus}**.
             </DialogDescription>
@@ -487,14 +487,16 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
 
       {/* Dialog: Order Inspect details & Transition History timeline */}
       <Dialog open={!!selectedJc} onOpenChange={() => setSelectedJc(null)}>
-        <DialogContent className="border-slate-800 bg-slate-900 text-slate-100 max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-white flex items-center gap-2">
+        <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 sm:max-w-2xl lg:max-w-3xl w-full p-6 sm:p-7 shadow-2xl max-h-[85vh] flex flex-col">
+          <DialogHeader className="border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2.5">
               <ClipboardList className="w-5 h-5 text-indigo-400" />
-              Order Operations Log
-            </DialogTitle>
+              <DialogTitle className="text-white text-base sm:text-lg font-bold">
+                Order Operations & Lifecycle History
+              </DialogTitle>
+            </div>
             <DialogDescription className="text-slate-400 text-xs">
-              History tracking for Job Card {selectedJc?.job_card_number}
+              Complete audit log and transition timestamps for Job Card {selectedJc?.job_card_number}
             </DialogDescription>
           </DialogHeader>
 

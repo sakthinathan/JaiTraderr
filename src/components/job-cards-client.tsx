@@ -994,155 +994,283 @@ export default function JobCardsClient({
         </div>
       </div>
 
-      {/* Dialog: Job Card Detailed Viewer */}
+      {/* Dialog: Job Card Detailed Viewer (Enlarged & High-Visibility) */}
       <Dialog open={!!detailedJc} onOpenChange={(open) => { if (!open) setDetailedJc(null); }}>
-        <DialogContent className="border-slate-800 bg-slate-900 text-slate-100 max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="text-white flex items-center justify-between pr-6">
-              <div className="flex items-center gap-2 min-w-0">
-                <ClipboardList className="w-5 h-5 text-indigo-400 shrink-0" />
-                <span className="truncate text-base font-bold">Job Card Summary</span>
+        <DialogContent className="border-slate-800 bg-slate-950 text-slate-100 sm:max-w-3xl lg:max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] flex flex-col shadow-2xl">
+          <DialogHeader className="border-b border-slate-800 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pr-6">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                  <ClipboardList className="w-5 h-5 text-indigo-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <DialogTitle className="text-white text-lg sm:text-xl font-extrabold tracking-tight">
+                      Job Card Summary
+                    </DialogTitle>
+                    <span className="font-mono text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-md">
+                      {detailedJc?.job_card_number}
+                    </span>
+                  </div>
+                  <DialogDescription className="text-slate-400 text-xs mt-0.5">
+                    Complete invoice breakdown, order items checklist, and lifecycle status
+                  </DialogDescription>
+                </div>
               </div>
-              {detailedJc?.is_locked && (
-                <span className="text-[10px] bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shrink-0">
-                  Locked
-                </span>
-              )}
-            </DialogTitle>
-            <DialogDescription className="text-slate-400 text-xs">
-              Full transaction receipt and service tracking logic for {detailedJc?.job_card_number}
-            </DialogDescription>
+              <div className="flex items-center gap-2 shrink-0">
+                {detailedJc?.is_locked ? (
+                  <span className="inline-flex items-center gap-1.5 text-xs bg-rose-500/15 text-rose-400 border border-rose-500/30 px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-sm shadow-rose-500/10">
+                    <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+                    Locked for Staff
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    Editable
+                  </span>
+                )}
+              </div>
+            </div>
           </DialogHeader>
 
           {detailedJc && (
-            <div className="space-y-5 py-2 max-h-[450px] overflow-y-auto pr-1">
-
-              {/* Meta information */}
-              <div className="grid grid-cols-2 gap-4 text-xs bg-slate-950/40 p-4 rounded-xl border border-slate-850">
-                <div>
-                  <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Customer</p>
-                  <p className="text-slate-200 mt-0.5 font-bold text-sm">{detailedJc.customer_name || "Guest Customer"}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Mobile</p>
-                  <p className="text-slate-200 mt-0.5 font-mono">{detailedJc.customer_mobile || "N/A"}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Expected Delivery</p>
-                  <p className="text-slate-200 mt-0.5 font-semibold">
-                    {detailedJc.expected_delivery_date ? detailedJc.expected_delivery_date.split('T')[0].split('-').reverse().join('/') : "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Shelf Location</p>
-                  <p className="text-slate-200 mt-0.5 font-semibold uppercase">{detailedJc.shelf_location || "Not assigned"}</p>
-                </div>
-                <div className="col-span-2">
-                  <p className="text-slate-500 font-bold uppercase tracking-wider text-[9px]">Staff Remarks</p>
-                  <p className="text-slate-300 mt-0.5 italic">{detailedJc.remarks || "No remarks entered."}</p>
-                </div>
-
-                {/* Overall counts metrics */}
-                <div className="col-span-2 grid grid-cols-3 gap-2.5 pt-2.5 border-t border-slate-900/60 mt-1">
-                  <div>
-                    <p className="text-slate-500 font-bold uppercase tracking-wider text-[8px]">Overall Weight</p>
-                    <p className="text-slate-200 font-mono mt-0.5 font-bold">{detailedJc.total_weight_kg ? `${detailedJc.total_weight_kg} Kg` : "0 Kg"}</p>
+            <div className="flex-1 overflow-y-auto pr-1 py-4 space-y-6 max-h-[calc(90vh-170px)]">
+              {/* Lock Alert Banner if locked */}
+              {detailedJc.is_locked && (
+                <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-transparent border border-amber-500/25 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 text-xs text-amber-200">
+                    <Zap className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
+                    <span>
+                      <strong>Job Card is Locked:</strong> Pricing and clothes items are protected from unauthorized staff alterations. Use Admin PIN to unlock.
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-slate-500 font-bold uppercase tracking-wider text-[8px]">Overall Pieces</p>
-                    <p className="text-slate-200 mt-0.5 font-bold">{detailedJc.total_pcs ? `${detailedJc.total_pcs} Pcs` : "0 Pcs"}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-500 font-bold uppercase tracking-wider text-[8px]">Overall Bags</p>
-                    <p className="text-slate-200 mt-0.5 font-bold">{detailedJc.total_bags ? `${detailedJc.total_bags} Bags` : "0 Bags"}</p>
-                  </div>
+                  <Button
+                    onClick={() => setAdminUnlockModalOpen(true)}
+                    size="xs"
+                    className="bg-amber-600 hover:bg-amber-500 text-white font-bold shrink-0 text-xs gap-1 shadow-md"
+                  >
+                    <Zap className="w-3 h-3" />
+                    Unlock
+                  </Button>
                 </div>
-              </div>
+              )}
 
-              {/* Items details table */}
-              <div className="space-y-4">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Services & Items Checklist</p>
+              {/* Two Column Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Column: Customer Details & Items Checklist (7 cols) */}
+                <div className="lg:col-span-7 space-y-5">
+                  {/* Customer Information Card */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+                      <User className="w-3.5 h-3.5" />
+                      Customer & Fulfillment Info
+                    </h4>
 
-                {loadingDetails ? (
-                  <p className="text-xs text-slate-500 py-3">Loading items checklist...</p>
-                ) : detailedJc.services && detailedJc.services.length > 0 ? (
-                  <div className="space-y-3">
-                    {detailedJc.services.map((svc) => (
-                      <div key={svc.id} className="p-3 bg-slate-950/20 rounded-xl border border-slate-900 space-y-2">
-                        <p className="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">{svc.service_name_snapshot}</p>
-                        <div className="divide-y divide-slate-900/60">
-                          {svc.items?.map((item) => (
-                            <div key={item.id} className="py-2 flex justify-between text-xs items-center">
-                              <div>
-                                <p className="font-semibold text-slate-250">{item.item_name_snapshot}</p>
-                                {item.remarks && <p className="text-[10px] text-slate-500 italic mt-0.5">&quot;{item.remarks}&quot;</p>}
-                              </div>
-                              <span className="font-mono text-slate-300 text-right">
-                                {item.quantity} {item.unit_id_snapshot} × ₹{item.rate_snapshot} = <span className="font-bold text-white">₹{item.amount}</span>
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                    <div className="grid grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Customer Name</p>
+                        <p className="text-white font-bold text-sm mt-0.5">{detailedJc.customer_name || "Guest Customer"}</p>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-xs text-slate-500 py-3">No items logged in this card.</p>
-                )}
-              </div>
+                      <div>
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Contact Number</p>
+                        <p className="text-slate-200 font-mono text-xs mt-0.5 font-semibold">{detailedJc.customer_mobile || "N/A"}</p>
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Expected Delivery</p>
+                        <p className="text-slate-200 font-semibold mt-0.5">
+                          {detailedJc.expected_delivery_date
+                            ? detailedJc.expected_delivery_date.split("T")[0].split("-").reverse().join("/")
+                            : "Standard timeline"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Shelf Allocation</p>
+                        <p className="text-slate-200 font-semibold uppercase mt-0.5">
+                          {detailedJc.shelf_location ? (
+                            <span className="font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold">
+                              Rack {detailedJc.shelf_location}
+                            </span>
+                          ) : (
+                            <span className="text-slate-500">Unassigned</span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
 
-              {/* Ledger/Financials Summary */}
-              <div className="border-t border-slate-900 pt-4 space-y-2 text-xs bg-slate-950/20 p-3.5 rounded-xl border border-slate-900">
-                <div className="flex justify-between text-slate-400">
-                  <span>Subtotal:</span>
-                  <span className="font-mono">₹{detailedJc.subtotal.toFixed(2)}</span>
-                </div>
-                {detailedJc.discount > 0 && (
-                  <div className="flex justify-between text-slate-400">
-                    <span>Discount:</span>
-                    <span className="font-mono text-rose-400">- ₹{detailedJc.discount.toFixed(2)}</span>
+                    {detailedJc.remarks && (
+                      <div className="pt-3 border-t border-slate-800/60">
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Special Instructions</p>
+                        <p className="text-slate-300 text-xs italic mt-0.5">&quot;{detailedJc.remarks}&quot;</p>
+                      </div>
+                    )}
+
+                    {/* Quick Metric Badges */}
+                    <div className="grid grid-cols-3 gap-3 pt-3 border-t border-slate-800/60">
+                      <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
+                        <p className="text-[10px] text-slate-400 uppercase font-bold">Total Weight</p>
+                        <p className="text-sm font-extrabold text-white mt-0.5 font-mono">
+                          {detailedJc.total_weight_kg ? `${detailedJc.total_weight_kg} Kg` : "0 Kg"}
+                        </p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
+                        <p className="text-[10px] text-slate-400 uppercase font-bold">Total Pieces</p>
+                        <p className="text-sm font-extrabold text-white mt-0.5 font-mono">
+                          {detailedJc.total_pcs ? `${detailedJc.total_pcs} Pcs` : "0 Pcs"}
+                        </p>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
+                        <p className="text-[10px] text-slate-400 uppercase font-bold">Laundry Bags</p>
+                        <p className="text-sm font-extrabold text-white mt-0.5 font-mono">
+                          {detailedJc.total_bags ? `${detailedJc.total_bags} Bags` : "0 Bags"}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                )}
-                {detailedJc.tax_amount > 0 && (
-                  <div className="flex justify-between text-slate-400">
-                    <span>Tax:</span>
-                    <span className="font-mono text-emerald-400">+ ₹{detailedJc.tax_amount.toFixed(2)}</span>
+
+                  {/* Services & Items Checklist */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
+                      <span>Services & Clothes Checklist</span>
+                      {detailedJc.services && (
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          {detailedJc.services.length} Service Categories
+                        </span>
+                      )}
+                    </h4>
+
+                    {loadingDetails ? (
+                      <div className="p-6 text-center text-xs text-slate-400 rounded-xl bg-slate-900/40 border border-slate-800">
+                        Loading detailed checklist items...
+                      </div>
+                    ) : detailedJc.services && detailedJc.services.length > 0 ? (
+                      <div className="space-y-3">
+                        {detailedJc.services.map((svc) => (
+                          <div key={svc.id} className="p-4 bg-slate-900/60 rounded-xl border border-slate-800/80 space-y-2.5">
+                            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                              <p className="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">
+                                {svc.service_name_snapshot}
+                              </p>
+                              {svc.items && (
+                                <span className="text-[10px] font-mono text-slate-400">
+                                  {svc.items.length} {svc.items.length === 1 ? "Item" : "Items"}
+                                </span>
+                              )}
+                            </div>
+                            <div className="divide-y divide-slate-800/50">
+                              {svc.items?.map((item) => (
+                                <div key={item.id} className="py-2.5 flex justify-between text-xs items-center">
+                                  <div>
+                                    <p className="font-semibold text-slate-200">{item.item_name_snapshot}</p>
+                                    {item.remarks && (
+                                      <p className="text-[10px] text-slate-400 italic mt-0.5">&quot;{item.remarks}&quot;</p>
+                                    )}
+                                  </div>
+                                  <div className="text-right">
+                                    <span className="font-mono text-slate-300">
+                                      {item.quantity} {item.unit_id_snapshot} × ₹{item.rate_snapshot} ={" "}
+                                      <span className="font-bold text-white">₹{item.amount}</span>
+                                    </span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-slate-400 py-3 text-center rounded-xl bg-slate-900/30 border border-slate-800">
+                        No individual items catalogued for this job card.
+                      </p>
+                    )}
                   </div>
-                )}
-                <div className="flex justify-between text-sm font-bold text-slate-950 border-t border-slate-900 pt-2.5">
-                  <span>Grand Total:</span>
-                  <span className="font-mono text-indigo-600">₹{detailedJc.grand_total.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-slate-400">
-                  <span>Advance Paid:</span>
-                  <span className="font-mono text-emerald-400">₹{detailedJc.advance_paid.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-sm font-bold border-t border-dashed border-slate-900 pt-2 text-slate-200">
-                  <span>Balance Due:</span>
-                  <span className="font-mono text-rose-400">₹{detailedJc.balance_due.toFixed(2)}</span>
+
+                {/* Right Column: Ledger, Financials & Quick Status (5 cols) */}
+                <div className="lg:col-span-5 space-y-5">
+                  {/* Ledger Breakdown Card */}
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 shadow-xl space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center justify-between">
+                      <span>Invoice & Ledger</span>
+                      <span className="text-[10px] font-mono text-slate-400">INR (₹)</span>
+                    </h4>
+
+                    <div className="space-y-2.5 text-xs">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Items Subtotal:</span>
+                        <span className="font-mono text-slate-200 font-semibold">₹{detailedJc.subtotal.toFixed(2)}</span>
+                      </div>
+                      {detailedJc.discount > 0 && (
+                        <div className="flex justify-between text-slate-400">
+                          <span>Special Discount:</span>
+                          <span className="font-mono text-rose-400 font-semibold">- ₹{detailedJc.discount.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {detailedJc.tax_amount > 0 && (
+                        <div className="flex justify-between text-slate-400">
+                          <span>GST / Taxes:</span>
+                          <span className="font-mono text-emerald-400 font-semibold">+ ₹{detailedJc.tax_amount.toFixed(2)}</span>
+                        </div>
+                      )}
+
+                      <div className="flex justify-between items-center text-base font-extrabold text-white border-t border-slate-800 pt-3">
+                        <span className="tracking-tight">Grand Total:</span>
+                        <span className="font-mono text-xl text-white font-extrabold tracking-tight">
+                          ₹{detailedJc.grand_total.toFixed(2)}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between text-slate-400 pt-1">
+                        <span>Advance Deposited:</span>
+                        <span className="font-mono text-emerald-400 font-bold">₹{detailedJc.advance_paid.toFixed(2)}</span>
+                      </div>
+
+                      <div className="flex justify-between items-center text-sm font-bold border-t border-dashed border-slate-800 pt-3">
+                        <span className="text-slate-300">Balance Due:</span>
+                        {detailedJc.balance_due > 0 ? (
+                          <span className="font-mono text-lg font-extrabold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded border border-rose-500/20">
+                            ₹{detailedJc.balance_due.toFixed(2)}
+                          </span>
+                        ) : (
+                          <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20 uppercase tracking-wider">
+                            ✓ Fully Settled
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Operational Status Preview */}
+                  <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 space-y-2">
+                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Current Workflow Stage</p>
+                    <div className="flex items-center gap-2">
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border ${getStatusColor(detailedJc.status)}`}>
+                        <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+                        {detailedJc.status.replace(/_/g, " ")}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
             </div>
           )}
 
-          <DialogFooter className="pt-2 border-t border-slate-900 flex sm:justify-between gap-2">
+          <DialogFooter className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:justify-between gap-3">
             {detailedJc && (
-              <>
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 {detailedJc.is_locked ? (
                   <Button
                     onClick={() => setAdminUnlockModalOpen(true)}
-                    className="bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs shadow-lg shadow-amber-600/20"
+                    className="bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white h-11 px-5 gap-2 font-bold text-xs shadow-lg shadow-amber-600/20 flex-1 sm:flex-none"
                   >
                     <Zap className="w-4 h-4" />
-                    Unlock Card (Admin PIN)
+                    Unlock with Admin PIN
                   </Button>
                 ) : (
                   <Button
                     onClick={() => handleEditJobCard(detailedJc)}
-                    className="bg-indigo-600 hover:bg-indigo-500 text-white flex-1 h-10 gap-1.5 font-bold text-xs"
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white h-11 px-5 gap-2 font-bold text-xs flex-1 sm:flex-none"
                   >
-                    <PlusCircle className="w-3.5 h-3.5" />
+                    <PlusCircle className="w-4 h-4" />
                     Edit Job Card
                   </Button>
                 )}
@@ -1150,18 +1278,17 @@ export default function JobCardsClient({
                   href={buildWhatsAppLink(detailedJc)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-lg font-medium text-xs transition-all duration-200 h-10 px-4 bg-emerald-600 hover:bg-emerald-500 text-white gap-2 active:scale-98 flex-1"
+                  className="inline-flex items-center justify-center rounded-xl font-bold text-xs transition-all duration-200 h-11 px-5 bg-emerald-600 hover:bg-emerald-500 text-white gap-2 active:scale-98 flex-1 sm:flex-none shadow-lg shadow-emerald-600/10"
                 >
                   <Share2 className="w-4 h-4" />
                   WhatsApp Receipt
                 </a>
-              </>
+              </div>
             )}
             <Button
-              onClick={() => {
-                setDetailedJc(null);
-              }}
-              className="bg-slate-900 hover:bg-slate-850 text-slate-300 flex-1 h-10 text-xs"
+              onClick={() => setDetailedJc(null)}
+              variant="outline"
+              className="border-slate-800 text-slate-300 hover:bg-slate-800 h-11 px-6 text-xs w-full sm:w-auto"
             >
               Close
             </Button>
