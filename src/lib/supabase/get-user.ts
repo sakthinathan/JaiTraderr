@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cache } from "react";
-import { cookies } from "next/headers";
-import { createClient } from "./server";
+import { createClient } from "./client";
 
 export interface UserProfile {
   id: string;
@@ -12,10 +10,19 @@ export interface UserProfile {
   branchName: string;
 }
 
-export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
-  const cookieStore = await cookies();
-  const mockToken = cookieStore.get("sb-mock-token")?.value;
+export async function getCurrentUser(): Promise<UserProfile | null> {
   const isDemoAllowed = process.env.NODE_ENV !== "production" || process.env.ALLOW_DEMO_MODE === "true";
+
+  let mockToken: string | null = null;
+  if (typeof window !== "undefined") {
+    mockToken =
+      localStorage.getItem("sb-mock-token") ||
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("sb-mock-token="))
+        ?.split("=")[1] ||
+      null;
+  }
 
   // 1. Check for mock session first (only in non-production or explicit demo mode)
   if (isDemoAllowed && mockToken) {
@@ -27,7 +34,7 @@ export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
     };
 
     const details = roleMapping[mockToken] || { role: "billing_staff", name: "Demo User", roleName: "Staff User" };
-    
+
     return {
       id: `mock-id-${mockToken}`,
       name: details.name,
@@ -40,9 +47,9 @@ export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
 
   // 2. Real Supabase auth fallback
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    
+
     if (!user) return null;
 
     // Fetch profile and role from db
@@ -71,7 +78,7 @@ export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
 
     const rolesData = (profile as any).user_roles || [];
     const mainRole = rolesData[0]?.role_id || "billing_staff";
-    
+
     const roleNames: Record<string, string> = {
       admin: "System Administrator",
       billing_staff: "Billing Officer",
@@ -91,4 +98,4 @@ export const getCurrentUser = cache(async (): Promise<UserProfile | null> => {
     console.error("Error fetching current user session:", error);
     return null;
   }
-});
+}

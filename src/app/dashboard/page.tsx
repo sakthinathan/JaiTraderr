@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { 
   PlusCircle, 
@@ -13,28 +15,65 @@ import {
   Zap, 
   Sliders, 
   IndianRupee, 
-  Search
+  Search,
+  Loader2
 } from "lucide-react";
-import { getCurrentUser } from "@/lib/supabase/get-user";
+import { getCurrentUser, type UserProfile } from "@/lib/supabase/get-user";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { getJobCardsList } from "@/app/actions/job-cards";
-import { getAllPayments } from "@/app/actions/payments";
-import { getExpensesList } from "@/app/actions/expenses";
+import { getJobCardsList, type JobCard } from "@/app/actions/job-cards";
+import { getAllPayments, type Payment } from "@/app/actions/payments";
+import { getExpensesList, type Expense } from "@/app/actions/expenses";
 import { getGreeting } from "@/lib/formatters";
 import { getStatusColor } from "@/lib/status-helpers";
 
-export default async function DashboardPage() {
-  const user = await getCurrentUser();
+export default function DashboardPage() {
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [jobCards, setJobCards] = useState<JobCard[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadData() {
+      try {
+        const [u, jcs, pmts, exps] = await Promise.all([
+          getCurrentUser(),
+          getJobCardsList().catch(() => []),
+          getAllPayments().catch(() => []),
+          getExpensesList().catch(() => [])
+        ]);
+
+        if (!mounted) return;
+        setUser(u);
+        setJobCards(jcs);
+        setPayments(pmts);
+        setExpenses(exps);
+      } catch (err) {
+        console.error("Dashboard failed to load live metrics:", err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    loadData();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-3">
+        <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+        <p className="text-xs text-slate-400">Loading operations dashboard...</p>
+      </div>
+    );
+  }
 
   if (!user) return null;
-
-  // Retrieve live data from Supabase
-  const [jobCards, payments, expenses] = await Promise.all([
-    getJobCardsList(),
-    getAllPayments(),
-    getExpensesList()
-  ]);
 
   const todayStr = new Date().toISOString().split("T")[0];
   const todayJcs = jobCards.filter(jc => jc.created_at?.split("T")[0] === todayStr);
@@ -47,7 +86,7 @@ export default async function DashboardPage() {
     cashCollected: todayPayments.reduce((sum, p) => sum + p.amount, 0),
     pendingBalance: jobCards.filter(j => j.status !== "DELIVERED").reduce((sum, jc) => sum + jc.balance_due, 0),
     expenses: todayExpenses.reduce((sum, e) => sum + e.amount, 0),
-    operatingResult: 0, // Computed below
+    operatingResult: 0,
     washingCount: jobCards.filter(jc => jc.status === "WASHING").length,
     ironingCount: jobCards.filter(jc => jc.status === "IRONING").length,
     readyCount: jobCards.filter(jc => jc.status === "READY_FOR_DELIVERY").length,
@@ -70,7 +109,6 @@ export default async function DashboardPage() {
     balance: jc.balance_due,
     shelf: jc.shelf_location || null
   }));
-
 
   return (
     <div className="space-y-4 md:space-y-5 animate-fade-in pb-4">
@@ -127,7 +165,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Main Grid View */}
-      {/* 1. Quick Financial Cards (Admin-centric but displayed summaries for everyone) */}
+      {/* 1. Quick Financial Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md hover:border-slate-800 transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">

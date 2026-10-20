@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server";
-
-import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 import { getCurrentUser } from "@/lib/supabase/get-user";
 import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
 import { hashOtp, sendSupervisorOtp } from "@/utils/sms";
-import crypto from "crypto";
+
+const revalidatePath = (_path: string) => {};
 
 
 export interface JobCardItem {
@@ -597,8 +595,8 @@ export async function requestJobCardUnlockOtp(jobCardId: string): Promise<{ succ
       return { success: false, error: "Job card is already unlocked." };
     }
 
-    // 2. Generate cryptographically secure 6-digit numeric OTP
-    const rawOtp = crypto.randomInt(100000, 999999).toString();
+    // 2. Generate 6-digit numeric OTP
+    const rawOtp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpHash = hashOtp(rawOtp);
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 

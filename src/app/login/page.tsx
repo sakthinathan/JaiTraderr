@@ -50,13 +50,12 @@ export default function LoginPage() {
       if (isPlaceholderEnv) {
         // Enable mock demo login for evaluation purposes
         setSuccess(true);
-        // Set a mock session cookie
         const role = data.email.split("@")[0] || "billing_staff";
+        localStorage.setItem("sb-mock-token", role);
         document.cookie = `sb-mock-token=${role}; path=/; max-age=86400;`;
         
         setTimeout(() => {
           router.push("/dashboard");
-          router.refresh();
         }, 1200);
         return;
       }
@@ -71,10 +70,10 @@ export default function LoginPage() {
       if (signInError) {
         setError(signInError.message);
       } else {
+        localStorage.removeItem("sb-mock-token");
         setSuccess(true);
         setTimeout(() => {
           router.push("/dashboard");
-          router.refresh();
         }, 1000);
       }
     } catch (err: any) {

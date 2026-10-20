@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server";
-
-import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 import { isPlaceholderMode as isPlaceholder } from "@/lib/supabase/env-helper";
+
+const revalidatePath = (_path: string) => {};
 
 export interface Customer {
   id: string;

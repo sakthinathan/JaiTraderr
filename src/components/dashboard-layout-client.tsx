@@ -40,8 +40,9 @@ export default function DashboardLayoutClient({ user, children }: DashboardLayou
   const [profileModalTab, setProfileModalTab] = useState<"profile" | "settings">("profile");
 
   const handleLogout = async () => {
-    // Clear mock token cookie
+    // Clear mock token cookie and localStorage
     document.cookie = "sb-mock-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    localStorage.removeItem("sb-mock-token");
     
     // Clear Supabase session if needed
     try {
