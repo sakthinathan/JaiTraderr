@@ -136,9 +136,9 @@ export default function DashboardPage() {
               </Link>
               <Link
                 href="/dashboard/customers"
-                className={buttonVariants({ variant: "outline", size: "sm", className: "border-slate-800 text-slate-350 hover:bg-slate-900/10 gap-2 text-xs" })}
+                className={buttonVariants({ variant: "outline", size: "sm", className: "border-slate-300 bg-white text-slate-800 hover:bg-slate-100 gap-2 text-xs font-semibold shadow-sm" })}
               >
-                <PlusCircle className="w-3.5 h-3.5 text-cyan-500" />
+                <PlusCircle className="w-3.5 h-3.5 text-cyan-600" />
                 Register Customer
               </Link>
             </>
@@ -223,29 +223,29 @@ export default function DashboardPage() {
       {/* 2. Operations Workflow Distribution */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl border border-slate-900 bg-slate-950/10">
         <div className="text-center p-3 border-r border-slate-900 last:border-0">
-          <p className="text-slate-500 text-xs font-medium uppercase">Washing</p>
-          <div className="text-3xl font-extrabold text-indigo-400 mt-1.5 flex items-center justify-center gap-1.5">
+          <p className="text-slate-700 text-xs font-bold uppercase tracking-wider">Washing</p>
+          <div className="text-3xl font-extrabold text-indigo-600 mt-1.5 flex items-center justify-center gap-1.5">
             <Shirt className="w-5 h-5" />
             {stats.washingCount}
           </div>
         </div>
         <div className="text-center p-3 border-r border-slate-900 last:border-0">
-          <p className="text-slate-500 text-xs font-medium uppercase">Ironing</p>
-          <div className="text-3xl font-extrabold text-amber-400 mt-1.5 flex items-center justify-center gap-1.5">
+          <p className="text-slate-700 text-xs font-bold uppercase tracking-wider">Ironing</p>
+          <div className="text-3xl font-extrabold text-amber-600 mt-1.5 flex items-center justify-center gap-1.5">
             <Zap className="w-5 h-5" />
             {stats.ironingCount}
           </div>
         </div>
         <div className="text-center p-3 border-r border-slate-900 last:border-0">
-          <p className="text-slate-500 text-xs font-medium uppercase">Ready for Pickup</p>
-          <div className="text-3xl font-extrabold text-emerald-400 mt-1.5 flex items-center justify-center gap-1.5">
+          <p className="text-slate-700 text-xs font-bold uppercase tracking-wider">Ready for Pickup</p>
+          <div className="text-3xl font-extrabold text-emerald-600 mt-1.5 flex items-center justify-center gap-1.5">
             <Package className="w-5 h-5" />
             {stats.readyCount}
           </div>
         </div>
         <div className="text-center p-3">
-          <p className="text-slate-500 text-xs font-medium uppercase">Delivered Today</p>
-          <div className="text-3xl font-extrabold text-slate-400 mt-1.5 flex items-center justify-center gap-1.5">
+          <p className="text-slate-700 text-xs font-bold uppercase tracking-wider">Delivered Today</p>
+          <div className="text-3xl font-extrabold text-teal-700 mt-1.5 flex items-center justify-center gap-1.5">
             <CheckCircle2 className="w-5 h-5" />
             {stats.deliveredCount}
           </div>
@@ -273,7 +273,7 @@ export default function DashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-900 text-slate-500 font-semibold text-xs uppercase bg-slate-950/30">
+                  <tr className="border-b border-slate-900 text-slate-700 font-bold text-xs uppercase bg-slate-100/60">
                     <th className="px-6 py-3">Job ID</th>
                     <th className="px-6 py-3">Customer</th>
                     <th className="px-6 py-3">Workflow State</th>
@@ -283,32 +283,32 @@ export default function DashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-900/60">
                   {recentOrders.map((order) => (
-                    <tr key={order.id} className="hover:bg-slate-900/20 text-slate-300 transition">
-                      <td className="px-6 py-4.5 font-mono text-xs font-semibold text-white">{order.id}</td>
+                    <tr key={order.id} className="hover:bg-slate-100/50 text-slate-900 transition">
+                      <td className="px-6 py-4.5 font-mono text-xs font-bold text-indigo-700">{order.id}</td>
                       <td className="px-6 py-4.5">
-                        <p className="font-semibold text-slate-200">{order.customer}</p>
-                        <p className="text-[10px] text-slate-500">{order.mobile} • {order.items}</p>
+                        <p className="font-bold text-slate-900">{order.customer}</p>
+                        <p className="text-[10px] text-slate-600 font-medium">{order.mobile} • {order.items}</p>
                       </td>
                       <td className="px-6 py-4.5">
                         <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-semibold border ${getStatusColor(order.status)}`}>
                           <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
                           {order.status.replace(/_/g, " ")}
-                          {order.shelf && <span className="text-slate-500 font-medium ml-1">[{order.shelf}]</span>}
+                          {order.shelf && <span className="text-slate-600 font-bold ml-1">[{order.shelf}]</span>}
                         </span>
                       </td>
-                      <td className="px-6 py-4.5 text-right font-medium text-white">₹{order.amount}</td>
+                      <td className="px-6 py-4.5 text-right font-extrabold text-slate-900">₹{order.amount}</td>
                       <td className="px-6 py-4.5 text-right">
                         {order.balance > 0 ? (
-                          <span className="text-rose-400 font-semibold text-xs">₹{order.balance}</span>
+                          <span className="text-rose-600 font-bold text-xs">₹{order.balance}</span>
                         ) : (
-                          <span className="text-emerald-400 text-xs font-medium">Paid</span>
+                          <span className="text-emerald-700 text-xs font-bold">Paid</span>
                         )}
                       </td>
                     </tr>
                   ))}
                   {recentOrders.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-12 text-center text-slate-500 text-xs">
+                      <td colSpan={5} className="py-12 text-center text-slate-600 font-medium text-xs">
                         No active job card orders currently in process.
                       </td>
                     </tr>
@@ -330,22 +330,22 @@ export default function DashboardPage() {
             <CardContent className="space-y-3">
               <Link 
                 href="/dashboard/job-cards" 
-                className={buttonVariants({ variant: "outline", className: "w-full h-auto py-2.5 justify-start border-slate-900 text-slate-300 hover:bg-slate-900 gap-3" })}
+                className={buttonVariants({ variant: "outline", className: "w-full h-auto py-2.5 justify-start border-slate-300 bg-white hover:bg-slate-100 text-slate-800 gap-3 shadow-sm" })}
               >
-                <FolderPlus className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
+                <FolderPlus className="w-4.5 h-4.5 text-indigo-600 shrink-0" />
                 <div className="text-left">
-                  <p className="text-xs font-semibold text-slate-200">Generate Job Card</p>
-                  <p className="text-[9px] text-slate-500">Record customer clothes & advance payment</p>
+                  <p className="text-xs font-bold text-slate-900">Generate Job Card</p>
+                  <p className="text-[10px] text-slate-600 font-medium">Record customer clothes & advance payment</p>
                 </div>
               </Link>
               <Link 
                 href="/dashboard/workflow" 
-                className={buttonVariants({ variant: "outline", className: "w-full h-auto py-2.5 justify-start border-slate-900 text-slate-300 hover:bg-slate-900 gap-3" })}
+                className={buttonVariants({ variant: "outline", className: "w-full h-auto py-2.5 justify-start border-slate-300 bg-white hover:bg-slate-100 text-slate-800 gap-3 shadow-sm" })}
               >
-                <Package className="w-4.5 h-4.5 text-amber-400 shrink-0" />
+                <Package className="w-4.5 h-4.5 text-amber-600 shrink-0" />
                 <div className="text-left">
-                  <p className="text-xs font-semibold text-slate-200">Track Order Pipeline</p>
-                  <p className="text-[9px] text-slate-500">Washing, ironing, and shelf updates</p>
+                  <p className="text-xs font-bold text-slate-900">Track Order Pipeline</p>
+                  <p className="text-[10px] text-slate-600 font-medium">Washing, ironing, and shelf updates</p>
                 </div>
               </Link>
               <Link 

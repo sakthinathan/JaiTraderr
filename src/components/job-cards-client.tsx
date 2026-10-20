@@ -473,7 +473,7 @@ export default function JobCardsClient({
                         placeholder="Type customer mobile number or name..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-9 bg-slate-950/60 border-slate-900 text-white placeholder-slate-700 h-10"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium h-10 shadow-sm"
                       />
                     </div>
                   </div>
@@ -692,7 +692,7 @@ export default function JobCardsClient({
                     <Button
                       variant="ghost"
                       onClick={() => setStep(1)}
-                      className="text-slate-400 hover:text-white gap-1.5"
+                      className="text-slate-700 hover:text-slate-900 hover:bg-slate-100 gap-1.5 font-semibold"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Back
@@ -872,7 +872,7 @@ export default function JobCardsClient({
                     <Button
                       variant="ghost"
                       onClick={() => setStep(2)}
-                      className="text-slate-400 hover:text-white gap-1.5"
+                      className="text-slate-700 hover:text-slate-900 hover:bg-slate-100 gap-1.5 font-semibold"
                       disabled={isPending}
                     >
                       <ArrowLeft className="w-4 h-4" />
@@ -884,7 +884,7 @@ export default function JobCardsClient({
                         variant="secondary"
                         onClick={() => handleSaveJobCard(false)}
                         disabled={isPending}
-                        className="bg-slate-900 hover:bg-slate-850 text-slate-200 border-slate-800"
+                        className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold shadow-sm"
                       >
                         Save Draft
                       </Button>
@@ -924,7 +924,7 @@ export default function JobCardsClient({
                 <select
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value as "booking" | "delivery")}
-                  className="h-8 px-2 rounded bg-slate-950 border border-slate-800 text-[10px] text-white focus:outline-none"
+                  className="h-8 px-2 rounded bg-white border border-slate-300 text-[11px] text-slate-900 font-medium focus:outline-none shadow-sm"
                 >
                   <option value="delivery">Delivery Date</option>
                   <option value="booking">Booking Date</option>
@@ -933,7 +933,7 @@ export default function JobCardsClient({
                   type="date"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
-                  className="h-8 text-[11px] bg-slate-950 border-slate-850 text-white font-mono flex-1"
+                  className="h-8 text-[11px] bg-white border-slate-300 text-slate-900 font-mono font-bold flex-1 shadow-sm"
                 />
                 {filterDate && (
                   <Button

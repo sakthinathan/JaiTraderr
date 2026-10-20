@@ -199,7 +199,7 @@ export default function LoginPage() {
         </form>
 
         {/* Footer */}
-        <p className="text-[10px] text-center mt-8 uppercase tracking-wider" style={{ color: '#334155' }}>
+        <p className="text-[10px] text-center mt-8 uppercase tracking-wider" style={{ color: '#64748b' }}>
           Secured access · Operations are logged
         </p>
       </div>

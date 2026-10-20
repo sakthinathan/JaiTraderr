@@ -302,13 +302,13 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
             onClick={() => setActiveTab("pending")}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "pending"
-                ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-rose-50 text-rose-800 border border-rose-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <Clock className="w-3.5 h-3.5 text-rose-400" />
+            <Clock className="w-3.5 h-3.5 text-rose-600" />
             <span>Pending Bills</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-rose-500/20 text-rose-300">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-rose-100 text-rose-800 font-bold">
               {stats.pendingCount}
             </span>
           </button>
@@ -318,13 +318,13 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
             onClick={() => setActiveTab("collected")}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "collected"
-                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <CheckCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Payments Collected (Paid)</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-emerald-100 text-emerald-800 font-bold">
               {stats.collectedCount}
             </span>
           </button>
@@ -334,13 +334,13 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
             onClick={() => setActiveTab("all")}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "all"
-                ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-indigo-50 text-indigo-800 border border-indigo-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <Filter className="w-3.5 h-3.5 text-indigo-400" />
+            <Filter className="w-3.5 h-3.5 text-indigo-600" />
             <span>All Orders</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-indigo-500/20 text-indigo-300">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-indigo-100 text-indigo-800 font-bold">
               {stats.allCount}
             </span>
           </button>
@@ -350,13 +350,13 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
             onClick={() => setActiveTab("ledger")}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "ledger"
-                ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-cyan-50 text-cyan-800 border border-cyan-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <ArrowUpRight className="w-3.5 h-3.5 text-cyan-400" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-cyan-600" />
             <span>Collected Transactions Feed</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-cyan-500/20 text-cyan-300">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-cyan-100 text-cyan-800 font-bold">
               {stats.txCount}
             </span>
           </button>
@@ -373,7 +373,7 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
             }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9 bg-slate-950 border-slate-850 text-xs text-white placeholder-slate-600 rounded-xl"
+            className="pl-9 h-9 bg-white border-slate-300 text-xs text-slate-900 placeholder:text-slate-500 rounded-xl font-medium shadow-sm"
           />
         </div>
       </div>
@@ -633,9 +633,9 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
                     </a>
                     <Button
                       onClick={() => setShowPrintModal(true)}
-                      className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-800 gap-2 h-10 px-5 rounded-xl font-bold text-xs"
+                      className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 gap-2 h-10 px-5 rounded-xl font-bold text-xs shadow-sm"
                     >
-                      <Printer className="w-4 h-4 text-indigo-400" />
+                      <Printer className="w-4 h-4 text-indigo-600" />
                       Print Tax Invoice
                     </Button>
                   </div>
@@ -679,11 +679,11 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
                       <div className="space-y-4 animate-fade-in">
                         <div className="space-y-2">
                           <div className="flex justify-between items-center">
-                            <Label htmlFor="collect" className="text-slate-300 text-xs font-bold">Collect Amount (₹)</Label>
+                            <Label htmlFor="collect" className="text-slate-800 text-xs font-bold">Collect Amount (₹)</Label>
                             <button
                               type="button"
                               onClick={() => setCollectAmount(selectedJc.balance_due)}
-                              className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold underline"
+                              className="text-[10px] text-indigo-600 hover:text-indigo-700 font-bold underline"
                             >
                               Fill Full Balance (₹{selectedJc.balance_due})
                             </button>
@@ -695,19 +695,19 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
                               type="number"
                               value={collectAmount || ""}
                               onChange={(e) => setCollectAmount(Number(e.target.value))}
-                              className="pl-8 bg-slate-950 border-slate-800 text-white font-mono font-bold"
+                              className="pl-8 bg-white border-slate-300 text-slate-900 font-mono font-extrabold text-sm shadow-sm"
                               disabled={isPending}
                             />
                           </div>
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="method" className="text-slate-300 text-xs font-bold">Payment Method</Label>
+                          <Label htmlFor="method" className="text-slate-800 text-xs font-bold">Payment Method</Label>
                           <select
                             id="method"
                             value={paymentMethod}
                             onChange={(e) => setPaymentMethod(e.target.value as any)}
-                            className="w-full h-9 px-3 rounded-xl bg-slate-950 border border-slate-850 text-white text-xs font-medium focus:border-indigo-500 focus:outline-none"
+                            className="w-full h-9 px-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs font-bold focus:border-indigo-600 focus:outline-none shadow-sm"
                             disabled={isPending}
                           >
                             <option value="UPI">UPI / QR Code</option>
@@ -719,13 +719,13 @@ export default function PaymentsClient({ initialJobCards, initialPayments = [] }
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="remarks" className="text-slate-300 text-xs font-bold">Remarks / Transaction Ref</Label>
+                          <Label htmlFor="remarks" className="text-slate-800 text-xs font-bold">Remarks / Transaction Ref</Label>
                           <Input
                             id="remarks"
                             placeholder="e.g. GPay / PhonePe ref or Cash received"
                             value={paymentRemarks}
                             onChange={(e) => setPaymentRemarks(e.target.value)}
-                            className="bg-slate-950 border-slate-850 text-white text-xs h-9 rounded-xl"
+                            className="bg-white border-slate-300 text-slate-900 text-xs h-9 rounded-xl font-medium shadow-sm"
                             disabled={isPending}
                           />
                         </div>

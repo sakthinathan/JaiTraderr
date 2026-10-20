@@ -194,27 +194,46 @@
   color: #033d29 !important;
 }
 
-/* Override input and select field options to avoid white text on white backgrounds */
-main input, 
+/* Override input and select field options to avoid white text on white backgrounds across pages and modals */
+main input:not([type="checkbox"]):not([type="radio"]), 
 main select, 
 main textarea,
 main .bg-slate-950,
 main .bg-slate-950\/60,
-main select option {
+main select option,
+[data-slot="dialog-content"] input:not([type="checkbox"]):not([type="radio"]),
+[data-slot="dialog-content"] select,
+[data-slot="dialog-content"] textarea,
+[data-slot="dialog-content"] select option,
+[data-slot="dialog-content"] .bg-slate-950,
+[data-slot="dialog-content"] .bg-slate-900 {
   background-color: #ffffff !important;
   color: #033d29 !important;
   border-color: #d0e7c5 !important;
 }
 
-main input::placeholder {
-  color: #64748b !important;
-  opacity: 0.8;
+main input::placeholder,
+main textarea::placeholder,
+[data-slot="dialog-content"] input::placeholder,
+[data-slot="dialog-content"] textarea::placeholder {
+  color: #475569 !important;
+  opacity: 0.85;
 }
 
 /* Preserve active and highlighted subtext contrasts */
 main .text-slate-400, 
-main .text-slate-500 {
-  color: #315c45 !important;
+main .text-slate-500,
+[data-slot="dialog-content"] .text-slate-400,
+[data-slot="dialog-content"] .text-slate-500 {
+  color: #2d5a3f !important;
+}
+
+/* Ensure secondary buttons with light slate backgrounds never render invisible white text */
+button.bg-slate-900,
+button.bg-slate-950,
+button[class*="bg-slate-900"],
+button[class*="bg-slate-950"] {
+  color: #033d29 !important;
 }
 
 /* Ensure the calendar dates and selector popovers are dark on light backgrounds */
@@ -296,16 +315,22 @@ aside button:hover {
 /* Globals: Form inputs & Select dropdown popovers contrast fix */
 input.bg-slate-950, 
 select.bg-slate-950, 
-textarea.bg-slate-950 {
+textarea.bg-slate-950,
+input.bg-slate-900, 
+select.bg-slate-900, 
+textarea.bg-slate-900 {
   color: #0f172a !important; /* Force dark text color inside light bg fields */
 }
 
 input.bg-slate-950::placeholder,
-textarea.bg-slate-950::placeholder {
-  color: #64748b !important; /* Force readable slate placeholder */
+textarea.bg-slate-950::placeholder,
+input.bg-slate-900::placeholder,
+textarea.bg-slate-900::placeholder {
+  color: #475569 !important; /* Force readable slate placeholder */
 }
 
-select.bg-slate-950 option {
+select.bg-slate-950 option,
+select.bg-slate-900 option {
   background-color: #ffffff !important; /* Clean white background for dropdown select options */
   color: #0f172a !important; /* Readable dark text inside options list */
 }

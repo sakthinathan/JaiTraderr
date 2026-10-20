@@ -108,8 +108,8 @@ export default function ProfileSettingsModal({
               onClick={() => setTabOverride("profile")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === "profile"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-semibold"
               }`}
             >
               <User className="w-3.5 h-3.5" />
@@ -119,8 +119,8 @@ export default function ProfileSettingsModal({
               onClick={() => setTabOverride("settings")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === "settings"
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-semibold"
               }`}
             >
               <Settings className="w-3.5 h-3.5" />
@@ -233,7 +233,7 @@ export default function ProfileSettingsModal({
                     size="sm"
                     disabled={isSwitchingRole}
                     onClick={() => handleRoleSwitch("admin")}
-                    className={`justify-start text-xs h-9 ${user.role === "admin" ? "bg-indigo-600 text-white" : "border-slate-800 text-slate-300 hover:bg-slate-900"}`}
+                    className={`justify-start text-xs h-9 ${user.role === "admin" ? "bg-indigo-600 text-white font-bold" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-100 font-semibold shadow-sm"}`}
                   >
                     👑 Alex (Admin)
                   </Button>
@@ -242,7 +242,7 @@ export default function ProfileSettingsModal({
                     size="sm"
                     disabled={isSwitchingRole}
                     onClick={() => handleRoleSwitch("billing")}
-                    className={`justify-start text-xs h-9 ${user.role === "billing_staff" ? "bg-indigo-600 text-white" : "border-slate-800 text-slate-300 hover:bg-slate-900"}`}
+                    className={`justify-start text-xs h-9 ${user.role === "billing_staff" ? "bg-indigo-600 text-white font-bold" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-100 font-semibold shadow-sm"}`}
                   >
                     🧾 Brad (Billing)
                   </Button>
@@ -251,7 +251,7 @@ export default function ProfileSettingsModal({
                     size="sm"
                     disabled={isSwitchingRole}
                     onClick={() => handleRoleSwitch("processing")}
-                    className={`justify-start text-xs h-9 ${user.role === "processing_staff" ? "bg-indigo-600 text-white" : "border-slate-800 text-slate-300 hover:bg-slate-900"}`}
+                    className={`justify-start text-xs h-9 ${user.role === "processing_staff" ? "bg-indigo-600 text-white font-bold" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-100 font-semibold shadow-sm"}`}
                   >
                     🧺 Pat (Processing)
                   </Button>
@@ -260,7 +260,7 @@ export default function ProfileSettingsModal({
                     size="sm"
                     disabled={isSwitchingRole}
                     onClick={() => handleRoleSwitch("delivery")}
-                    className={`justify-start text-xs h-9 ${user.role === "delivery_staff" ? "bg-indigo-600 text-white" : "border-slate-800 text-slate-300 hover:bg-slate-900"}`}
+                    className={`justify-start text-xs h-9 ${user.role === "delivery_staff" ? "bg-indigo-600 text-white font-bold" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-100 font-semibold shadow-sm"}`}
                   >
                     🚚 David (Delivery)
                   </Button>

@@ -216,13 +216,13 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-slate-300 text-sm">Full Name <span className="text-rose-500">*</span></Label>
+                    <Label htmlFor="name" className="text-slate-800 font-bold text-sm">Full Name <span className="text-rose-500">*</span></Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                       <Input
                         id="name"
                         placeholder="John Doe"
-                        className="pl-9 bg-slate-950/40 border-slate-900 text-white placeholder-slate-700"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium"
                         {...register("name")}
                         disabled={isPending}
                       />
@@ -231,13 +231,13 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="mobile" className="text-slate-300 text-sm">Mobile Number <span className="text-rose-500">*</span></Label>
+                    <Label htmlFor="mobile" className="text-slate-800 font-bold text-sm">Mobile Number <span className="text-rose-500">*</span></Label>
                     <div className="relative">
                       <Smartphone className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                       <Input
                         id="mobile"
                         placeholder="9876543210"
-                        className="pl-9 bg-slate-950/40 border-slate-900 text-white placeholder-slate-700"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium"
                         {...register("mobile")}
                         disabled={isPending}
                       />
@@ -250,24 +250,24 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                   <input
                     type="checkbox"
                     id="same_as_mobile"
-                    className="w-4 h-4 rounded border-slate-800 bg-slate-950 accent-indigo-600"
+                    className="w-4 h-4 rounded border-slate-300 bg-white accent-indigo-600"
                     {...register("same_as_mobile")}
                     disabled={isPending}
                   />
-                  <Label htmlFor="same_as_mobile" className="text-slate-400 text-xs cursor-pointer">
+                  <Label htmlFor="same_as_mobile" className="text-slate-700 font-semibold text-xs cursor-pointer">
                     WhatsApp number is same as mobile number
                   </Label>
                 </div>
 
                 {!sameAsMobile && (
                   <div className="space-y-2 animate-fade-in">
-                    <Label htmlFor="whatsapp_number" className="text-slate-300 text-sm">WhatsApp Number</Label>
+                    <Label htmlFor="whatsapp_number" className="text-slate-800 font-bold text-sm">WhatsApp Number</Label>
                     <div className="relative">
                       <Smartphone className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                       <Input
                         id="whatsapp_number"
                         placeholder="9876543210"
-                        className="pl-9 bg-slate-950/40 border-slate-900 text-white placeholder-slate-700"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium"
                         {...register("whatsapp_number")}
                         disabled={isPending}
                       />
@@ -277,13 +277,13 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-slate-300 text-sm">Email Address</Label>
+                    <Label htmlFor="email" className="text-slate-800 font-bold text-sm">Email Address</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                       <Input
                         id="email"
                         placeholder="john@gmail.com"
-                        className="pl-9 bg-slate-950/40 border-slate-900 text-white placeholder-slate-700"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium"
                         {...register("email")}
                         disabled={isPending}
                       />
@@ -292,13 +292,13 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="place_address" className="text-slate-300 text-sm">Place / Address</Label>
+                    <Label htmlFor="place_address" className="text-slate-800 font-bold text-sm">Place / Address</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                       <Input
                         id="place_address"
                         placeholder="Flat, Road, Area..."
-                        className="pl-9 bg-slate-950/40 border-slate-900 text-white placeholder-slate-700"
+                        className="pl-9 bg-white border-slate-300 text-slate-900 placeholder:text-slate-500 font-medium"
                         {...register("place_address")}
                         disabled={isPending}
                       />
@@ -350,30 +350,30 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                   {/* Details list */}
                   <div className="space-y-3.5 text-sm border-t border-slate-900 pt-4">
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-500">Mobile</span>
-                      <span className="text-slate-300 font-medium">{selectedCustomer.mobile}</span>
+                      <span className="text-slate-700 font-bold">Mobile</span>
+                      <span className="text-slate-900 font-bold">{selectedCustomer.mobile}</span>
                     </div>
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-500">WhatsApp</span>
-                      <span className="text-slate-300 font-medium">
+                      <span className="text-slate-700 font-bold">WhatsApp</span>
+                      <span className="text-slate-900 font-bold">
                         {selectedCustomer.whatsapp_number || "Same as mobile"}
                       </span>
                     </div>
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-500">Email</span>
-                      <span className="text-slate-300 font-medium truncate max-w-[150px]">
+                      <span className="text-slate-700 font-bold">Email</span>
+                      <span className="text-slate-900 font-bold truncate max-w-[150px]">
                         {selectedCustomer.email || "—"}
                       </span>
                     </div>
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-500">Address</span>
-                      <span className="text-slate-300 font-medium text-right max-w-[180px]">
+                      <span className="text-slate-700 font-bold">Address</span>
+                      <span className="text-slate-900 font-bold text-right max-w-[180px]">
                         {selectedCustomer.place_address || "—"}
                       </span>
                     </div>
                     <div className="flex justify-between items-start">
-                      <span className="text-slate-500">Customer Since</span>
-                      <span className="text-slate-300 font-medium">
+                      <span className="text-slate-700 font-bold">Customer Since</span>
+                      <span className="text-slate-900 font-bold">
                         {selectedCustomer.created_at ? formatLocalDate(selectedCustomer.created_at) : "—"}
                       </span>
                     </div>
@@ -382,35 +382,35 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                   {/* Financial Stats Summary */}
                   {selectedCustomer.stats && (
                     <div className="border-t border-slate-900 pt-4 space-y-4">
-                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                        <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
+                      <p className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <TrendingUp className="w-3.5 h-3.5 text-indigo-600" />
                         Account Statistics
                       </p>
                       <div className="grid grid-cols-2 gap-3.5">
-                        <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
-                          <p className="text-[10px] text-slate-500 uppercase font-medium">Total Visits</p>
-                          <p className="text-xl font-bold text-white mt-0.5">{selectedCustomer.stats.totalJobCards}</p>
+                        <div className="p-3 rounded-lg bg-white border border-slate-300 text-center shadow-sm">
+                          <p className="text-[10px] text-slate-700 uppercase font-bold">Total Visits</p>
+                          <p className="text-xl font-extrabold text-slate-900 mt-0.5">{selectedCustomer.stats.totalJobCards}</p>
                         </div>
-                        <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
-                          <p className="text-[10px] text-slate-500 uppercase font-medium">Total Billed</p>
-                          <p className="text-xl font-bold text-white mt-0.5">₹{selectedCustomer.stats.totalBilled}</p>
+                        <div className="p-3 rounded-lg bg-white border border-slate-300 text-center shadow-sm">
+                          <p className="text-[10px] text-slate-700 uppercase font-bold">Total Billed</p>
+                          <p className="text-xl font-extrabold text-slate-900 mt-0.5">₹{selectedCustomer.stats.totalBilled}</p>
                         </div>
-                        <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
-                          <p className="text-[10px] text-slate-500 uppercase font-medium">Total Paid</p>
-                          <p className="text-xl font-bold text-emerald-400 mt-0.5">₹{selectedCustomer.stats.totalPaid}</p>
+                        <div className="p-3 rounded-lg bg-white border border-slate-300 text-center shadow-sm">
+                          <p className="text-[10px] text-slate-700 uppercase font-bold">Total Paid</p>
+                          <p className="text-xl font-extrabold text-emerald-600 mt-0.5">₹{selectedCustomer.stats.totalPaid}</p>
                         </div>
-                        <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-900 text-center">
-                          <p className="text-[10px] text-slate-500 uppercase font-medium">Outstanding</p>
-                          <p className={`text-xl font-bold mt-0.5 ${
-                            selectedCustomer.stats.outstandingBalance > 0 ? "text-rose-400" : "text-emerald-400"
+                        <div className="p-3 rounded-lg bg-white border border-slate-300 text-center shadow-sm">
+                          <p className="text-[10px] text-slate-700 uppercase font-bold">Outstanding</p>
+                          <p className={`text-xl font-extrabold mt-0.5 ${
+                            selectedCustomer.stats.outstandingBalance > 0 ? "text-rose-600" : "text-emerald-600"
                           }`}>
                             ₹{selectedCustomer.stats.outstandingBalance}
                           </p>
                         </div>
                         {/* Average Bill Value card spanning full width */}
-                        <div className="p-3 rounded-lg bg-indigo-600/5 border border-indigo-500/20 text-center col-span-2 shadow-inner">
-                          <p className="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Average Bill Value</p>
-                          <p className="text-xl font-extrabold text-indigo-400 mt-0.5">₹{selectedCustomer.stats.averageBillValue?.toFixed(2) || "0.00"}</p>
+                        <div className="p-3 rounded-lg bg-indigo-50 border border-indigo-200 text-center col-span-2 shadow-sm">
+                          <p className="text-[10px] text-indigo-900 uppercase font-bold tracking-wider">Average Bill Value</p>
+                          <p className="text-xl font-extrabold text-indigo-700 mt-0.5">₹{selectedCustomer.stats.averageBillValue?.toFixed(2) || "0.00"}</p>
                         </div>
                       </div>
                     </div>
@@ -428,8 +428,8 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                 </div>
               ) : (
                 <div className="py-12 text-center">
-                  <Bookmark className="w-12 h-12 text-slate-800 mx-auto stroke-1" />
-                  <p className="text-slate-500 text-sm mt-3">Select a customer from the lookup list to inspect profile details.</p>
+                  <Bookmark className="w-12 h-12 text-slate-400 mx-auto stroke-1" />
+                  <p className="text-slate-600 font-medium text-sm mt-3">Select a customer from the lookup list to inspect profile details.</p>
                 </div>
               )}
             </CardContent>

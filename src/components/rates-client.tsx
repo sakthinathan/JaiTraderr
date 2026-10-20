@@ -173,7 +173,7 @@ export default function RatesClient({
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-900 text-slate-500 font-semibold text-xs uppercase bg-slate-950/30">
+                    <tr className="border-b border-slate-900 text-slate-700 font-bold text-xs uppercase bg-slate-100/60">
                       <th className="px-6 py-3">Service</th>
                       <th className="px-6 py-3">Item Name</th>
                       <th className="px-6 py-3">Billing Unit</th>
@@ -182,17 +182,17 @@ export default function RatesClient({
                   </thead>
                   <tbody className="divide-y divide-slate-900/40">
                     {rates.filter(r => r.is_active).map((rate) => (
-                      <tr key={rate.id} className="hover:bg-slate-900/10 text-slate-300 transition">
+                      <tr key={rate.id} className="hover:bg-slate-100/50 text-slate-900 transition">
                         <td className="px-6 py-4">
-                          <span className="font-semibold text-slate-100">{rate.service_name}</span>
+                          <span className="font-bold text-slate-900">{rate.service_name}</span>
                         </td>
-                        <td className="px-6 py-4">{rate.item_name}</td>
+                        <td className="px-6 py-4 font-medium text-slate-800">{rate.item_name}</td>
                         <td className="px-6 py-4">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-900 border border-slate-800 text-slate-400 uppercase">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 border border-slate-300 text-slate-700 uppercase">
                             {rate.unit_id}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-right font-bold text-indigo-400">
+                        <td className="px-6 py-4 text-right font-extrabold text-indigo-700">
                           ₹{rate.rate.toFixed(2)}
                         </td>
                       </tr>
@@ -242,10 +242,10 @@ export default function RatesClient({
                     )}
 
                     <div className="space-y-2">
-                      <Label htmlFor="service_id" className="text-slate-300 text-xs">Select Service</Label>
+                      <Label htmlFor="service_id" className="text-slate-800 font-bold text-xs">Select Service</Label>
                       <select
                         id="service_id"
-                        className="w-full h-9 px-3 rounded-lg bg-slate-950 border border-slate-900 text-white text-sm focus:border-indigo-500 focus:outline-none"
+                        className="w-full h-9 px-3 rounded-lg bg-white border border-slate-300 text-slate-900 text-sm focus:border-indigo-600 focus:outline-none"
                         {...register("service_id")}
                         disabled={isPending}
                       >
@@ -254,14 +254,14 @@ export default function RatesClient({
                           <option key={s.id} value={s.id}>{s.name}</option>
                         ))}
                       </select>
-                      {errors.service_id && <p className="text-rose-500 text-[10px]">{errors.service_id.message}</p>}
+                      {errors.service_id && <p className="text-rose-600 text-[10px] font-bold">{errors.service_id.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="item_id" className="text-slate-300 text-xs">Select Item</Label>
+                      <Label htmlFor="item_id" className="text-slate-800 font-bold text-xs">Select Item</Label>
                       <select
                         id="item_id"
-                        className="w-full h-9 px-3 rounded-lg bg-slate-950 border border-slate-900 text-white text-sm focus:border-indigo-500 focus:outline-none"
+                        className="w-full h-9 px-3 rounded-lg bg-white border border-slate-300 text-slate-900 text-sm focus:border-indigo-600 focus:outline-none"
                         {...register("item_id")}
                         disabled={isPending}
                       >
@@ -270,15 +270,15 @@ export default function RatesClient({
                           <option key={i.id} value={i.id}>{i.name}</option>
                         ))}
                       </select>
-                      {errors.item_id && <p className="text-rose-500 text-[10px]">{errors.item_id.message}</p>}
+                      {errors.item_id && <p className="text-rose-600 text-[10px] font-bold">{errors.item_id.message}</p>}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="unit_id" className="text-slate-300 text-xs">Billing Unit</Label>
+                        <Label htmlFor="unit_id" className="text-slate-800 font-bold text-xs">Billing Unit</Label>
                         <select
                           id="unit_id"
-                          className="w-full h-9 px-3 rounded-lg bg-slate-950 border border-slate-900 text-white text-sm focus:border-indigo-500 focus:outline-none"
+                          className="w-full h-9 px-3 rounded-lg bg-white border border-slate-300 text-slate-900 text-sm focus:border-indigo-600 focus:outline-none"
                           {...register("unit_id")}
                           disabled={isPending}
                         >
@@ -286,11 +286,11 @@ export default function RatesClient({
                             <option key={u.id} value={u.id}>{u.name} ({u.id})</option>
                           ))}
                         </select>
-                        {errors.unit_id && <p className="text-rose-500 text-[10px]">{errors.unit_id.message}</p>}
+                        {errors.unit_id && <p className="text-rose-600 text-[10px] font-bold">{errors.unit_id.message}</p>}
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="rate" className="text-slate-300 text-xs">Rate (₹)</Label>
+                        <Label htmlFor="rate" className="text-slate-800 font-bold text-xs">Rate (₹)</Label>
                         <div className="relative">
                           <IndianRupee className="absolute left-2.5 top-2.5 w-4 h-4 text-slate-500" />
                           <Input
@@ -298,7 +298,7 @@ export default function RatesClient({
                             type="number"
                             step="0.01"
                             placeholder="0.00"
-                            className="pl-8 bg-slate-950 border-slate-900 text-white"
+                            className="pl-8 bg-white border-slate-300 text-slate-900 font-bold"
                             {...register("rate", { valueAsNumber: true })}
                             disabled={isPending}
                           />
@@ -329,31 +329,31 @@ export default function RatesClient({
                 <CardContent>
                   <form onSubmit={handleCreateService} className="space-y-3">
                     <div className="space-y-1">
-                      <Label htmlFor="serviceName" className="text-slate-300 text-xs">Service Name</Label>
+                      <Label htmlFor="serviceName" className="text-slate-800 font-bold text-xs">Service Name</Label>
                       <Input
                         id="serviceName"
                         placeholder="e.g. Dry Cleaning"
                         value={newServiceName}
                         onChange={(e) => setNewServiceName(e.target.value)}
-                        className="bg-slate-950 border-slate-900 text-white h-8 text-xs"
+                        className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
                         disabled={isPending}
                       />
                     </div>
                     <div className="space-y-1">
-                      <Label htmlFor="serviceDesc" className="text-slate-300 text-xs">Description</Label>
+                      <Label htmlFor="serviceDesc" className="text-slate-800 font-bold text-xs">Description</Label>
                       <Input
                         id="serviceDesc"
                         placeholder="Optional details"
                         value={newServiceDesc}
                         onChange={(e) => setNewServiceDesc(e.target.value)}
-                        className="bg-slate-950 border-slate-900 text-white h-8 text-xs"
+                        className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
                         disabled={isPending}
                       />
                     </div>
                     <Button
                       type="submit"
                       disabled={isPending || !newServiceName}
-                      className="w-full bg-slate-900 border border-slate-800 hover:bg-slate-850 text-white text-xs py-1.5 rounded-lg"
+                      className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2 rounded-lg shadow-sm"
                     >
                       {isPending ? "Creating..." : "Create Service"}
                     </Button>
@@ -364,28 +364,28 @@ export default function RatesClient({
               {/* Create Item Form */}
               <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                    <Tag className="w-5 h-5 text-indigo-400" />
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <Tag className="w-5 h-5 text-indigo-600" />
                     Create New Item
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleCreateItem} className="space-y-3">
                     <div className="space-y-1">
-                      <Label htmlFor="itemName" className="text-slate-300 text-xs">Item Name</Label>
+                      <Label htmlFor="itemName" className="text-slate-800 font-bold text-xs">Item Name</Label>
                       <Input
                         id="itemName"
                         placeholder="e.g. Kurti"
                         value={newItemName}
                         onChange={(e) => setNewItemName(e.target.value)}
-                        className="bg-slate-950 border-slate-900 text-white h-8 text-xs"
+                        className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
                         disabled={isPending}
                       />
                     </div>
                     <Button
                       type="submit"
                       disabled={isPending || !newItemName}
-                      className="w-full bg-slate-900 border border-slate-800 hover:bg-slate-850 text-white text-xs py-1.5 rounded-lg"
+                      className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2 rounded-lg shadow-sm"
                     >
                       {isPending ? "Creating..." : "Create Item"}
                     </Button>

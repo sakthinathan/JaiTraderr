@@ -546,9 +546,9 @@ export default function ReportsClient({
         <div className="flex items-center gap-2.5 shrink-0">
           <Button
             onClick={handleExportCSV}
-            className="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 text-xs font-bold h-9 px-3.5 rounded-xl gap-2 shadow-sm"
+            className="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold h-9 px-3.5 rounded-xl gap-2 shadow-sm"
           >
-            <Download className="w-4 h-4 text-indigo-400" />
+            <Download className="w-4 h-4 text-indigo-600" />
             Export CSV
           </Button>
           <Button
@@ -566,8 +566,8 @@ export default function ReportsClient({
         <CardContent className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Preset Buttons */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mr-1 flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5 text-indigo-600" />
               Range:
             </span>
             {[
@@ -583,7 +583,7 @@ export default function ReportsClient({
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
                   datePreset === p.id
                     ? "bg-indigo-600 text-white shadow"
-                    : "bg-slate-900 text-slate-400 hover:text-white"
+                    : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300 font-semibold"
                 }`}
               >
                 {p.label}
@@ -592,7 +592,7 @@ export default function ReportsClient({
           </div>
 
           {/* Custom Date Pickers */}
-          <div className="flex items-center gap-2.5 text-xs text-slate-300">
+          <div className="flex items-center gap-2.5 text-xs text-slate-700 font-bold">
             <Input
               type="date"
               value={startDate}
@@ -600,9 +600,9 @@ export default function ReportsClient({
                 setStartDate(e.target.value);
                 setDatePreset("custom");
               }}
-              className="h-8 w-34 bg-slate-950 border-slate-800 text-white text-xs font-mono rounded-lg"
+              className="h-8 w-34 bg-white border-slate-300 text-slate-900 text-xs font-mono font-bold rounded-lg shadow-sm"
             />
-            <span className="text-slate-500 font-bold">to</span>
+            <span className="text-slate-600 font-bold">to</span>
             <Input
               type="date"
               value={endDate}
@@ -610,7 +610,7 @@ export default function ReportsClient({
                 setEndDate(e.target.value);
                 setDatePreset("custom");
               }}
-              className="h-8 w-34 bg-slate-950 border-slate-800 text-white text-xs font-mono rounded-lg"
+              className="h-8 w-34 bg-white border-slate-300 text-slate-900 text-xs font-mono font-bold rounded-lg shadow-sm"
             />
           </div>
         </CardContent>
@@ -624,11 +624,11 @@ export default function ReportsClient({
             onClick={() => setActiveTab("sales")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "sales"
-                ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-indigo-50 text-indigo-800 border border-indigo-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <TrendingUp className="w-4 h-4 text-indigo-400" />
+            <TrendingUp className="w-4 h-4 text-indigo-600" />
             <span>Sales &amp; Revenue Report</span>
           </button>
 
@@ -637,11 +637,11 @@ export default function ReportsClient({
             onClick={() => setActiveTab("washing")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "washing"
-                ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-cyan-50 text-cyan-800 border border-cyan-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <Shirt className="w-4 h-4 text-cyan-400" />
+            <Shirt className="w-4 h-4 text-cyan-600" />
             <span>Washing &amp; Service Volume</span>
           </button>
 
@@ -650,11 +650,11 @@ export default function ReportsClient({
             onClick={() => setActiveTab("customers")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "customers"
-                ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-amber-50 text-amber-800 border border-amber-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <Users className="w-4 h-4 text-amber-400" />
+            <Users className="w-4 h-4 text-amber-600" />
             <span>Customer-Wise Frequency &amp; Billing</span>
           </button>
 
@@ -663,13 +663,13 @@ export default function ReportsClient({
             onClick={() => setActiveTab("dues")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "dues"
-                ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm"
-                : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-900"
+                ? "bg-rose-50 text-rose-800 border border-rose-300 shadow-sm"
+                : "bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-300"
             }`}
           >
-            <Clock className="w-4 h-4 text-rose-400" />
+            <Clock className="w-4 h-4 text-rose-600" />
             <span>Pending Receivables &amp; Aging</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-rose-500/20 text-rose-300">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-rose-100 text-rose-800 font-bold">
               {duesReport.defaulterCount}
             </span>
           </button>
@@ -682,7 +682,7 @@ export default function ReportsClient({
             placeholder="Search report records..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9 bg-slate-950 border-slate-850 text-xs text-white placeholder-slate-600 rounded-xl"
+            className="pl-9 h-9 bg-white border-slate-300 text-xs text-slate-900 placeholder:text-slate-500 rounded-xl font-medium shadow-sm"
           />
         </div>
       </div>

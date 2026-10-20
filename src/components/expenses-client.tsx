@@ -324,13 +324,13 @@ export default function ExpensesClient({
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-900 border border-slate-800 shrink-0">
+        <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-100 border border-slate-300 shrink-0">
           <button
             onClick={() => setActiveTab("register")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "register"
                 ? "bg-indigo-600 text-white shadow-md"
-                : "text-slate-400 hover:text-white"
+                : "text-slate-700 hover:text-slate-900 hover:bg-slate-200 font-semibold"
             }`}
           >
             <Calculator className="w-3.5 h-3.5" />
@@ -341,7 +341,7 @@ export default function ExpensesClient({
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${
               activeTab === "expenses"
                 ? "bg-indigo-600 text-white shadow-md"
-                : "text-slate-400 hover:text-white"
+                : "text-slate-700 hover:text-slate-900 hover:bg-slate-200 font-semibold"
             }`}
           >
             <Receipt className="w-3.5 h-3.5" />
@@ -1126,11 +1126,11 @@ export default function ExpensesClient({
             )}
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-slate-300">Category *</Label>
+              <Label className="text-xs font-bold text-slate-800">Category *</Label>
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full h-9 px-3 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs"
+                className="w-full h-9 px-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs font-semibold focus:border-indigo-600 shadow-sm"
               >
                 <option value="">Select Category...</option>
                 {categories.map((c) => (
@@ -1140,7 +1140,7 @@ export default function ExpensesClient({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-slate-300">Amount (₹) *</Label>
+              <Label className="text-xs font-bold text-slate-800">Amount (₹) *</Label>
               <div className="relative">
                 <IndianRupee className="absolute left-2.5 top-2.5 w-4 h-4 text-slate-500" />
                 <Input
@@ -1148,17 +1148,17 @@ export default function ExpensesClient({
                   placeholder="0.00"
                   value={amount || ""}
                   onChange={(e) => setAmount(Number(e.target.value))}
-                  className="pl-8 bg-slate-900 border-slate-800 text-white text-xs rounded-xl"
+                  className="pl-8 bg-white border-slate-300 text-slate-900 text-xs rounded-xl font-bold shadow-sm"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-slate-300">Payment Mode</Label>
+              <Label className="text-xs font-bold text-slate-800">Payment Mode</Label>
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value as any)}
-                className="w-full h-9 px-3 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs"
+                className="w-full h-9 px-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs font-semibold focus:border-indigo-600 shadow-sm"
               >
                 <option value="CASH">Cash Drawer (Deducts from Till)</option>
                 <option value="UPI">UPI / Online</option>
@@ -1167,12 +1167,12 @@ export default function ExpensesClient({
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-slate-300">Purpose / Remarks</Label>
+              <Label className="text-xs font-bold text-slate-800">Purpose / Remarks</Label>
               <Input
                 placeholder="e.g. Tea for staff, Detergent refill, Transport"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="bg-slate-900 border-slate-800 text-white text-xs rounded-xl h-9"
+                className="bg-white border-slate-300 text-slate-900 text-xs rounded-xl h-9 font-medium shadow-sm"
               />
             </div>
 
@@ -1181,7 +1181,7 @@ export default function ExpensesClient({
                 type="button"
                 variant="outline"
                 onClick={() => setShowQuickExpenseModal(false)}
-                className="h-9 text-xs bg-slate-900 border-slate-800 text-slate-300"
+                className="h-9 text-xs bg-white hover:bg-slate-100 border-slate-300 text-slate-700 font-semibold shadow-sm"
               >
                 Cancel
               </Button>

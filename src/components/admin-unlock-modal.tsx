@@ -94,7 +94,7 @@ export default function AdminUnlockModal({
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition">
+          <button onClick={onClose} className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -103,20 +103,20 @@ export default function AdminUnlockModal({
           {success ? (
             <div className="flex flex-col items-center gap-3 py-6">
               <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center animate-bounce">
-                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                <CheckCircle2 className="w-8 h-8 text-emerald-600" />
               </div>
-              <p className="font-extrabold text-base text-white">Passcode Verified!</p>
-              <p className="text-xs text-slate-400">Unlocking job card for staff edits...</p>
+              <p className="font-extrabold text-base text-slate-900">Passcode Verified!</p>
+              <p className="text-xs text-slate-600 font-medium">Unlocking job card for staff edits...</p>
             </div>
           ) : (
             <form onSubmit={handleVerify} className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 leading-relaxed">
+              <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 leading-relaxed font-medium">
                 Enter the supervisor passcode to override lock restrictions and edit clothes, rates, or notes.
-                <div className="mt-1 font-mono text-[11px] text-amber-400">Default PIN: 889900</div>
+                <div className="mt-1 font-mono text-[11px] text-amber-950 font-bold">Default PIN: 889900</div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs font-semibold text-slate-300">
+                <Label className="text-xs font-bold text-slate-800">
                   Enter 6-Digit Admin Passcode
                 </Label>
                 <div className="relative">
@@ -127,17 +127,17 @@ export default function AdminUnlockModal({
                     placeholder="••••••"
                     value={passcode}
                     onChange={e => setPasscode(e.target.value)}
-                    className="pr-12 h-12 rounded-xl text-lg text-center border bg-slate-900 border-slate-850 text-white font-mono tracking-[0.3em] font-bold shadow-inner"
+                    className="pr-12 h-12 rounded-xl text-xl text-center border bg-white border-slate-300 text-[#033d29] font-mono tracking-[0.3em] font-extrabold shadow-sm focus:border-indigo-600"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPasscode(!showPasscode)}
-                    className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-200"
+                    className="absolute right-3.5 top-3.5 text-slate-500 hover:text-slate-800"
                   >
                     {showPasscode ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                {error && <p className="text-rose-400 text-xs mt-1.5 font-semibold text-center">{error}</p>}
+                {error && <p className="text-rose-600 text-xs mt-1.5 font-bold text-center">{error}</p>}
               </div>
 
               {/* Quick Keypad */}
@@ -147,7 +147,7 @@ export default function AdminUnlockModal({
                     key={num}
                     type="button"
                     onClick={() => setPasscode((prev) => (prev.length < 8 ? prev + num : prev))}
-                    className="h-10 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 font-bold text-sm transition active:scale-95 shadow-sm"
+                    className="h-10 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-900 font-extrabold text-base transition active:scale-95 shadow-sm"
                   >
                     {num}
                   </button>
@@ -155,21 +155,21 @@ export default function AdminUnlockModal({
                 <button
                   type="button"
                   onClick={() => setPasscode("")}
-                  className="h-10 rounded-xl bg-slate-900/60 hover:bg-slate-850 border border-slate-850 text-rose-400 font-semibold text-xs transition active:scale-95"
+                  className="h-10 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 font-bold text-xs transition active:scale-95"
                 >
                   Clear
                 </button>
                 <button
                   type="button"
                   onClick={() => setPasscode((prev) => (prev.length < 8 ? prev + "0" : prev))}
-                  className="h-10 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 font-bold text-sm transition active:scale-95 shadow-sm"
+                  className="h-10 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-900 font-extrabold text-base transition active:scale-95 shadow-sm"
                 >
                   0
                 </button>
                 <button
                   type="button"
                   onClick={() => setPasscode((prev) => prev.slice(0, -1))}
-                  className="h-10 rounded-xl bg-slate-900/60 hover:bg-slate-850 border border-slate-850 text-slate-400 font-semibold text-xs transition active:scale-95"
+                  className="h-10 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-bold text-xs transition active:scale-95"
                 >
                   ⌫
                 </button>
