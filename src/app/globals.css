@@ -334,3 +334,36 @@ select.bg-slate-900 option {
   background-color: #ffffff !important; /* Clean white background for dropdown select options */
   color: #0f172a !important; /* Readable dark text inside options list */
 }
+
+/* ============================================================
+   GLOBAL CONTRAST FIX: Main content area text visibility
+   The Tailwind v4 theme maps slate-950 to a cream/light color,
+   so text-white and text-slate-400 are invisible on light backgrounds.
+   These rules re-map them to readable dark tones inside <main>.
+   ============================================================ */
+
+/* text-white inside main content → dark slate */
+main .text-white:not(button):not(a):not([class*="bg-indigo"]):not([class*="bg-emerald"]):not([class*="bg-rose"]):not([class*="bg-amber"]):not([class*="bg-gradient"]):not([class*="bg-slate-9"]):not([class*="bg-slate-8"]) {
+  color: #1e293b !important;
+}
+
+/* text-slate-400 in main → readable mid-grey */
+main .text-slate-400:not(button):not(a) {
+  color: #475569 !important;
+}
+
+/* text-slate-500 in main → readable mid-grey */
+main .text-slate-500:not(button):not(a) {
+  color: #64748b !important;
+}
+
+/* Dialog portals (rendered outside main): same fixes */
+[data-slot="dialog-content"] .text-white:not(button):not(a):not([class*="bg-"]) {
+  color: #1e293b !important;
+}
+[data-slot="dialog-content"] .text-slate-400:not(button):not(a) {
+  color: #475569 !important;
+}
+[data-slot="dialog-content"] .text-slate-500:not(button):not(a) {
+  color: #64748b !important;
+}

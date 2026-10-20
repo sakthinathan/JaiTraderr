@@ -116,12 +116,12 @@ export default function DashboardPage() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 p-4 md:p-5 rounded-xl border border-slate-900 bg-slate-950/40 backdrop-blur-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/5 rounded-full blur-[60px] pointer-events-none" />
         <div>
-          <h1 className="text-xl md:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+          <h1 className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
             {getGreeting()}, {user.name.split(" ")[0]}!
             <span className="animate-wave origin-[70%_70%] inline-block">👋</span>
           </h1>
-          <p className="text-slate-400 text-xs mt-0.5">
-            Logged in as <span className="text-indigo-400 font-semibold">{user.roleName}</span>. Operational context initialized for today.
+          <p className="text-slate-600 text-xs mt-0.5">
+            Logged in as <span className="text-indigo-600 font-semibold">{user.roleName}</span>. Operational context initialized for today.
           </p>
         </div>
         <div className="flex flex-wrap gap-2 shrink-0">
@@ -169,11 +169,11 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md hover:border-slate-800 transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Revenue Today</span>
-            <TrendingUp className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-semibold text-slate-600 uppercase">Revenue Today</span>
+            <TrendingUp className="w-4 h-4 text-emerald-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-extrabold text-white">₹{stats.revenueToday.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-slate-900">₹{stats.revenueToday.toLocaleString()}</div>
             <p className="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
               <span className="text-emerald-400 font-medium">+{stats.jobCardsCreated} jobs</span> created since morning
             </p>
@@ -182,11 +182,11 @@ export default function DashboardPage() {
 
         <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md hover:border-slate-800 transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Cash Collected</span>
-            <Wallet className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-slate-600 uppercase">Cash Collected</span>
+            <Wallet className="w-4 h-4 text-cyan-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-extrabold text-white">₹{stats.cashCollected.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-slate-900">₹{stats.cashCollected.toLocaleString()}</div>
             <p className="text-[10px] text-slate-500 mt-1">
               Advances + final balance collections
             </p>
@@ -195,11 +195,11 @@ export default function DashboardPage() {
 
         <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md hover:border-slate-800 transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Pending Balance</span>
-            <Clock className="w-4 h-4 text-amber-400" />
+            <span className="text-xs font-semibold text-slate-600 uppercase">Pending Balance</span>
+            <Clock className="w-4 h-4 text-amber-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-extrabold text-white">₹{stats.pendingBalance.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-slate-900">₹{stats.pendingBalance.toLocaleString()}</div>
             <p className="text-[10px] text-slate-500 mt-1">
               Outstanding values on active orders
             </p>
@@ -208,11 +208,11 @@ export default function DashboardPage() {
 
         <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md hover:border-slate-800 transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <span className="text-xs font-semibold text-slate-400 uppercase">Operating Result</span>
-            <CheckCircle2 className="w-4 h-4 text-indigo-400" />
+            <span className="text-xs font-semibold text-slate-600 uppercase">Operating Result</span>
+            <CheckCircle2 className="w-4 h-4 text-indigo-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-extrabold text-white">₹{stats.operatingResult.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-slate-900">₹{stats.operatingResult.toLocaleString()}</div>
             <p className="text-[10px] text-slate-500 mt-1">
               Est. Net (Cash ₹{stats.cashCollected} - Expenses ₹{stats.expenses})
             </p>
@@ -258,8 +258,8 @@ export default function DashboardPage() {
         <Card className="lg:col-span-2 border-slate-900 bg-slate-950/20 backdrop-blur-md">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg font-bold text-white">Active Order Processing</CardTitle>
-              <CardDescription className="text-slate-500 text-xs">Live tracking of ongoing orders inside the laundry pipeline</CardDescription>
+              <CardTitle className="text-lg font-bold text-slate-900">Active Order Processing</CardTitle>
+              <CardDescription className="text-slate-600 text-xs">Live tracking of ongoing orders inside the laundry pipeline</CardDescription>
             </div>
             <Link 
               href="/dashboard/workflow" 
@@ -324,8 +324,8 @@ export default function DashboardPage() {
           {/* Quick Actions Card */}
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader>
-              <CardTitle className="text-base font-bold text-white">Lifecycle Management</CardTitle>
-              <CardDescription className="text-slate-500 text-xs">Direct links to critical lifecycle stages</CardDescription>
+              <CardTitle className="text-base font-bold text-slate-900">Lifecycle Management</CardTitle>
+              <CardDescription className="text-slate-600 text-xs">Direct links to critical lifecycle stages</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link 
@@ -376,25 +376,25 @@ export default function DashboardPage() {
           {/* Audit logs summary */}
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader>
-              <CardTitle className="text-base font-bold text-white">System Status</CardTitle>
+              <CardTitle className="text-base font-bold text-slate-900">System Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between text-xs border-b border-slate-900 pb-2">
-                <span className="text-slate-400">Database Connection</span>
+                <span className="text-slate-700">Database Connection</span>
                 <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs border-b border-slate-900 pb-2">
-                <span className="text-slate-400">WhatsApp Notification Hub</span>
+                <span className="text-slate-700">WhatsApp Notification Hub</span>
                 <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   Online
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">PDF Generator Engine</span>
+                <span className="text-slate-700">PDF Generator Engine</span>
                 <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   Online

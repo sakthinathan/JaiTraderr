@@ -405,8 +405,8 @@ export default function JobCardsClient({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Job Cards Billing</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Job Cards Billing</h1>
+        <p className="text-slate-600 text-sm mt-1">
           Create new orders, calculate line amounts automatically, and close transaction cards.
         </p>
       </div>
@@ -421,7 +421,7 @@ export default function JobCardsClient({
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <ClipboardList className="w-5 h-5 text-indigo-400" />
-                  <CardTitle className="text-base font-extrabold text-white">
+                  <CardTitle className="text-base font-extrabold text-slate-900">
                     {step === 1 && "Select Customer Profile"}
                     {step === 2 && (editingJobCardId ? "Edit Job Card Details" : "Configure Services & Items")}
                     {step === 3 && "Review Billing & Close Card"}
@@ -518,7 +518,7 @@ export default function JobCardsClient({
                           <User className="w-4.5 h-4.5 text-indigo-400" />
                         </div>
                         <div>
-                          <p className="font-bold text-sm text-white">{selectedCust.name}</p>
+                          <p className="font-bold text-sm text-slate-900">{selectedCust.name}</p>
                           <p className="text-[10px] text-slate-500 mt-0.5">{selectedCust.mobile} • {selectedCust.customer_code}</p>
                         </div>
                       </div>
@@ -565,7 +565,7 @@ export default function JobCardsClient({
                   {selectedServices.map((svcGroup) => (
                     <div key={svcGroup.service_id} className="p-4 rounded-xl border border-slate-900 bg-slate-950/10 space-y-4">
                       <div className="flex items-center justify-between border-b border-slate-900 pb-2">
-                        <span className="text-sm font-bold text-white uppercase tracking-wider">{svcGroup.service_name}</span>
+                        <span className="text-sm font-bold text-slate-900 uppercase tracking-wider">{svcGroup.service_name}</span>
                         <button
                           type="button"
                           onClick={() => removeServiceGroup(svcGroup.service_id)}
@@ -911,7 +911,7 @@ export default function JobCardsClient({
             <CardHeader className="space-y-3 border-b border-slate-900/60 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <FileText className="w-4.5 h-4.5 text-indigo-400" />
                     Active Job Directory
                   </CardTitle>

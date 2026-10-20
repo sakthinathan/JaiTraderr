@@ -149,8 +149,8 @@ export default function RatesClient({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Pricing & Services Rates Catalog</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Pricing & Services Rates Catalog</h1>
+          <p className="text-slate-600 text-sm mt-1">
             Configure rates for specific Service + Item + Unit combinations.
           </p>
         </div>
@@ -161,11 +161,11 @@ export default function RatesClient({
         <div className="lg:col-span-2 space-y-6">
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-                <Sliders className="w-5 h-5 text-indigo-400" />
+              <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Sliders className="w-5 h-5 text-indigo-600" />
                 Active Rate Cards
               </CardTitle>
-              <CardDescription className="text-slate-500 text-xs">
+              <CardDescription className="text-slate-600 text-xs">
                 Prices matching operations for active laundry jobs.
               </CardDescription>
             </CardHeader>
@@ -218,11 +218,11 @@ export default function RatesClient({
               {/* Add New Rate Form */}
               <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                    <PlusCircle className="w-5 h-5 text-indigo-400" />
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <PlusCircle className="w-5 h-5 text-indigo-600" />
                     Configure Rate Card
                   </CardTitle>
-                  <CardDescription className="text-slate-500 text-xs">
+                  <CardDescription className="text-slate-600 text-xs">
                     Create or update pricing combination.
                   </CardDescription>
                 </CardHeader>
@@ -321,8 +321,8 @@ export default function RatesClient({
               {/* Create Service Form */}
               <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-indigo-400" />
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <Layers className="w-5 h-5 text-indigo-600" />
                     Create New Service
                   </CardTitle>
                 </CardHeader>
@@ -396,16 +396,16 @@ export default function RatesClient({
           ) : (
             <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
               <CardHeader>
-                <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-amber-400" />
+                <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-amber-600" />
                   Authorization Scope
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-xs text-slate-400 leading-relaxed">
+              <CardContent className="space-y-3 text-xs text-slate-700 leading-relaxed">
                 <div className="flex gap-2">
-                  <Info className="w-4.5 h-4.5 text-indigo-400 shrink-0 mt-0.5" />
+                  <Info className="w-4.5 h-4.5 text-indigo-600 shrink-0 mt-0.5" />
                   <p>
-                    Your current role (<span className="text-indigo-400 font-semibold">Staff User</span>) is restricted to catalog view access.
+                    Your current role (<span className="text-indigo-600 font-semibold">Staff User</span>) is restricted to catalog view access.
                   </p>
                 </div>
                 <p>

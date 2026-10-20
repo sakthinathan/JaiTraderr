@@ -115,8 +115,8 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
     <div className="space-y-6">
       {/* Search Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Customer Database</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Customer Database</h1>
+        <p className="text-slate-600 text-sm mt-1">
           Perform live mobile lookups, inspect visit histories, or register new accounts.
         </p>
       </div>
@@ -127,11 +127,11 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
           {/* Lookup Card */}
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-                <Search className="w-5 h-5 text-indigo-400" />
+              <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Search className="w-5 h-5 text-indigo-600" />
                 Live Mobile Lookup
               </CardTitle>
-              <CardDescription className="text-slate-500 text-xs">
+              <CardDescription className="text-slate-600 text-xs">
                 Type name, mobile number, or customer ID to search.
               </CardDescription>
             </CardHeader>
@@ -191,11 +191,11 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
           {/* Registration Form Card */}
           <Card id="registration-form" className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-cyan-400" />
+              <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <UserPlus className="w-5 h-5 text-cyan-600" />
                 Register New Customer
               </CardTitle>
-              <CardDescription className="text-slate-500 text-xs">
+              <CardDescription className="text-slate-600 text-xs">
                 Create new operational account.
               </CardDescription>
             </CardHeader>
@@ -324,8 +324,8 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
         <div className="space-y-6">
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader className="border-b border-slate-900 pb-4">
-              <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-                <UserCheck className="w-5 h-5 text-indigo-400" />
+              <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <UserCheck className="w-5 h-5 text-indigo-600" />
                 Customer Profile
               </CardTitle>
             </CardHeader>
@@ -340,7 +340,7 @@ export default function CustomersClient({ initialCustomers }: CustomersClientPro
                       </span>
                     </div>
                     <div>
-                      <p className="font-extrabold text-white text-base leading-tight">{selectedCustomer.name}</p>
+                      <p className="font-extrabold text-slate-900 text-base leading-tight">{selectedCustomer.name}</p>
                       <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-900 border border-slate-800 text-indigo-400 uppercase tracking-wider">
                         {selectedCustomer.customer_code}
                       </span>

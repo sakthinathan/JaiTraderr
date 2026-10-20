@@ -186,8 +186,8 @@ export default function WorkflowClient({ jobCards: initialJobCards, shelfLocatio
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-white">Operations Pipeline</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Operations Pipeline</h1>
+        <p className="text-slate-600 text-sm mt-1">
           Monitor active jobs through workflow queues and update process checkpoints.
         </p>
       </div>

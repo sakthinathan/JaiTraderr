@@ -314,11 +314,11 @@ export default function ExpensesClient({
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <Coins className="w-6 h-6 text-lime-400" />
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
+            <Coins className="w-6 h-6 text-lime-600" />
             Daily Cash Register & Expense Tracking
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-600 text-sm mt-1">
             Maintain day-to-day till balance from morning opening cash, customer billing, petty cash expenses, and final day closing.
           </p>
         </div>
@@ -362,7 +362,7 @@ export default function ExpensesClient({
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-sm font-bold text-white">Daily Cash Register</p>
+                    <p className="text-sm font-bold text-slate-900">Daily Cash Register</p>
                     {existingClosing ? (
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                         <Lock className="w-3 h-3" /> DAY CLOSED &amp; RECONCILED
@@ -373,7 +373,7 @@ export default function ExpensesClient({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-slate-600 mt-0.5">
                     {existingClosing 
                       ? `Reconciled by ${existingClosing.closed_by} on ${existingClosing.closed_at.split('T')[0]} at ${existingClosing.closed_at.split('T')[1]?.slice(0, 5)}`
                       : "Live tracking cash float, customer billing inflows, and petty expenses"}
@@ -412,7 +412,7 @@ export default function ExpensesClient({
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Step 1 • Morning</span>
-                    <p className="text-sm font-bold text-white mt-0.5">Opening Cash Float</p>
+                    <p className="text-sm font-bold text-slate-900 mt-0.5">Opening Cash Float</p>
                   </div>
                   <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400">
                     <Wallet className="w-5 h-5" />
@@ -431,13 +431,13 @@ export default function ExpensesClient({
                     />
                   </div>
                   <div className="flex justify-between items-center text-[10px]">
-                    <span className="text-slate-400">Drawer starting balance</span>
+                    <span className="text-slate-600">Drawer starting balance</span>
                     {floatSavedNotice ? (
-                      <span className="text-emerald-400 font-bold flex items-center gap-1">
+                      <span className="text-emerald-600 font-bold flex items-center gap-1">
                         <CheckCheck className="w-3 h-3" /> Saved!
                       </span>
                     ) : (
-                      <span className="text-slate-500">Auto-saved for date</span>
+                      <span className="text-slate-600">Auto-saved for date</span>
                     )}
                   </div>
                 </div>
@@ -451,7 +451,7 @@ export default function ExpensesClient({
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Step 2 • Inflow</span>
-                    <p className="text-sm font-bold text-white mt-0.5">+ Cash Billing Collected</p>
+                    <p className="text-sm font-bold text-slate-900 mt-0.5">+ Cash Billing Collected</p>
                   </div>
                   <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
                     <ArrowUpRight className="w-5 h-5" />
@@ -472,7 +472,7 @@ export default function ExpensesClient({
                   </div>
                   <div className="flex justify-between">
                     <span>Total Day Revenue:</span>
-                    <span className="text-white font-bold">₹{totalCollectedRevenue.toFixed(2)}</span>
+                    <span className="text-slate-900 font-bold">₹{totalCollectedRevenue.toFixed(2)}</span>
                   </div>
                 </div>
               </CardContent>
@@ -485,7 +485,7 @@ export default function ExpensesClient({
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider">Step 3 • Outflow</span>
-                    <p className="text-sm font-bold text-white mt-0.5">- Cash Expenses Paid</p>
+                    <p className="text-sm font-bold text-slate-900 mt-0.5">- Cash Expenses Paid</p>
                   </div>
                   <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400">
                     <ArrowDownRight className="w-5 h-5" />
@@ -519,7 +519,7 @@ export default function ExpensesClient({
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] font-bold text-lime-400 uppercase tracking-wider">Step 4 • Expected</span>
-                    <p className="text-sm font-bold text-white mt-0.5">= Expected Cash in Till</p>
+                    <p className="text-sm font-bold text-slate-900 mt-0.5">= Expected Cash in Till</p>
                   </div>
                   <div className="p-2 rounded-xl bg-lime-500/10 text-lime-400">
                     <Coins className="w-5 h-5" />
@@ -563,7 +563,7 @@ export default function ExpensesClient({
             {/* Left: End-of-Day Closing Form / Settlement Status */}
             <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
               <CardHeader className="border-b border-slate-900/60 pb-3">
-                <CardTitle className="text-base font-bold text-white flex items-center justify-between">
+                <CardTitle className="text-base font-bold text-slate-900 flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <Lock className="w-4.5 h-4.5 text-indigo-400" />
                     Final Day Closing &amp; Settlement
@@ -579,7 +579,7 @@ export default function ExpensesClient({
                     </Button>
                   )}
                 </CardTitle>
-                <CardDescription className="text-slate-400 text-xs">
+                <CardDescription className="text-slate-600 text-xs">
                   Physically count the cash drawer at end of shift/day and verify against system tally.
                 </CardDescription>
               </CardHeader>
@@ -750,11 +750,11 @@ export default function ExpensesClient({
             <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
               <CardHeader className="border-b border-slate-900/60 pb-3 flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <History className="w-4.5 h-4.5 text-indigo-400" />
                     Today&apos;s Cash &amp; Payment Ledger ({dailyLedgerMovements.length})
                   </CardTitle>
-                  <CardDescription className="text-slate-400 text-xs">
+                  <CardDescription className="text-slate-600 text-xs">
                     Chronological inflow &amp; outflow activity for {tallyDate}
                   </CardDescription>
                 </div>
@@ -799,11 +799,11 @@ export default function ExpensesClient({
           {/* Past Daily Closings History Table */}
           <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
             <CardHeader className="border-b border-slate-900/60 pb-3">
-              <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+              <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <FileText className="w-4.5 h-4.5 text-indigo-400" />
                 Past Daily Closings &amp; Settlement History ({closings.length})
               </CardTitle>
-              <CardDescription className="text-slate-400 text-xs">
+              <CardDescription className="text-slate-600 text-xs">
                 Audit trail of completed day register settlements and cash variance records.
               </CardDescription>
             </CardHeader>
@@ -878,8 +878,8 @@ export default function ExpensesClient({
               <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
               <CardContent className="pt-6 flex justify-between items-center">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Expenditures</p>
-                  <p className="text-2xl font-extrabold text-white mt-1.5">₹{totalSpentMonthly.toFixed(2)}</p>
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Total Expenditures</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1.5">₹{totalSpentMonthly.toFixed(2)}</p>
                 </div>
                 <ArrowDownCircle className="w-10 h-10 text-rose-500/20" />
               </CardContent>
@@ -889,13 +889,13 @@ export default function ExpensesClient({
               <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500" />
               <CardContent className="pt-6 flex justify-between items-center">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Top Cost Category</p>
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Top Cost Category</p>
                   {Object.keys(categoryTotals).length > 0 ? (
                     (() => {
                       const sorted = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
                       return (
                         <>
-                          <p className="text-lg font-bold text-white mt-1.5 truncate max-w-[150px]">{sorted[0][0]}</p>
+                          <p className="text-lg font-bold text-slate-900 mt-1.5 truncate max-w-[150px]">{sorted[0][0]}</p>
                           <p className="text-xs text-slate-400 mt-0.5">₹{sorted[0][1].toFixed(2)} spent</p>
                         </>
                       );
@@ -912,8 +912,8 @@ export default function ExpensesClient({
               <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500" />
               <CardContent className="pt-6 flex justify-between items-center">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg Cost per Voucher</p>
-                  <p className="text-2xl font-extrabold text-white mt-1.5">
+                  <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Avg Cost per Voucher</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1.5">
                     ₹{expenses.length > 0 ? (totalSpentMonthly / expenses.length).toFixed(2) : "0.00"}
                   </p>
                 </div>
@@ -927,7 +927,7 @@ export default function ExpensesClient({
             <div className="space-y-6">
               <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                  <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                     <PlusCircle className="w-4.5 h-4.5 text-indigo-400" />
                     Record Expenditure Voucher
                   </CardTitle>
@@ -1042,11 +1042,11 @@ export default function ExpensesClient({
               <Card className="border-slate-900 bg-slate-950/20 backdrop-blur-md">
                 <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-900/60 pb-4">
                   <div>
-                    <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                    <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
                       <Receipt className="w-4.5 h-4.5 text-indigo-400" />
                       Recorded Expenditures History
                     </CardTitle>
-                    <CardDescription className="text-slate-400 text-xs">
+                    <CardDescription className="text-slate-600 text-xs">
                       {filteredExpenses.length} voucher records
                     </CardDescription>
                   </div>
@@ -1070,7 +1070,7 @@ export default function ExpensesClient({
                         <div key={exp.id} className="p-3.5 flex items-center justify-between hover:bg-slate-900/20 transition">
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-white text-xs">{exp.category_name}</span>
+                              <span className="font-bold text-slate-900 text-xs">{exp.category_name}</span>
                               <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
                                 exp.payment_method === "CASH" ? "bg-amber-500/10 text-amber-400" : "bg-indigo-500/10 text-indigo-400"
                               }`}>

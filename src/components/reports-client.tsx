@@ -533,11 +533,11 @@ export default function ReportsClient({
       {/* Top Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <BarChart3 className="w-6 h-6 text-indigo-400" />
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
+            <BarChart3 className="w-6 h-6 text-indigo-600" />
             Business Intelligence &amp; Operational Reports
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-600 text-sm mt-1">
             Comprehensive audit reports covering sales, washing garment volume, customer frequency, and outstanding recovery.
           </p>
         </div>
